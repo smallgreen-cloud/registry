@@ -1,0 +1,69 @@
+{
+  "schema_version": "0.1.0",
+  "spec_version": "0.1.2",
+  "project_id": "sink",
+  "submitted_at": "2026-07-30T13:55:00Z",
+  "supersedes": "evidence/sink/2026-07-30-sandbox-01.json",
+  "submitter": { "github_handle": "AlanChen75" },
+  "deploy_event": {
+    "date": "2026-07-30",
+    "profile": "small-app",
+    "path": "C-adapter",
+    "result": "success"
+  },
+  "code_metrics": {
+    "loc": 47033,
+    "dependency_count": 64,
+    "measured_at_commit": "3f8d30ae8c917f269249d6c7c1c3894fc8d8af91",
+    "tool": "git ls-files + wc -l（ts/vue/js/mjs，排除 docs/ tests/）"
+  },
+  "conformance": {
+    "minutes": 0.9,
+    "result": "pass",
+    "ci_run_url": "https://github.com/smallgreen-cloud/adapter-sink/actions/runs/30546814574"
+  },
+  "low_carbon": {
+    "scale_to_zero": true,
+    "green_compute": false,
+    "no_idle_infra": true
+  },
+  "free_tier": {
+    "grade": "D",
+    "quota_notes": [
+      "本 Pack 取代 sandbox-01（主迴圈徒手部署、無 AE 功能的初版）——本輪為 agent 矩陣協定完整版：deployer（claude-code subagent）只憑 adapter repo 部署，verifier（codex-cli, gpt-5.6-sol）獨立六項全 pass，Analytics Engine 點擊統計端到端驗證通過",
+      "AE 統計實測：3 次點擊→visits 3（deployer 輪詢 0→2→3 收斂）；裁判追加點擊後 verifier 查得 visits 5——遞增正確，ingestion 延遲約 20-60 秒",
+      "AE dataset 無刪除 API：teardown 後 dataset 資料留存（3 個月自動過期），不計入資源歸零 diff（diff 範圍＝workers/d1/kv/pages）",
+      "R2 選配確認：帳號未啟用 R2（error 10042），依 AGENTS.md 省略 DEPLOY_R2_BUCKET_NAME 部署成功——R2 非 Sink 必要資源",
+      "暫時性異常：部署後首波 API 請求遇 edge error 1042＋404，約 1 分鐘自癒；retry budget 內重試通過",
+      "grade D 依 SVC-4 機械判定（ai binding，AI slug 為選配）——required/optional 細分見 spec issue #3"
+    ]
+  },
+  "agent_matrix": [
+    {
+      "agent": "claude-code",
+      "model": "claude-fable-5",
+      "version": "2.x",
+      "result": "autonomous",
+      "human_interventions": 0,
+      "stuck_state": null,
+      "retries": 1,
+      "date": "2026-07-30"
+    }
+  ],
+  "teardown": {
+    "performed": true,
+    "pass": true,
+    "residual_resources": [],
+    "method": "worker wrangler delete（secrets 隨之移除）；D1 與 KV 走 REST DELETE；workers/d1/kv/pages 四類與部署前 diff 為空；AE dataset 資料無刪除 API，留存至自動過期",
+    "date": "2026-07-30"
+  },
+  "user_acceptance": [
+    { "task": "GET /（health 200）", "result": "pass", "date": "2026-07-30" },
+    { "task": "POST /api/link/migration/run 初始化（解 423 gate）", "result": "pass", "date": "2026-07-30" },
+    { "task": "帶 token 建短鏈 t1（201，回 shortLink）", "result": "pass", "date": "2026-07-30" },
+    { "task": "GET /t1 → 301 → https://example.com/", "result": "pass", "date": "2026-07-30" },
+    { "task": "未帶 token 建鏈 401", "result": "pass", "date": "2026-07-30" },
+    { "task": "AE 統計 /api/stats/counters 遞增（0→3→5）", "result": "pass", "date": "2026-07-30" },
+    { "task": "verifier（codex）獨立六項全 pass＋首頁無宣告外第三方網域", "result": "pass", "date": "2026-07-30" }
+  ]
+}
