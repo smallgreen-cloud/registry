@@ -1,0 +1,63 @@
+{
+  "schema_version": "0.2.0",
+  "spec_version": "0.2.0",
+  "project_id": "uptimeflare",
+  "submitted_at": "2026-07-30T16:20:00Z",
+  "submitter": { "github_handle": "AlanChen75" },
+  "deploy_event": {
+    "date": "2026-07-30",
+    "profile": "small-app",
+    "path": "C-adapter",
+    "result": "success"
+  },
+  "code_metrics": {
+    "loc": 3188,
+    "dependency_count": 18,
+    "measured_at_commit": "a5670e51cbc167bf3610fce4d3389dd00141d729",
+    "tool": "git ls-files + wc -l（ts/tsx/js/mjs，排除 docs/）；deps=root+worker dependencies"
+  },
+  "conformance": {
+    "minutes": 1.0,
+    "result": "pass",
+    "ci_run_url": "https://github.com/smallgreen-cloud/adapter-uptimeflare/actions/runs/30541258252"
+  },
+  "low_carbon": {
+    "scale_to_zero": true,
+    "green_compute": false,
+    "no_idle_infra": true
+  },
+  "free_tier": {
+    "grade": "A",
+    "quota_notes": [
+      "弱模型軸首實證：deployer＝codex CLI 搭 gpt-5.4 低推理設定，autonomous 8 分鐘、驗收全過——確定性在閘門與 AGENTS.md 而非模型智力的直接證據（spec『弱模型走得完＝確定性真的在閘門』判準）",
+      "本 Pack 為 v0.2 schema 首例（agent_matrix 帶 role 欄）",
+      "deviation（已回饋 AGENTS.md）：Pages D1 binding REST PATCH 的 payload 形狀未寫全，agent 以陣列型試錯一次後依 API 錯誤訊息自我修正為物件型；wrangler 寫 ~/.wrangler/logs 在受限沙盒回 EPERM（不影響功能，環境差異）"
+    ]
+  },
+  "agent_matrix": [
+    {
+      "role": "deployer",
+      "agent": "codex",
+      "model": "gpt-5.4（reasoning effort low）",
+      "version": "0.130.0",
+      "result": "autonomous",
+      "human_interventions": 0,
+      "stuck_state": null,
+      "retries": 1,
+      "date": "2026-07-30"
+    }
+  ],
+  "teardown": {
+    "performed": true,
+    "pass": true,
+    "residual_resources": [],
+    "method": "worker wrangler delete；D1 REST DELETE；pages project wrangler delete --yes；四類歸零 diff 為空",
+    "date": "2026-07-30"
+  },
+  "user_acceptance": [
+    { "task": "狀態頁 GET /（200）", "result": "pass", "date": "2026-07-30" },
+    { "task": "頁面含監測狀態（overallUp 2 / overallDown 0，Example＋Cloudflare）", "result": "pass", "date": "2026-07-30" },
+    { "task": "D1 COUNT(*)=1", "result": "pass", "date": "2026-07-30" },
+    { "task": "裁判獨立複驗（頁 200＋D1 REST c=1）", "result": "pass", "date": "2026-07-30" }
+  ]
+}
