@@ -1,0 +1,63 @@
+{
+  "schema_version": "0.1.0",
+  "spec_version": "0.1.3",
+  "project_id": "uptimeflare",
+  "submitted_at": "2026-07-30T15:10:00Z",
+  "submitter": { "github_handle": "AlanChen75" },
+  "deploy_event": {
+    "date": "2026-07-30",
+    "profile": "small-app",
+    "path": "C-adapter",
+    "result": "success"
+  },
+  "code_metrics": {
+    "loc": 3188,
+    "dependency_count": 18,
+    "measured_at_commit": "a5670e51cbc167bf3610fce4d3389dd00141d729",
+    "tool": "git ls-files + wc -l（ts/tsx/js/mjs，排除 docs/）；deps=root+worker dependencies"
+  },
+  "conformance": {
+    "minutes": 1.0,
+    "result": "pass",
+    "ci_run_url": "https://github.com/smallgreen-cloud/adapter-uptimeflare/actions/runs/30541258252"
+  },
+  "low_carbon": {
+    "scale_to_zero": true,
+    "green_compute": false,
+    "no_idle_infra": true
+  },
+  "free_tier": {
+    "grade": "A",
+    "quota_notes": [
+      "第二輪矩陣（模型多樣性軸）：deployer＝opencode 1.15.12 搭 big-pickle（免費中高階模型），同一 adapter 資產、零人工介入 12 分鐘 autonomous 走完——「任何 CLI agent 照 AGENTS.md＋契約可完成部署」承諾的跨引擎第二實證",
+      "4 個 deviation 已回饋 AGENTS.md：pages deploy 需 --branch main --commit-dirty=true（鎖定 commit 為 detached HEAD）；Pages D1 binding REST PATCH 欄位名為 id 非 database_id 且 production/preview 都要補；workers.dev 子網域 API 動詞必須 PUT（POST 回 10405）且 wrangler v4.54 已無 subdomain 子命令；補綁前的 500 會被快取需 no-cache 重測",
+      "retries 計 2（apex 快取 500 重測、subdomain API 動詞嘗試），皆在 budget 3 之內",
+      "agy 軸本輪未成行：headless 需全域 skip-permissions 旗標（本 harness 權限政策攔下）或 agy settings.json 允許規則，屬執行環境限制非標準缺陷，待 Alan 決定是否開通"
+    ]
+  },
+  "agent_matrix": [
+    {
+      "agent": "opencode",
+      "model": "big-pickle",
+      "version": "1.15.12",
+      "result": "autonomous",
+      "human_interventions": 0,
+      "stuck_state": null,
+      "retries": 2,
+      "date": "2026-07-30"
+    }
+  ],
+  "teardown": {
+    "performed": true,
+    "pass": true,
+    "residual_resources": [],
+    "method": "worker wrangler delete；D1 REST DELETE；pages project wrangler delete --yes；workers/d1/kv/pages 四類與部署前 diff 為空",
+    "date": "2026-07-30"
+  },
+  "user_acceptance": [
+    { "task": "狀態頁 GET /（200）", "result": "pass", "date": "2026-07-30" },
+    { "task": "頁面顯示監測狀態（overallUp 2 / overallDown 0，Example＋Cloudflare 兩目標）", "result": "pass", "date": "2026-07-30" },
+    { "task": "D1 狀態列存在（SELECT COUNT(*) FROM uptimeflare → c=1）", "result": "pass", "date": "2026-07-30" },
+    { "task": "裁判獨立複驗（頁 200＋D1 REST 查詢 c=1＋三資源在帳）", "result": "pass", "date": "2026-07-30" }
+  ]
+}
