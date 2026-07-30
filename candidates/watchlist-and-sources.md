@@ -5,11 +5,14 @@
 
 ## 一、雙平台編排軸（CF＋GH 同時編排——幾乎無人標準化的象限）
 
-| 專案/pattern | 說明 |
-|---|---|
-| Decap CMS pattern | GitHub repo 當內容資料庫＋CF Pages 出站＋CF Worker OAuth 代理（decaporg/decap-cms 19,267★，2026-07-29 核對） |
-| meeting-capture pattern（自有原型） | LINE 入口＋CF Worker 閘道（KV lock）＋GH Actions 批次運算＋repo 歸檔——Pipeline Profile 的定義原型 |
-| Upptime 類 | 純 GH 三元件編排，可延伸接 CF 前端 |
+> 2026-07-30 更新：本軸已非純觀察——三個項目排進首波（見 batch-02 首波標記與下表）。**雙平台整合是社群吸引力核心，首波必須有真整合 G+C 的高價值工具。**
+
+| 專案/pattern | 首波 | 說明 |
+|---|---|---|
+| Decap CMS G+C 組合包 | **首波-S3（適配 repo）** | GitHub repo 當內容資料庫＋CF Pages 出站＋CF Worker OAuth 代理（decaporg/decap-cms 19,267★）；市場缺的只是標準化一鍵組合 |
+| osmosfeed 復活版 | **首波-S3（自建）** | GH Actions 抓 RSS＋repo 時序庫＋CF Pages＋Workers AI 摘要——G+C 整合旗艦示範＋復活敘事（詳 batch-02） |
+| meeting-capture pattern（自有原型） | 架構揭露文 | LINE 入口＋CF Worker 閘道（KV lock）＋GH Actions 批次運算＋repo 歸檔——Pipeline Profile 的定義原型 |
+| Upptime 類 | **首波-S2（驗證）** | 純 GH 三元件編排，Pipeline Profile 第一個驗證對象；可延伸接 CF 前端 |
 
 ## 二、活的巨型專案（只串接不改寫）
 
