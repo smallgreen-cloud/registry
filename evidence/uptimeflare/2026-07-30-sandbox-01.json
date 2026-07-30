@@ -1,0 +1,64 @@
+{
+  "schema_version": "0.1.0",
+  "spec_version": "0.1.2",
+  "project_id": "uptimeflare",
+  "submitted_at": "2026-07-30T12:10:00Z",
+  "submitter": { "github_handle": "AlanChen75" },
+  "deploy_event": {
+    "date": "2026-07-30",
+    "profile": "small-app",
+    "path": "C-adapter",
+    "result": "success"
+  },
+  "code_metrics": {
+    "loc": 3188,
+    "dependency_count": 18,
+    "measured_at_commit": "a5670e51cbc167bf3610fce4d3389dd00141d729",
+    "tool": "git ls-files + wc -l（ts/tsx/js/mjs，排除 docs/）；deps=root+worker dependencies"
+  },
+  "conformance": {
+    "minutes": 1.0,
+    "result": "pass",
+    "ci_run_url": "https://github.com/smallgreen-cloud/adapter-uptimeflare/actions/runs/30541258252"
+  },
+  "low_carbon": {
+    "scale_to_zero": true,
+    "green_compute": false,
+    "no_idle_infra": true
+  },
+  "free_tier": {
+    "grade": "A",
+    "quota_notes": [
+      "本次為 agent 矩陣協定首次實跑：deployer（claude-code subagent）只憑 adapter repo 公開資訊照 AGENTS.md 部署；verifier（codex-cli, gpt-5.6-sol）獨立驗證判 pass——verifier 角色暫無 schema 欄位可記，見 spec issue #5",
+      "Durable Object SQLite-backed 免費層實測可部署可運行（allowlist v0.1.2 durable_objects_sqlite 首個實證）；每分鐘 cron × 2 監測目標，DO 請求量約 2,880/day，遠低於 100k/day 上限",
+      "deployer 三個 deviation 已回饋修正：patch TOML 檔尾附加落入 [[d1_databases]] 表內／pages project 名與 config name 不一致（error 8000007）／acceptance D1 表名錯誤（uptimeflare_state → uptimeflare）",
+      "wrangler pages deploy 首次未帶入 D1 binding，照 AGENTS.md 以 REST PATCH deployment_configs 補綁後成功（AGENTS.md 預告有效）",
+      "teardown 含 Pages project 共四類資源，歸零 diff 為空；D1 刪除沿用 REST API（wrangler 非互動 bug 同 Sink 輪）"
+    ]
+  },
+  "agent_matrix": [
+    {
+      "agent": "claude-code",
+      "model": "claude-fable-5",
+      "version": "2.x",
+      "result": "autonomous",
+      "human_interventions": 0,
+      "stuck_state": null,
+      "retries": 1,
+      "date": "2026-07-30"
+    }
+  ],
+  "teardown": {
+    "performed": true,
+    "pass": true,
+    "residual_resources": [],
+    "method": "worker（含 DO namespace）wrangler delete；D1 REST DELETE；pages project wrangler delete --yes；workers/d1/kv/pages 四類與部署前 diff 為空",
+    "date": "2026-07-30"
+  },
+  "user_acceptance": [
+    { "task": "狀態頁 GET /（health 200）", "result": "pass", "date": "2026-07-30" },
+    { "task": "首次 cron 後頁面顯示監測目標狀態（overallUp 2 / overallDown 0）", "result": "pass", "date": "2026-07-30" },
+    { "task": "D1 狀態列存在（SELECT COUNT(*) FROM uptimeflare ≥ 1）", "result": "pass", "date": "2026-07-30" },
+    { "task": "verifier（codex）獨立複驗四項全過＋頁面無宣告外第三方網域", "result": "pass", "date": "2026-07-30" }
+  ]
+}
