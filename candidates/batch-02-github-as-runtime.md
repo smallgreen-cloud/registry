@@ -6,23 +6,23 @@
 
 ## 活躍種子（9 項）
 
-| 名稱 | full_name | stars | Pattern | 備註 |
-|------|-----------|------:|---------|------|
-| Upptime | upptime/upptime | 17,106 | Actions 排程＋Issues 事件庫＋Pages 狀態頁 | 「GitHub as compute」公認代表作 |
-| metrics | lowlighter/metrics | 16,985 | Actions 當圖表生成引擎 | |
-| Decap CMS | decaporg/decap-cms | 19,267 | Git repo 當 CMS 資料庫 | 雙平台編排橋樑（搭 CF Pages＋Worker OAuth） |
-| giscus | giscus/giscus | 11,970 | Discussions 當留言資料庫 | utterances 的活繼承者（繼承者模式案例） |
-| PicX | XPoet/picx | 5,075 | repo 當圖床儲存＋CDN | 趨緩（2025-02 後） |
-| running_page | yihong0618/running_page | 4,493 | Actions pipeline＋repo 當個人資料庫 | |
-| blog-post-workflow | gautamkrishnar/blog-post-workflow | 3,423 | Actions 定時聚合外部內容 | |
-| shot-scraper | simonw/shot-scraper | 2,537 | git scraping 家族 | Actions 抓資料、repo 當時序庫 |
-| gitblog | yihong0618/gitblog | 1,624 | Issues 當部落格 | |
+| 名稱 | full_name | stars | Pattern | 首波 | 備註 |
+|------|-----------|------:|---------|------|------|
+| Upptime | upptime/upptime | 17,106 | Actions 排程＋Issues 事件庫＋Pages 狀態頁 | **首波-S2** | 「GitHub as compute」公認代表作；Pipeline Profile 第一個驗證對象（與 CF 先行三專案同步，讓兩個 Profile 都在 S2 被真實案例打過） |
+| metrics | lowlighter/metrics | 16,985 | Actions 當圖表生成引擎 | | |
+| Decap CMS | decaporg/decap-cms | 19,267 | Git repo 當 CMS 資料庫 | **首波-S3（組合包）** | 升格雙平台適配 repo：GitHub repo 內容庫＋CF Pages＋CF Worker OAuth 代理，標準化成一鍵 G+C 組合 |
+| giscus | giscus/giscus | 11,970 | Discussions 當留言資料庫 | | utterances 的活繼承者（繼承者模式案例） |
+| PicX | XPoet/picx | 5,075 | repo 當圖床儲存＋CDN | | 趨緩（2025-02 後） |
+| running_page | yihong0618/running_page | 4,493 | Actions pipeline＋repo 當個人資料庫 | | |
+| blog-post-workflow | gautamkrishnar/blog-post-workflow | 3,423 | Actions 定時聚合外部內容 | **首波-S3** | 「Actions 聚合」pattern 最簡代表 |
+| shot-scraper | simonw/shot-scraper | 2,537 | git scraping 家族 | | Actions 抓資料、repo 當時序庫 |
+| gitblog | yihong0618/gitblog | 1,624 | Issues 當部落格 | | |
 
 ## 已停更（復活候選池）
 
 | 名稱 | full_name | stars | license | 停更 | 復活評估 |
 |------|-----------|------:|---------|------|----------|
-| osmosfeed | osmoscraft/osmosfeed | 990 | MIT | 2023-10 | **復活首發**：作者 README 已導流 sister project（明確棄坑）；復活版＝Actions 抓取＋CF Pages/D1＋Workers AI 摘要＋MCP |
+| osmosfeed | osmoscraft/osmosfeed | 990 | MIT | 2023-10 | **復活首發，升格首波-S3 動工**：作者 README 已導流 sister project（明確棄坑）；復活版＝GH Actions 抓取＋repo 時序庫＋CF Pages 呈現＋Workers AI 摘要＋MCP——**雙平台整合的旗艦示範**。建置 S3、復活敘事內容 S5 發布（建置與敘事分離） |
 | git-history | pomber/git-history | 13,684 | MIT | 2024-10 | 排後：純前端仍可用，復活增量小 |
 | utterances | utterance/utterances | 9,692 | MIT | 2024-08 | 不復活：giscus 已是活繼承者，作為「繼承者模式」案例研究 |
 
