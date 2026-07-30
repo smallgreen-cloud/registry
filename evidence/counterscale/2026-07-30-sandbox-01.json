@@ -1,0 +1,65 @@
+{
+  "schema_version": "0.1.0",
+  "spec_version": "0.1.3",
+  "project_id": "counterscale",
+  "submitted_at": "2026-07-30T14:40:00Z",
+  "submitter": { "github_handle": "AlanChen75" },
+  "deploy_event": {
+    "date": "2026-07-30",
+    "profile": "small-app",
+    "path": "C-adapter",
+    "result": "success"
+  },
+  "code_metrics": {
+    "loc": 15021,
+    "dependency_count": 32,
+    "measured_at_commit": "a04818f7d1c2adf6d3b141230e234cfdb06741e1",
+    "tool": "git ls-files + wc -l（ts/tsx/js/mjs，排除 docs/test/spec）；deps=packages/{server,tracker,cli} dependencies 計數"
+  },
+  "conformance": {
+    "minutes": 0.5,
+    "result": "pass",
+    "ci_run_url": "https://github.com/smallgreen-cloud/adapter-counterscale/actions/runs/30549393120"
+  },
+  "low_carbon": {
+    "scale_to_zero": true,
+    "green_compute": false,
+    "no_idle_infra": true
+  },
+  "free_tier": {
+    "grade": "C",
+    "quota_notes": [
+      "矩陣協定：deployer（claude-code subagent）autonomous 25 分鐘；verifier（codex-cli, gpt-5.6-sol）功能五項全過；verifier 對「首頁 HTML 含 github.com」報 fail，裁判機械複驗判定為口徑假陽性——全部為 <a href> 點擊連結、零自動載入外域資源（grep src=/link href 零命中），spec 行為分析器範圍本即限 outbound fetch",
+      "AE 統計端到端：3 筆 collect 事件 → 輪詢至 views 3（ingestion 實測約 2-2.5 分鐘，比 Sink 慢）；裁判＋verifier 各加一筆後 views 5，遞增完整",
+      "grade C 依 SVC-4：required secrets（CF_ACCOUNT_ID／CF_BEARER_TOKEN）皆為使用者自己帳號的免費憑證",
+      "R2 長期 rollup 由 adapter patch 停用（未啟用 R2 帳號適配；上游 CF_STORAGE_ENABLED 旗標有防呆）；AE dataset 資料 90 天自動過期，無刪除 API，不計入歸零 diff",
+      "deployer deviation（已修回 adapter）：AGENTS.md 建置指令繞過 turbo 依賴鏈（tracker build → copytracker），導致 tracker.js 404——monorepo 局部 build 陷阱"
+    ]
+  },
+  "agent_matrix": [
+    {
+      "agent": "claude-code",
+      "model": "claude-fable-5",
+      "version": "2.x",
+      "result": "autonomous",
+      "human_interventions": 0,
+      "stuck_state": null,
+      "retries": 1,
+      "date": "2026-07-30"
+    }
+  ],
+  "teardown": {
+    "performed": true,
+    "pass": true,
+    "residual_resources": [],
+    "method": "wrangler delete --name counterscale --force（secrets 隨 worker 移除）；workers/d1/kv/pages 四類與部署前 diff 為空；AE dataset 資料留存至 90 天自動過期",
+    "date": "2026-07-30"
+  },
+  "user_acceptance": [
+    { "task": "儀表板 GET /（200）", "result": "pass", "date": "2026-07-30" },
+    { "task": "GET /tracker.js（200, text/javascript）", "result": "pass", "date": "2026-07-30" },
+    { "task": "3 筆 collect 事件（皆 200）", "result": "pass", "date": "2026-07-30" },
+    { "task": "AE ingestion 後 /resources/stats views 3；/resources/paths 三路徑齊全", "result": "pass", "date": "2026-07-30" },
+    { "task": "裁判＋verifier 重放 collect 後 views 遞增至 5", "result": "pass", "date": "2026-07-30" }
+  ]
+}
