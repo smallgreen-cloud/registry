@@ -1,0 +1,64 @@
+{
+  "schema_version": "0.1.0",
+  "spec_version": "0.1.1",
+  "project_id": "sink",
+  "submitted_at": "2026-07-30T09:57:00Z",
+  "submitter": { "github_handle": "AlanChen75" },
+  "deploy_event": {
+    "date": "2026-07-30",
+    "profile": "small-app",
+    "path": "C-adapter",
+    "result": "success"
+  },
+  "code_metrics": {
+    "loc": 47033,
+    "dependency_count": 64,
+    "measured_at_commit": "3f8d30ae8c917f269249d6c7c1c3894fc8d8af91",
+    "tool": "git ls-files + wc -l（ts/vue/js/mjs，排除 docs/ tests/）；deps=devDependencies 計數"
+  },
+  "conformance": {
+    "minutes": 0.9,
+    "result": "pass",
+    "ci_run_url": "https://github.com/smallgreen-cloud/adapter-sink/actions/runs/30531834552"
+  },
+  "low_carbon": {
+    "scale_to_zero": true,
+    "green_compute": false,
+    "no_idle_infra": true
+  },
+  "free_tier": {
+    "grade": "D",
+    "quota_notes": [
+      "grade D 依 SVC-4 機械判定（wrangler 宣告 ai binding）；AI slug 為選配功能，核心短鏈不耗 Neurons——判定表 required/optional 細分見 spec issue #3",
+      "Analytics Engine 免費（100k writes/10k reads per day）但需 dashboard 一次性啟用（error 10089，無公開 API）；本輪以無 AE 變體部署，點擊統計功能未驗，上游對缺 binding 有防呆（access-log.ts if (!analytics) return）",
+      "workers.dev 子網域需先註冊：可走 API（PUT /accounts/:id/workers/subdomain），註冊後 TLS 憑證佈建約 3-4 分鐘（實測第 5 次 45s 輪詢才 200）",
+      "首次啟用需呼叫 POST /api/link/migration/run 解除 423 Link migration gate（fresh install 也要）"
+    ]
+  },
+  "agent_matrix": [
+    {
+      "agent": "claude-code",
+      "model": "claude-fable-5",
+      "version": "2.x",
+      "result": "autonomous",
+      "human_interventions": 0,
+      "stuck_state": null,
+      "retries": 2,
+      "date": "2026-07-30"
+    }
+  ],
+  "teardown": {
+    "performed": true,
+    "pass": true,
+    "residual_resources": [],
+    "method": "maintenance.yaml uninstall steps；發現 wrangler d1 delete 非互動模式靜默失敗（zero-diff 抓到 D1 殘留），改 REST DELETE /d1/database/:uuid 完成；最終 workers/d1/kv 三類與部署前 snapshot diff 為空",
+    "date": "2026-07-30"
+  },
+  "user_acceptance": [
+    { "task": "GET /（health）", "result": "pass", "date": "2026-07-30" },
+    { "task": "POST /api/link/migration/run 初始化", "result": "pass", "date": "2026-07-30" },
+    { "task": "以 NUXT_SITE_TOKEN 建立短鏈 sg-spec", "result": "pass", "date": "2026-07-30" },
+    { "task": "GET /sg-spec 轉址（301 → 目標網址）", "result": "pass", "date": "2026-07-30" },
+    { "task": "未授權建鏈被拒（401）", "result": "pass", "date": "2026-07-30" }
+  ]
+}
