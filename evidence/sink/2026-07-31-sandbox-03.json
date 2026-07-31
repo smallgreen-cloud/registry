@@ -1,0 +1,65 @@
+{
+  "schema_version": "0.2.0",
+  "spec_version": "0.2.0",
+  "project_id": "sink",
+  "submitted_at": "2026-07-31T00:55:00Z",
+  "submitter": { "github_handle": "AlanChen75" },
+  "deploy_event": {
+    "date": "2026-07-31",
+    "profile": "small-app",
+    "path": "C-adapter",
+    "result": "success"
+  },
+  "code_metrics": {
+    "loc": 47033,
+    "dependency_count": 64,
+    "measured_at_commit": "3f8d30ae8c917f269249d6c7c1c3894fc8d8af91",
+    "tool": "git ls-files + wc -l（ts/vue/js/mjs，排除 docs/ tests/）"
+  },
+  "conformance": {
+    "minutes": 0.9,
+    "result": "pass",
+    "ci_run_url": "https://github.com/smallgreen-cloud/adapter-sink/actions/runs/30546814574"
+  },
+  "low_carbon": {
+    "scale_to_zero": true,
+    "green_compute": false,
+    "no_idle_infra": true
+  },
+  "free_tier": {
+    "grade": "C",
+    "quota_notes": [
+      "Gemini 引擎軸（agy/Antigravity CLI）首跑：組裝、build、D1/KV 建立、部署、三把 secrets、site token 落檔全程自主完成；於驗收階段遭遇 Gemini model API overloaded 中斷（transcript ERROR_MESSAGE 可證），裁判代跑驗收五項全過（migration/建鏈/301 轉址/401/AE visits 3）——依協定定性 assisted",
+      "agy headless 開通紀錄：互動授權不產生持久規則、settings.json 權限規則對 write 類匹配失效，最終以 --dangerously-skip-permissions（Claude Code harness 顯式放行）執行——跨 CLI harness 權限開通表素材",
+      "grade C 依 v0.2 SVC-4（resource_usage 標 workers_ai 選配後不判 D）"
+    ]
+  },
+  "agent_matrix": [
+    {
+      "role": "deployer",
+      "agent": "agy",
+      "model": "gemini（Antigravity CLI 預設，session 未指定）",
+      "version": "2026-07",
+      "result": "assisted",
+      "human_interventions": 1,
+      "stuck_state": "ACCEPTANCE：Gemini model API overloaded，部署與 secrets 已自主完成，驗收由裁判代跑",
+      "retries": 1,
+      "date": "2026-07-31"
+    }
+  ],
+  "teardown": {
+    "performed": true,
+    "pass": true,
+    "residual_resources": [],
+    "method": "worker wrangler delete；D1 與 KV REST DELETE；四類歸零 diff 為空",
+    "date": "2026-07-31"
+  },
+  "user_acceptance": [
+    { "task": "GET /（200）", "result": "pass", "date": "2026-07-31" },
+    { "task": "migration/run 初始化（completed true）", "result": "pass", "date": "2026-07-31" },
+    { "task": "帶 token 建短鏈 agy1（回 shortLink）", "result": "pass", "date": "2026-07-31" },
+    { "task": "GET /agy1 → 301 → 目標", "result": "pass", "date": "2026-07-31" },
+    { "task": "未帶 token 401", "result": "pass", "date": "2026-07-31" },
+    { "task": "AE 統計 visits 3（3 次點擊後）", "result": "pass", "date": "2026-07-31" }
+  ]
+}
