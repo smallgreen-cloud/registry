@@ -1,0 +1,68 @@
+{
+  "schema_version": "0.2.0",
+  "spec_version": "0.2.0",
+  "project_id": "sink",
+  "submitted_at": "2026-08-01T00:45:00Z",
+  "supersedes": "evidence/sink/2026-07-31-sandbox-03.json",
+  "submitter": { "github_handle": "AlanChen75" },
+  "deploy_event": {
+    "date": "2026-08-01",
+    "profile": "small-app",
+    "path": "C-adapter",
+    "result": "success"
+  },
+  "code_metrics": {
+    "loc": 47033,
+    "dependency_count": 64,
+    "measured_at_commit": "3f8d30ae8c917f269249d6c7c1c3894fc8d8af91",
+    "tool": "git ls-files + wc -l（ts/vue/js/mjs，排除 docs/ tests/）"
+  },
+  "conformance": {
+    "minutes": 0.9,
+    "result": "pass",
+    "ci_run_url": "https://github.com/smallgreen-cloud/adapter-sink/actions/runs/30546814574"
+  },
+  "low_carbon": {
+    "scale_to_zero": true,
+    "green_compute": false,
+    "no_idle_infra": true
+  },
+  "free_tier": {
+    "grade": "C",
+    "quota_notes": [
+      "本 Pack 取代 sandbox-03（assisted 版）：agy 於 Antigravity.app 切至 Pro 帳號後完整重跑，**autonomous 16 分鐘走完全程**（含本地 dev 驗證、AE 統計遞增查證）——Gemini 引擎軸正式補齊，四引擎全數通過部署",
+      "前輪 assisted 的敗因確認為 Starter 額度撞頂（非標準缺陷）；agy 額度撞頂會先偽裝成 model overloaded，矩陣 run 前應跑額度探針",
+      "deviation 2 則（已回饋 AGENTS.md）：wrangler.deploy.jsonc 需先 pnpm deploy:config 產生才可單獨跑 secret put；workers.dev 子網域名可由 GET /workers/subdomain 查得",
+      "資料衛生註記：AE dataset 無刪除 API 且跨驗證輪存活，統計查詢會累計到前輪事件（本輪 visits=9 含歷史）——驗證統計應以本輪 delta 為準",
+      "CLI print 模式 50 分鐘上限早於 agent 完成（agent 實際 16 分鐘完成但含等待），最終報告由 brain transcript 取得——agy headless 結果以 transcript 為權威來源"
+    ]
+  },
+  "agent_matrix": [
+    {
+      "role": "deployer",
+      "agent": "agy",
+      "model": "gemini（Antigravity Pro，session 預設）",
+      "version": "1.1.9",
+      "result": "autonomous",
+      "human_interventions": 0,
+      "stuck_state": null,
+      "retries": 0,
+      "date": "2026-08-01"
+    }
+  ],
+  "teardown": {
+    "performed": true,
+    "pass": true,
+    "residual_resources": [],
+    "method": "worker wrangler delete；D1 與 KV REST DELETE；四類歸零 diff 為空；AE dataset 資料留存至 90 天自動過期",
+    "date": "2026-08-01"
+  },
+  "user_acceptance": [
+    { "task": "migration/run 初始化（completed true）", "result": "pass", "date": "2026-08-01" },
+    { "task": "帶 token 建短鏈 test-slug-123（回 shortLink）", "result": "pass", "date": "2026-08-01" },
+    { "task": "未帶 token 401", "result": "pass", "date": "2026-08-01" },
+    { "task": "GET /test-slug-123 × 3 → 301", "result": "pass", "date": "2026-08-01" },
+    { "task": "AE 統計遞增查證", "result": "pass", "date": "2026-08-01" },
+    { "task": "裁判獨立複驗（頁 200＋301 轉址）＋teardown 歸零", "result": "pass", "date": "2026-08-01" }
+  ]
+}
