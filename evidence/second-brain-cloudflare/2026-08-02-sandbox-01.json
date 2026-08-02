@@ -1,0 +1,80 @@
+{
+  "schema_version": "0.3.0",
+  "spec_version": "0.2.1",
+  "project_id": "second-brain-cloudflare",
+  "submitted_at": "2026-08-02T08:40:00Z",
+  "submitter": { "github_handle": "AlanChen75" },
+  "deploy_event": {
+    "date": "2026-08-02",
+    "profile": "small-app",
+    "path": "C-adapter",
+    "result": "success"
+  },
+  "maturity_reached": "D5a",
+  "code_metrics": {
+    "loc": 8265,
+    "dependency_count": 6,
+    "measured_at_commit": "371a8f987b2e4e8d95fc60d20580fb4757877641",
+    "tool": "git ls-files（ts/js/mjs，排除 test/spec/.d.ts）+ wc -l；deps=package.json dependencies"
+  },
+  "conformance": {
+    "minutes": 0.5,
+    "result": "pass",
+    "ci_run_url": "https://github.com/smallgreen-cloud/adapter-second-brain/actions/runs/30733326759"
+  },
+  "low_carbon": {
+    "scale_to_zero": true,
+    "green_compute": false,
+    "no_idle_infra": true
+  },
+  "free_tier": {
+    "grade": "C",
+    "quota_notes": [
+      "W2 fallback 軌首案（keyword-only 降級 adapter，Vectorize token 未解鎖前提）：deployer＝claude-code 與 B run（partial，agent 臨場改碼 4 處）配對——C 12 分 success 零臨場改碼 vs B 18 分 partial；降級以 adapter patch 標準化（B 的一次性補救→可重現介入）",
+      "功能語義＝D4-degraded（語意搜尋→關鍵字、去重與向量鄰居停用），契約如實揭露且驗收全過；maturity_reached 記 D5a（teardown 歸零）——degraded 語義見本欄與 runs-master",
+      "新卡點：wrangler.jsonc secrets.required×wrangler 4.114 對不存在 worker 拒絕『先 deploy 再 secret put』——改 --secrets-file 一次帶入（已回饋 AGENTS.md）；E45 auto-provision 陷阱本輪未觸發",
+      "verifier 6/6 pass；註記 /forget 回 deletedVectors:1 與 index missing 的狀態語意小矛盾（上游 non-fatal 計數語義，不影響驗收）",
+      "grade C 因 Workers AI（capture 的 embedding＋LLM 分類；10k Neurons/day）"
+    ]
+  },
+  "agent_matrix": [
+    {
+      "role": "deployer",
+      "agent": "claude-code",
+      "model": "claude-fable-5",
+      "version": "2.x",
+      "result": "autonomous",
+      "human_interventions": 0,
+      "stuck_state": null,
+      "retries": 1,
+      "date": "2026-08-02"
+    },
+    {
+      "role": "verifier",
+      "agent": "codex",
+      "model": "gpt-5.6-sol",
+      "version": "0.130.0",
+      "result": "autonomous",
+      "human_interventions": 0,
+      "stuck_state": null,
+      "retries": 0,
+      "date": "2026-08-02"
+    }
+  ],
+  "teardown": {
+    "performed": true,
+    "pass": true,
+    "residual_resources": [],
+    "method": "REST 直刪 worker second-brain（secrets 隨之移除）＋D1 second-brain-db＋KV OAUTH_KV；五類歸零 diff 為空",
+    "date": "2026-08-02"
+  },
+  "user_acceptance": [
+    { "task": "前端 GET /（200）", "result": "pass", "date": "2026-08-02" },
+    { "task": "帶 token capture → 200 ok（寫路徑防呆 patch 驗證點，無 500）", "result": "pass", "date": "2026-08-02" },
+    { "task": "關鍵字 recall 命中＋semantic_unavailable:true；no-hit 回 Vectorize prose 提示", "result": "pass", "date": "2026-08-02" },
+    { "task": "無 token → 401", "result": "pass", "date": "2026-08-02" },
+    { "task": "forget → ok；再搜 0 結果", "result": "pass", "date": "2026-08-02" },
+    { "task": "裁判獨立複驗（/ 200＋judge 筆記 recall 命中＋health 如實回報 vectorize 不可用）", "result": "pass", "date": "2026-08-02" },
+    { "task": "verifier 獨立複驗（6/6 pass，測試筆記自清）", "result": "pass", "date": "2026-08-02" }
+  ]
+}
