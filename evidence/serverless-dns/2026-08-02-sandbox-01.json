@@ -1,0 +1,78 @@
+{
+  "schema_version": "0.3.0",
+  "spec_version": "0.2.1",
+  "project_id": "serverless-dns",
+  "submitted_at": "2026-08-02T06:30:00Z",
+  "submitter": { "github_handle": "AlanChen75" },
+  "deploy_event": {
+    "date": "2026-08-02",
+    "profile": "small-app",
+    "path": "C-adapter",
+    "result": "success"
+  },
+  "maturity_reached": "D5a",
+  "code_metrics": {
+    "loc": 13361,
+    "dependency_count": 7,
+    "measured_at_commit": "b0b7fe52ecc053562d1fc425f9c5c6f984d37e11",
+    "tool": "git ls-files（js/ts/mjs，排除 test/spec/.d.ts）+ wc -l；deps=package.json dependencies"
+  },
+  "conformance": {
+    "minutes": 0.5,
+    "result": "pass",
+    "ci_run_url": "https://github.com/smallgreen-cloud/adapter-serverless-dns/actions/runs/30732298098"
+  },
+  "low_carbon": {
+    "scale_to_zero": true,
+    "green_compute": false,
+    "no_idle_infra": true
+  },
+  "free_tier": {
+    "grade": "A",
+    "quota_notes": [
+      "W1 配對主軸 4/5：deployer＝claude-code（與 serverless-dns-B-01 同引擎成對）；C 10 分 vs B 18 分——devDeps 剪枝 patch（E33 回饋）把安裝從 12 分不收斂降到 3 分內",
+      "deployer 保守判 partial（契約 smoke『裸 GET /dns-query→400』實際 503/1102）；裁判裁定契約設計缺陷（免費層 CPU 限制先於參數檢查）——修契約改 RFC 8484 GET?dns= smoke、E35 範圍擴至所有無參數 GET，deployment 判 success（同 B run 已知限制處理）",
+      "npm 11 prepare hook 不留產物（手動 npm run prepare 補齊，已回饋 AGENTS.md）；python urllib UA 被服務端 403（測試工具需 curl，已回饋）；wireformat 偶發 1042/1102 冷 isolate 現象重試即過",
+      "封鎖旗標未設（沙盒預設）：doubleclick.net 正常解析屬預期，封鎖引擎驗證留待啟用旗標的部署"
+    ]
+  },
+  "agent_matrix": [
+    {
+      "role": "deployer",
+      "agent": "claude-code",
+      "model": "claude-fable-5",
+      "version": "2.x",
+      "result": "autonomous",
+      "human_interventions": 0,
+      "stuck_state": null,
+      "retries": 3,
+      "date": "2026-08-02"
+    },
+    {
+      "role": "verifier",
+      "agent": "codex",
+      "model": "gpt-5.6-sol",
+      "version": "0.130.0",
+      "result": "autonomous",
+      "human_interventions": 0,
+      "stuck_state": null,
+      "retries": 0,
+      "date": "2026-08-02"
+    }
+  ],
+  "teardown": {
+    "performed": true,
+    "pass": true,
+    "residual_resources": [],
+    "method": "REST 直刪 worker serverless-dns（force=true）；五類歸零 diff 為空",
+    "date": "2026-08-02"
+  },
+  "user_acceptance": [
+    { "task": "RFC 8484 GET ?dns=（example.com）→ 200 NOERROR answers 1", "result": "pass", "date": "2026-08-02" },
+    { "task": "DoH wireformat POST example.com → NOERROR answers 1", "result": "pass", "date": "2026-08-02" },
+    { "task": "連續多 domain（cloudflare.com/iana.org 等 5 個）全 NOERROR", "result": "pass", "date": "2026-08-02" },
+    { "task": "無參數 GET 路徑一致 1102/503（已知限制記錄，含裸 /dns-query——契約 smoke 已修）", "result": "pass", "date": "2026-08-02" },
+    { "task": "裁判獨立複驗（curl wireformat 3 domain＋GET?dns= 全 200 NOERROR）", "result": "pass", "date": "2026-08-02" },
+    { "task": "verifier 獨立複驗（4/4 pass，transaction ID 保持 0x1234）", "result": "pass", "date": "2026-08-02" }
+  ]
+}
