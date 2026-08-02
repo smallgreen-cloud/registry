@@ -1,0 +1,78 @@
+{
+  "schema_version": "0.3.0",
+  "spec_version": "0.2.1",
+  "project_id": "newsnow",
+  "submitted_at": "2026-08-02T04:40:00Z",
+  "submitter": { "github_handle": "AlanChen75" },
+  "deploy_event": {
+    "date": "2026-08-02",
+    "profile": "small-app",
+    "path": "C-adapter",
+    "result": "success"
+  },
+  "maturity_reached": "D5a",
+  "code_metrics": {
+    "loc": 6679,
+    "dependency_count": 33,
+    "measured_at_commit": "2173126f804bec0201769f59d933add6c4632d17",
+    "tool": "git ls-files（ts/tsx/js/mjs，排除 test/spec/.d.ts）+ wc -l；deps=package.json dependencies"
+  },
+  "conformance": {
+    "minutes": 0.5,
+    "result": "pass",
+    "ci_run_url": "https://github.com/smallgreen-cloud/adapter-newsnow/actions/runs/30731303920"
+  },
+  "low_carbon": {
+    "scale_to_zero": true,
+    "green_compute": false,
+    "no_idle_infra": true
+  },
+  "free_tier": {
+    "grade": "A",
+    "quota_notes": [
+      "W1 配對主軸首案：deployer＝claude-code（與 newsnow-B-01 同引擎成對）；C 26 分 vs B 11 分（C 側含 14 分快取語義驗收窗口等待——非 adapter 摩擦）",
+      "deviation×2 已回饋 adapter（commit 見 repo）：detached HEAD 下 wrangler 推斷 branch=head 落 preview（deploy 需 --branch main）；acceptance 快取判準改 D1 row 證據或 interval 後窗口",
+      "verifier 首跑 codex read-only sandbox 斷網全 fail（假陰性，裁判仲裁推翻——E20 後裁判推翻 verifier 第二例，成因不同）；改可聯網模式重跑 5/5 pass",
+      "deployer 等待斷鏈一次（背景計時器，AGENTRES）——SendMessage 喚醒改前景輪詢，計 human_interventions 1"
+    ]
+  },
+  "agent_matrix": [
+    {
+      "role": "deployer",
+      "agent": "claude-code",
+      "model": "claude-fable-5",
+      "version": "2.x",
+      "result": "autonomous",
+      "human_interventions": 1,
+      "stuck_state": "背景計時器等待斷鏈（harness 因素，非專案因素）",
+      "retries": 1,
+      "date": "2026-08-02"
+    },
+    {
+      "role": "verifier",
+      "agent": "codex",
+      "model": "gpt-5.6-sol",
+      "version": "0.130.0",
+      "result": "autonomous",
+      "human_interventions": 1,
+      "stuck_state": "attempt 1 read-only sandbox 斷網假陰性（裁判仲裁後改網路模式重跑）",
+      "retries": 1,
+      "date": "2026-08-02"
+    }
+  ],
+  "teardown": {
+    "performed": true,
+    "pass": true,
+    "residual_resources": [],
+    "method": "REST 直刪 Pages 專案（force=true，含 preview/production deployments）＋D1 newsnow-db；五類（workers/d1/kv/pages/queues）歸零 diff 為空",
+    "date": "2026-08-02"
+  },
+  "user_acceptance": [
+    { "task": "首頁 GET /（200 html）", "result": "pass", "date": "2026-08-02" },
+    { "task": "GET /api/s?id=hackernews（200，items=30）", "result": "pass", "date": "2026-08-02" },
+    { "task": "D1 快取生效（cache row updated 恆定＋interval 後 status=cache、updatedTime 穩定）", "result": "pass", "date": "2026-08-02" },
+    { "task": "未設 OAuth → GET /api/enable-login 506（登入自動停用設計行為）", "result": "pass", "date": "2026-08-02" },
+    { "task": "裁判獨立複驗（/ 200＋hackernews cache items 30＋v2ex 200＋506）", "result": "pass", "date": "2026-08-02" },
+    { "task": "verifier 獨立複驗（5/5 pass，含 github 來源與快取一致性）", "result": "pass", "date": "2026-08-02" }
+  ]
+}
