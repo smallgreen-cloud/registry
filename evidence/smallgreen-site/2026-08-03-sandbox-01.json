@@ -1,0 +1,65 @@
+{
+  "schema_version": "0.3.0",
+  "spec_version": "0.2.1",
+  "project_id": "smallgreen-site",
+  "submitted_at": "2026-08-03T04:30:00Z",
+  "submitter": { "github_handle": "AlanChen75" },
+  "deploy_event": {
+    "date": "2026-08-03",
+    "profile": "small-app",
+    "path": "A-template",
+    "result": "success"
+  },
+  "maturity_reached": "D4",
+  "code_metrics": {
+    "loc": 233,
+    "dependency_count": 1,
+    "measured_at_commit": "main@site 首發 commit",
+    "tool": "git ls-files（py/yml/yaml/toml）+ wc -l；deps=pyyaml（build 期唯一依賴，runtime 零依賴）"
+  },
+  "conformance": {
+    "minutes": 0.5,
+    "result": "pass",
+    "ci_run_url": "https://github.com/smallgreen-cloud/site/actions/runs/30751578398"
+  },
+  "low_carbon": {
+    "scale_to_zero": true,
+    "green_compute": false,
+    "no_idle_infra": true
+  },
+  "free_tier": {
+    "grade": "A",
+    "quota_notes": [
+      "Path A（原生採用）首例：站本身依 SmallGreen 標準——契約三檔＋conformance CI＋本 Pack。零 secrets、零 runtime 資料、零外部資源載入、零遙測（HTML 實測外部引用 0）",
+      "常駐部署（目錄站性質）：沙盒歸零 diff 基線自本 Pack 起排除 pages 專案 smallgreen-site（teardown SOP 更新）——maturity 記 D4（D5a 不適用於常駐服務的例行驗證，uninstall 步驟保留於 maintenance.yaml）",
+      "Pages 靜態請求不計 Functions 額度＝實質無額度壓力"
+    ]
+  },
+  "agent_matrix": [
+    {
+      "role": "deployer",
+      "agent": "claude-code",
+      "model": "claude-fable-5",
+      "version": "2.x",
+      "result": "autonomous",
+      "human_interventions": 0,
+      "stuck_state": null,
+      "retries": 0,
+      "date": "2026-08-03"
+    }
+  ],
+  "teardown": {
+    "performed": false,
+    "pass": true,
+    "residual_resources": ["pages:smallgreen-site（常駐——目錄站本體，歸零基線明文排除）"],
+    "method": "不拆除（常駐服務）；uninstall 程序在 maintenance.yaml，執行時一步刪 Pages 專案即歸零",
+    "date": "2026-08-03"
+  },
+  "user_acceptance": [
+    { "task": "production https://smallgreen-site.pages.dev/ → 200", "result": "pass", "date": "2026-08-03" },
+    { "task": "渲染卡數 13 ≥ registry 卡數 11（雙分類重複屬設計）", "result": "pass", "date": "2026-08-03" },
+    { "task": "零外部資源載入（script/style/font 引用計數 0）", "result": "pass", "date": "2026-08-03" },
+    { "task": "卡上 adapter 連結抽測（adapter-sink → 200）", "result": "pass", "date": "2026-08-03" },
+    { "task": "conformance CI（契約三檔）＋build 產物斷言全綠", "result": "pass", "date": "2026-08-03" }
+  ]
+}
