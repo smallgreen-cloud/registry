@@ -3,7 +3,9 @@
   "spec_version": "0.2.1",
   "project_id": "smallgreen-site",
   "submitted_at": "2026-08-03T04:30:00Z",
-  "submitter": { "github_handle": "AlanChen75" },
+  "submitter": {
+    "github_handle": "AlanChen75"
+  },
   "deploy_event": {
     "date": "2026-08-03",
     "profile": "small-app",
@@ -14,7 +16,7 @@
   "code_metrics": {
     "loc": 233,
     "dependency_count": 1,
-    "measured_at_commit": "main@site 首發 commit",
+    "measured_at_commit": "99f7e908359616ae454c55890b9feabf9cf5a0cd",
     "tool": "git ls-files（py/yml/yaml/toml）+ wc -l；deps=pyyaml（build 期唯一依賴，runtime 零依賴）"
   },
   "conformance": {
@@ -51,15 +53,37 @@
   "teardown": {
     "performed": false,
     "pass": true,
-    "residual_resources": ["pages:smallgreen-site（常駐——目錄站本體，歸零基線明文排除）"],
+    "residual_resources": [
+      "pages:smallgreen-site（常駐——目錄站本體，歸零基線明文排除）"
+    ],
     "method": "不拆除（常駐服務）；uninstall 程序在 maintenance.yaml，執行時一步刪 Pages 專案即歸零",
     "date": "2026-08-03"
   },
   "user_acceptance": [
-    { "task": "production https://smallgreen-site.pages.dev/ → 200", "result": "pass", "date": "2026-08-03" },
-    { "task": "渲染卡數 13 ≥ registry 卡數 11（雙分類重複屬設計）", "result": "pass", "date": "2026-08-03" },
-    { "task": "零外部資源載入（script/style/font 引用計數 0）", "result": "pass", "date": "2026-08-03" },
-    { "task": "卡上 adapter 連結抽測（adapter-sink → 200）", "result": "pass", "date": "2026-08-03" },
-    { "task": "conformance CI（契約三檔）＋build 產物斷言全綠", "result": "pass", "date": "2026-08-03" }
+    {
+      "task": "production https://smallgreen-site.pages.dev/ → 200",
+      "result": "pass",
+      "date": "2026-08-03"
+    },
+    {
+      "task": "渲染卡數 13 ≥ registry 卡數 11（雙分類重複屬設計）",
+      "result": "pass",
+      "date": "2026-08-03"
+    },
+    {
+      "task": "零外部資源載入（script/style/font 引用計數 0）",
+      "result": "pass",
+      "date": "2026-08-03"
+    },
+    {
+      "task": "卡上 adapter 連結抽測（adapter-sink → 200）",
+      "result": "pass",
+      "date": "2026-08-03"
+    },
+    {
+      "task": "conformance CI（契約三檔）＋build 產物斷言全綠",
+      "result": "pass",
+      "date": "2026-08-03"
+    }
   ]
 }
