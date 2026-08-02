@@ -1,0 +1,80 @@
+{
+  "schema_version": "0.3.0",
+  "spec_version": "0.2.1",
+  "project_id": "cloudflare-imgbed",
+  "submitted_at": "2026-08-02T09:40:00Z",
+  "submitter": { "github_handle": "AlanChen75" },
+  "deploy_event": {
+    "date": "2026-08-02",
+    "profile": "small-app",
+    "path": "C-adapter",
+    "result": "success"
+  },
+  "maturity_reached": "D5a",
+  "code_metrics": {
+    "loc": 20177,
+    "dependency_count": 0,
+    "measured_at_commit": "d8f3c22bbcf26a9a004c79a32bdfaf0695faee60",
+    "tool": "git ls-files（js/ts/mjs，排除 test/spec/.d.ts/frontend-dist）+ wc -l；deps=package.json dependencies（runtime 零依賴，測試工具鏈在 devDependencies）"
+  },
+  "conformance": {
+    "minutes": 0.5,
+    "result": "pass",
+    "ci_run_url": "https://github.com/smallgreen-cloud/adapter-cloudflare-imgbed/actions/runs/30733863936"
+  },
+  "low_carbon": {
+    "scale_to_zero": true,
+    "green_compute": false,
+    "no_idle_infra": true
+  },
+  "free_tier": {
+    "grade": "C",
+    "quota_notes": [
+      "W2 fallback 軌 2/3（External-only 降級：KV 中繼資料＋302 直連來源站；R2 未解鎖前提）：C 14 分 success 6/6 vs B 30 分 partial——B 的『儲存矩陣全滅』摸索被 adapter 定型為單一可驗證渠道",
+      "反遙測 patch 首戰：上游 Sentry 遙測預設開啟（sysConfig/others.js:80，送標頭/URL/CF 地理到硬編 DSN）——patch 0002 預設關閉並於契約揭露（GOV 反遙測條款首個實戰案例）；管理面板可重開（KV 覆蓋 env）已揭露",
+      "實體檔上傳如實失敗（500 逐渠道明確錯誤、KV 零殘留）＝降級誠實性驗證；transient 1042（worker 自呼 hostname 於 workers.dev 的已知模式）重試 1 次內解",
+      "deviation 已回饋：管理後台認證形狀＝adminLogin session cookie 非 HTTP Basic；KV writes 1k/day 為最緊限額（批量登記日留意）"
+    ]
+  },
+  "agent_matrix": [
+    {
+      "role": "deployer",
+      "agent": "claude-code",
+      "model": "claude-fable-5",
+      "version": "2.x",
+      "result": "autonomous",
+      "human_interventions": 0,
+      "stuck_state": null,
+      "retries": 1,
+      "date": "2026-08-02"
+    },
+    {
+      "role": "verifier",
+      "agent": "codex",
+      "model": "gpt-5.6-sol",
+      "version": "0.130.0",
+      "result": "autonomous",
+      "human_interventions": 0,
+      "stuck_state": null,
+      "retries": 0,
+      "date": "2026-08-02"
+    }
+  ],
+  "teardown": {
+    "performed": true,
+    "pass": true,
+    "residual_resources": [],
+    "method": "REST 直刪 worker cloudflare-imgbed（secrets 隨之移除）＋KV img_url；五類歸零 diff 為空",
+    "date": "2026-08-02"
+  },
+  "user_acceptance": [
+    { "task": "首頁 GET /（200）", "result": "pass", "date": "2026-08-02" },
+    { "task": "External 外鏈登記（multipart file 佔位＋url）→ 200 回 src", "result": "pass", "date": "2026-08-02" },
+    { "task": "GET /file/<id> → 302 直連來源站", "result": "pass", "date": "2026-08-02" },
+    { "task": "adminLogin session → 管理列表可見（Channel External）", "result": "pass", "date": "2026-08-02" },
+    { "task": "實體檔上傳 → 500 逐渠道明確錯誤＋KV 零殘留（降級如實）", "result": "pass", "date": "2026-08-02" },
+    { "task": "無 authCode → 401；random 預設 403", "result": "pass", "date": "2026-08-02" },
+    { "task": "裁判獨立複驗（/ 200＋302 目標 URL＋401＋403）", "result": "pass", "date": "2026-08-02" },
+    { "task": "verifier 獨立複驗（6/6 pass）", "result": "pass", "date": "2026-08-02" }
+  ]
+}
