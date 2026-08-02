@@ -1,0 +1,37 @@
+name: patrol
+
+on:
+  schedule:
+    - cron: "17 1 * * *"   # 每日 01:17 UTC
+  workflow_dispatch:
+
+jobs:
+  svc5-stale-patrol:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install --quiet pyyaml
+      - name: SVC-5 stale 檢查
+        id: patrol
+        run: |
+          set +e
+          python tools/patrol.py | tee patrol.out
+          echo "code=$?" >> "$GITHUB_OUTPUT"
+      - name: Telegram 告警（stale 或執行失敗才發）
+        if: steps.patrol.outputs.code != '0'
+        env:
+          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+          TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+        run: |
+          MSG="SmallGreen patrol（SVC-5）: exit ${{ steps.patrol.outputs.code }}
+          $(head -12 patrol.out)
+          https://github.com/smallgreen-cloud/registry/actions/runs/${{ github.run_id }}"
+          curl -s "https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage" \
+            --data-urlencode "chat_id=${TG_CHAT_ID}" \
+            --data-urlencode "text=${MSG}" > /dev/null
+      - name: 結果反映到 job 狀態
+        if: steps.patrol.outputs.code == '2'
+        run: exit 1
