@@ -1,0 +1,88 @@
+{
+  "schema_version": "0.3.0",
+  "spec_version": "0.2.1",
+  "project_id": "counterscale",
+  "submitted_at": "2026-08-03T15:50:00Z",
+  "submitter": {
+    "github_handle": "AlanChen75"
+  },
+  "deploy_event": {
+    "date": "2026-08-03",
+    "profile": "small-app",
+    "path": "C-adapter",
+    "result": "success"
+  },
+  "maturity_reached": "D4",
+  "code_metrics": {
+    "loc": 15021,
+    "dependency_count": 32,
+    "measured_at_commit": "a04818f7d1c2adf6d3b141230e234cfdb06741e1",
+    "tool": "git ls-files + wc -l（ts/tsx/js/mjs，排除 docs/test/spec）；deps=packages/{server,tracker,cli} dependencies（同 pack 01 量測，上游 commit 未變）"
+  },
+  "conformance": {
+    "minutes": 0.5,
+    "result": "pass",
+    "ci_run_url": "https://github.com/smallgreen-cloud/adapter-counterscale/actions/runs/30730773509"
+  },
+  "low_carbon": {
+    "scale_to_zero": true,
+    "green_compute": false,
+    "no_idle_infra": true
+  },
+  "free_tier": {
+    "grade": "C",
+    "quota_notes": [
+      "SVC-5 stale 消除重驗（patrol 首抓：前包停 spec 0.1.3 世代）＋引擎矩陣新格 codex×counterscale：deployer＝codex/gpt-5.6-sol(low) autonomous，驗收全過（dashboard 200／tracker.js 200／collect×3／AE ingestion 約 2 分後 views 3）",
+      "裁判機械複驗於部署在線時通過（stats views 3 實錄）；截圖驗證被並行 session 的 teardown 腰斬（audit log 15:22Z script_delete）——本 run 無截圖 artifact，佔位頁截圖已銷毀不入庫（SVC-8 禁假圖）",
+      "teardown：最終五類歸零由裁判 REST 實查證實；刪除動作由同憑證並行 session 執行（audit log 佐證）——沙盒互斥鎖（SANDBOX.lock）自本事件起強制",
+      "deployer 卡點：pnpm 並行安裝 stall 重試、Rosetta x64 workerd optional 套件不完整需手補（TOOL/CFCOMPAT，見 run 報告）"
+    ]
+  },
+  "agent_matrix": [
+    {
+      "role": "deployer",
+      "agent": "codex",
+      "model": "gpt-5.6-sol(effort=low)",
+      "version": "0.130.0",
+      "result": "autonomous",
+      "human_interventions": 0,
+      "stuck_state": null,
+      "retries": 2,
+      "date": "2026-08-03"
+    }
+  ],
+  "teardown": {
+    "performed": true,
+    "pass": true,
+    "residual_resources": [],
+    "method": "刪除由同憑證並行 session 執行（CF audit log 15:22Z script_delete）；裁判 REST 實查五類歸零（pages 常駐例外 smallgreen-site 除外）",
+    "date": "2026-08-03"
+  },
+  "user_acceptance": [
+    {
+      "task": "儀表板 GET /（200）",
+      "result": "pass",
+      "date": "2026-08-03"
+    },
+    {
+      "task": "GET /tracker.js（200，4898 bytes JS）",
+      "result": "pass",
+      "date": "2026-08-03"
+    },
+    {
+      "task": "collect ×3（皆 200 gif）",
+      "result": "pass",
+      "date": "2026-08-03"
+    },
+    {
+      "task": "AE ingestion 前景輪詢約 2 分 → stats views 3",
+      "result": "pass",
+      "date": "2026-08-03"
+    },
+    {
+      "task": "裁判獨立複驗（stats views 3，於部署在線時）",
+      "result": "pass",
+      "date": "2026-08-03"
+    }
+  ]
+}
