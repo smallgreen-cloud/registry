@@ -31,7 +31,7 @@
 | 18 | cf-image-hosting | ifyour/cf-image-hosting | 655 | 187 | **無 license** | 2024-05-02 | | ⚠️ 停更＋無授權，暫緩 |
 | 19 | serverless-cloud-notepad | s0urcelab/serverless-cloud-notepad | 484 | 368 | MIT | 2025-06-06 | | |
 | 20 | Alle | bestruirui/Alle | 452 | 151 | **無 license** | 2026-06-05 | | 郵件/AI 區；待作者補授權 |
-| 21 | R2-Explorer | G4brym/R2-Explorer | 626 | 538 | MIT | 2026-07-20 | 首批 | |
+| 21 | R2-Explorer | G4brym/R2-Explorer | 626 | 538 | MIT | 2026-07-20 | 首批 | **profile 不相容（免費層無 R2 帳號）**：核心＝R2 瀏覽器，R2 未啟用即完全阻斷（B run 21 實測 D2 hard-fail，10042 三重證據）；無降級空間不出 adapter。帳號啟用 R2 後可重評（三步可轉 success） |
 | 22 | gemini-balance-do | （待人工確認） | — | — | — | — | | 原 335★ repo 疑已刪除/轉私有 |
 | 23 | zmail | takumi913/zmail | 7 | — | — | 2026-07-26 | | 原 285★ repo 疑刪除重建，待確認 |
 | 24 | roim-picx | roimdev/roim-picx | 289 | 307 | Apache-2.0 | 2026-03-16 | | owner 已遷移 |
