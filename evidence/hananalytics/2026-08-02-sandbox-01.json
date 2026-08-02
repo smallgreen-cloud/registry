@@ -1,0 +1,78 @@
+{
+  "schema_version": "0.3.0",
+  "spec_version": "0.2.1",
+  "project_id": "hananalytics",
+  "submitted_at": "2026-08-02T05:50:00Z",
+  "submitter": { "github_handle": "AlanChen75" },
+  "deploy_event": {
+    "date": "2026-08-02",
+    "profile": "small-app",
+    "path": "C-adapter",
+    "result": "success"
+  },
+  "maturity_reached": "D5a",
+  "code_metrics": {
+    "loc": 2089,
+    "dependency_count": 13,
+    "measured_at_commit": "531c3edfce19a3ab31e5571ddf02b1ef6f2bef78",
+    "tool": "git ls-files（ts/tsx/js/vue/mjs，排除 test/spec/.d.ts）+ wc -l；deps=package.json dependencies"
+  },
+  "conformance": {
+    "minutes": 0.5,
+    "result": "pass",
+    "ci_run_url": "https://github.com/smallgreen-cloud/adapter-hananalytics/actions/runs/30732006464"
+  },
+  "low_carbon": {
+    "scale_to_zero": true,
+    "green_compute": false,
+    "no_idle_infra": true
+  },
+  "free_tier": {
+    "grade": "C",
+    "quota_notes": [
+      "W1 配對主軸 3/5：deployer＝claude-code（與 hananalytics-B-01 同引擎成對）；C 14 分 0 人工介入 vs B 18 分 1 介入——adapter IaC 化（E47 回饋）讓純 dashboard 型專案 CLI 直部署一次走通",
+      "無 lockfile 版本漂移新表現形：vue-tsc type-check 掛掉（TS2589/TS2742，三輪 pin 不收斂）→ build-only 跳過 dev gate（產物不受影響）；已回饋 AGENTS.md（B run E46 記安裝慢，本次是型別漂移——同根因兩表現）",
+      "detached HEAD → wrangler 推斷 branch=head 落 preview（E58 同雷第二例，Pages 類 adapter 通用）——deploy 補 --branch main，已回饋 AGENTS.md",
+      "密碼保護語義：錯誤密碼回 HTTP 200＋body code 401（上游 Response.json 未設 status）——acceptance 判準已修正；沙盒條款沿用同一 token 未另建 Analytics Read 最小權限 token（同 Counterscale 前例）"
+    ]
+  },
+  "agent_matrix": [
+    {
+      "role": "deployer",
+      "agent": "claude-code",
+      "model": "claude-fable-5",
+      "version": "2.x",
+      "result": "autonomous",
+      "human_interventions": 0,
+      "stuck_state": null,
+      "retries": 3,
+      "date": "2026-08-02"
+    },
+    {
+      "role": "verifier",
+      "agent": "codex",
+      "model": "gpt-5.6-sol",
+      "version": "0.130.0",
+      "result": "autonomous",
+      "human_interventions": 0,
+      "stuck_state": null,
+      "retries": 0,
+      "date": "2026-08-02"
+    }
+  ],
+  "teardown": {
+    "performed": true,
+    "pass": true,
+    "residual_resources": [],
+    "method": "REST 直刪 Pages 專案 hananalytics（force=true，secrets 隨之移除）；五類歸零 diff 為空；AE dataset 資料 90 天自動過期",
+    "date": "2026-08-02"
+  },
+  "user_acceptance": [
+    { "task": "儀表板 GET /（200）", "result": "pass", "date": "2026-08-02" },
+    { "task": "POST /send ×3（全 success true）", "result": "pass", "date": "2026-08-02" },
+    { "task": "AE ingestion 約 2 分鐘後 /api type=visit → views 3", "result": "pass", "date": "2026-08-02" },
+    { "task": "錯誤 session → body code 401（密碼保護生效）", "result": "pass", "date": "2026-08-02" },
+    { "task": "裁判獨立複驗（/ 200＋views 3＋code 401）", "result": "pass", "date": "2026-08-02" },
+    { "task": "verifier 獨立複驗（4/4 pass 含 /send 即時事件）", "result": "pass", "date": "2026-08-02" }
+  ]
+}
