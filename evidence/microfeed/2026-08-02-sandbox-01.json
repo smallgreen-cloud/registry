@@ -1,0 +1,81 @@
+{
+  "schema_version": "0.3.0",
+  "spec_version": "0.2.1",
+  "project_id": "microfeed",
+  "submitted_at": "2026-08-02T10:50:00Z",
+  "submitter": { "github_handle": "AlanChen75" },
+  "deploy_event": {
+    "date": "2026-08-02",
+    "profile": "small-app",
+    "path": "C-adapter",
+    "result": "success"
+  },
+  "maturity_reached": "D5a",
+  "code_metrics": {
+    "loc": 17579,
+    "dependency_count": 29,
+    "measured_at_commit": "fa0dcbd2ccd63444f704b8902b6850398b664d2b",
+    "tool": "git ls-files（ts/tsx/js/astro/mjs，排除 test/spec/.d.ts）+ wc -l；deps=package.json dependencies"
+  },
+  "conformance": {
+    "minutes": 0.5,
+    "result": "pass",
+    "ci_run_url": "https://github.com/smallgreen-cloud/adapter-microfeed/actions/runs/30734795827"
+  },
+  "low_carbon": {
+    "scale_to_zero": true,
+    "green_compute": false,
+    "no_idle_infra": true
+  },
+  "free_tier": {
+    "grade": "C",
+    "quota_notes": [
+      "W2 fallback 軌 3/3 收官（無 R2 降級：MICROFEED_DISABLE_R2 顯式開關，E52 三處臨場改碼的標準化）：C 34 分 success vs B 19 分 partial 改碼——C 側時長多在新卡點 E69（init 自跑上游測試被降級開關污染，4 筆 fail 中止；A/B 驗證定因後 vitest env 隔離解）與 10 分 timeout 重入",
+      "E53 反向漂移再確認：README 明言不支援 unattended API-token 部署，C run 全程非互動走通（token 未觸發瀏覽器 OAuth）；E54 旗標組照 AGENTS.md 罐頭指令一次過",
+      "媒體降級誠實性：presignedUrl 可取得但 PUT 503『Media storage is disabled on this deployment』（patch 0002 行為如實，非沉默失敗）；.well-known deployedAt 空值＝patch 0003（version_metadata 移除）的預期輸出",
+      "deviation×2 已回饋 adapter：patch 0005 vitest env 隔離、AGENTS.md 重入指引（--reuse-d1）＋POST 尾斜線警語",
+      "上游 License 矛盾（LICENSE=AGPL-3.0 vs package.json=MIT）已於 UPSTREAM.md 記錄，建議回饋上游"
+    ]
+  },
+  "agent_matrix": [
+    {
+      "role": "deployer",
+      "agent": "claude-code",
+      "model": "claude-fable-5",
+      "version": "2.x",
+      "result": "autonomous",
+      "human_interventions": 0,
+      "stuck_state": null,
+      "retries": 2,
+      "date": "2026-08-02"
+    },
+    {
+      "role": "verifier",
+      "agent": "codex",
+      "model": "gpt-5.6-sol",
+      "version": "0.130.0",
+      "result": "autonomous",
+      "human_interventions": 0,
+      "stuck_state": null,
+      "retries": 0,
+      "date": "2026-08-02"
+    }
+  ],
+  "teardown": {
+    "performed": true,
+    "pass": true,
+    "residual_resources": [],
+    "method": "REST 直刪 worker sg-c01-mf（secrets 隨之移除）＋D1 sg-c01-mf-db；五類歸零 diff 為空",
+    "date": "2026-08-02"
+  },
+  "user_acceptance": [
+    { "task": "首頁 GET /（200 含 acceptance item 標題）", "result": "pass", "date": "2026-08-02" },
+    { "task": "/json/ jsonfeed 1.1 含 item；/rss/ XML 合法", "result": "pass", "date": "2026-08-02" },
+    { "task": ".well-known/microfeed.json product 識別", "result": "pass", "date": "2026-08-02" },
+    { "task": "未認證 JSON POST /api/items/ → 401（非 JSON 空 POST → 403 cross-site 保護）", "result": "pass", "date": "2026-08-02" },
+    { "task": "admin 密碼一次性連結→設密碼→登入→建純文字 item 全程 API 完成", "result": "pass", "date": "2026-08-02" },
+    { "task": "媒體上傳 PUT → 503 明確降級訊息", "result": "pass", "date": "2026-08-02" },
+    { "task": "裁判獨立複驗（/ 200＋jsonfeed items 1＋rss 合法＋well-known＋403/401 語義）", "result": "pass", "date": "2026-08-02" },
+    { "task": "verifier 獨立複驗（7/7 pass，xmllint 驗 RSS）", "result": "pass", "date": "2026-08-02" }
+  ]
+}
