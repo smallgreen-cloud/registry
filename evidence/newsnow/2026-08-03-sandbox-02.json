@@ -1,0 +1,73 @@
+{
+  "schema_version": "0.3.0",
+  "spec_version": "0.2.1",
+  "project_id": "newsnow",
+  "submitted_at": "2026-08-03T16:40:00Z",
+  "submitter": { "github_handle": "AlanChen75" },
+  "deploy_event": {
+    "date": "2026-08-03",
+    "profile": "small-app",
+    "path": "C-adapter",
+    "result": "success"
+  },
+  "maturity_reached": "D5a",
+  "code_metrics": {
+    "loc": 6679,
+    "dependency_count": 33,
+    "measured_at_commit": "2173126f804bec0201769f59d933add6c4632d17",
+    "tool": "git ls-files（ts/tsx/js/mjs，排除 test/spec/.d.ts）+ wc -l；deps=package.json dependencies（同 pack 01，上游 commit 未變）"
+  },
+  "conformance": {
+    "minutes": 0.5,
+    "result": "pass",
+    "ci_run_url": "https://github.com/smallgreen-cloud/adapter-newsnow/actions/runs/30731303920"
+  },
+  "low_carbon": {
+    "scale_to_zero": true,
+    "green_compute": false,
+    "no_idle_infra": true
+  },
+  "free_tier": {
+    "grade": "A",
+    "quota_notes": [
+      "引擎矩陣新格 opencode/big-pickle×newsnow：autonomous 約 8-10 分（35 分預算），deviations=none——C run 1 的兩處契約修復（--branch main、D1 row 快取判準）被跨引擎直接走通＝deviation 迴圈有效性再證",
+      "deployer 卡點僅 TOOL 一項（wrangler d1 list 表格解析→改 --json）；transient 523 一次（契約已載明來源側波動樣本）重試即過",
+      "並行 session 干擾再現（E71 後續）：run 開始時帳號存在對方先前的 newsnow 資源（空 D1），旋即被對方刪除——我方 deployer 依契約重建完成不受影響；我方 teardown 後帳號仍有對方在線 pb/PB 資源（不動，E71 教訓）",
+      "首張合規真實截圖（SVC-8）：teardown 前 shot-scraper 收 dashboard 主圖（實載新聞內容目視確認）"
+    ]
+  },
+  "agent_matrix": [
+    {
+      "role": "deployer",
+      "agent": "opencode",
+      "model": "big-pickle",
+      "version": "1.15.12",
+      "result": "autonomous",
+      "human_interventions": 0,
+      "stuck_state": null,
+      "retries": 1,
+      "date": "2026-08-03"
+    }
+  ],
+  "screenshots": {
+    "app_png": {
+      "path": "evidence/newsnow/artifacts/2026-08-03-home.png",
+      "sha256": "684dab6752f5f71280565d121427beb3694ddf3b32c6a556ac588e8b6f13488a",
+      "tool": "shot-scraper（1280x800，teardown 前於在線部署收取；內容目視確認為實載新聞非空殼）"
+    }
+  },
+  "teardown": {
+    "performed": true,
+    "pass": true,
+    "residual_resources": ["並行 session 在線資源 worker:pb＋kv:PB（非本 run 產物，依互斥紀律不動）", "pages:smallgreen-site（常駐基線例外）"],
+    "method": "REST 直刪 Pages newsnow＋D1 newsnow-db；本 run 產物歸零實查（殘留清單皆非本 run 資源）",
+    "date": "2026-08-03"
+  },
+  "user_acceptance": [
+    { "task": "首頁 GET /（200）", "result": "pass", "date": "2026-08-03" },
+    { "task": "GET /api/s?id=hackernews（200，items 30；github 來源 15 items）", "result": "pass", "date": "2026-08-03" },
+    { "task": "D1 cache row updated 連打兩次不變（契約 method a）", "result": "pass", "date": "2026-08-03" },
+    { "task": "GET /api/enable-login → 506（登入停用設計行為）", "result": "pass", "date": "2026-08-03" },
+    { "task": "裁判獨立複驗（/ 200＋api items 30＋506，於截圖同時段）", "result": "pass", "date": "2026-08-03" }
+  ]
+}

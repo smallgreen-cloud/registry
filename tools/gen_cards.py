@@ -161,6 +161,10 @@ def build_card(pid: str) -> dict:
         "low_carbon": pack["low_carbon"],
         "maintenance_status": ed["maintenance_status"],
     }
+    shot = (pack.get("screenshots") or {}).get("app_png")
+    if shot:
+        card["images"] = {"screenshot": {"path": shot["path"],
+                                          "evidence_pack_ref": str(pack_path.relative_to(REG))}}
     if card["free_tier_grade"] in ("C", "D"):
         notes = pack["free_tier"].get("quota_notes") or []
         quota = next((n for n in notes if any(k in n for k in ("額度", "/day", "limit", "Neurons", "writes"))), None)
