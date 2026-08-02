@@ -1,0 +1,39 @@
+# 機械生成（tools/gen_cards.py）——editorial 欄位改 EDITORIAL 字典後重生，勿直接手改推導欄位
+id: newsnow
+name: NewsNow
+one_liner: 40+ 來源新聞熱榜聚合站，快取存自己的 D1
+categories:
+- publishing
+profile: small-app
+repo:
+  upstream: ourongxing/newsnow
+  adapter: smallgreen-cloud/adapter-newsnow
+  license: MIT
+components:
+  cloudflare:
+  - pages
+  - d1
+login_method: none
+data_flow:
+  external_services:
+  - 40+ 新聞來源站點（完整清單見上游 server/sources/，如 news.ycombinator.com、github.com、v2ex.com、zhihu.com
+    等）
+  - github.com
+  disclosure: D1 僅存來源快取（可重建，非珍貴資料）與啟用登入時的使用者偏好同步。預設部署不啟用登入（上游 auth middleware 對缺 OAuth
+    secrets 有防呆——登入功能自動停用，聚合 API 照常服務），啟用時 login_method 轉 github-oauth
+verification:
+  level: discovered
+  spec_version: 0.2.1
+  last_verified: '2026-08-02'
+  evidence_packs:
+  - evidence/newsnow/2026-08-02-sandbox-01.json
+  compatible_agents:
+  - agent: claude-code
+    model: claude-fable-5
+    result: autonomous
+free_tier_grade: A
+low_carbon:
+  scale_to_zero: true
+  green_compute: false
+  no_idle_infra: true
+maintenance_status: active

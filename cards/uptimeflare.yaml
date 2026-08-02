@@ -1,0 +1,49 @@
+# 機械生成（tools/gen_cards.py）——editorial 欄位改 EDITORIAL 字典後重生，勿直接手改推導欄位
+id: uptimeflare
+name: UptimeFlare
+one_liner: 自架服務監測與狀態頁（cron 探測＋D1 歷史）
+categories:
+- utilities
+profile: small-app
+repo:
+  upstream: lyc8503/UptimeFlare
+  adapter: smallgreen-cloud/adapter-uptimeflare
+  license: Apache-2.0
+components:
+  cloudflare:
+  - workers
+  - pages
+  - d1
+  - kv
+  - cron
+login_method: none
+data_flow:
+  external_services:
+  - (user-configured)
+  - cloudflare.com
+  - (user-configured)
+  disclosure: 自己帳號裡的網站監測與狀態頁（每分鐘檢查、離線通知、歷史紀錄）
+verification:
+  level: discovered
+  spec_version: 0.2.0
+  last_verified: '2026-07-30'
+  evidence_packs:
+  - evidence/uptimeflare/2026-07-30-sandbox-01.json
+  - evidence/uptimeflare/2026-07-30-sandbox-02.json
+  - evidence/uptimeflare/2026-07-30-sandbox-03.json
+  compatible_agents:
+  - agent: claude-code
+    model: claude-fable-5
+    result: autonomous
+  - agent: codex
+    model: gpt-5.4（reasoning effort low）
+    result: autonomous
+  - agent: opencode
+    model: big-pickle
+    result: autonomous
+free_tier_grade: A
+low_carbon:
+  scale_to_zero: true
+  green_compute: false
+  no_idle_infra: true
+maintenance_status: active

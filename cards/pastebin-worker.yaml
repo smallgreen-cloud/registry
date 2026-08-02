@@ -1,0 +1,38 @@
+# 機械生成（tools/gen_cards.py）——editorial 欄位改 EDITORIAL 字典後重生，勿直接手改推導欄位
+id: pastebin-worker
+name: Pastebin Worker
+one_liner: curl 友善的自架 pastebin／短網址／檔案分享
+categories:
+- sharing
+- utilities
+profile: small-app
+repo:
+  upstream: SharzyL/pastebin-worker
+  adapter: smallgreen-cloud/adapter-pastebin-worker
+  license: MIT
+components:
+  cloudflare:
+  - workers
+  - kv
+login_method: none
+data_flow:
+  external_services: []
+  disclosure: 本 adapter 為 KV-only 降級（上游雙層儲存 KV+R2；未啟用 R2 的帳號適配）——R2_THRESHOLD 拉至 R2_MAX_ALLOWED（20M），所有
+    paste 走 KV（KV 單值上限 25MB 內）。副作用：大檔分段上傳（MPU）API 不可用；每日 R2 清理 cron 已移除。paste 預設 7
+    天過期（MAX 90 天）。管理權採 manageUrl（建立
+verification:
+  level: discovered
+  spec_version: 0.2.1
+  last_verified: '2026-08-02'
+  evidence_packs:
+  - evidence/pastebin-worker/2026-08-02-sandbox-01.json
+  compatible_agents:
+  - agent: claude-code
+    model: claude-fable-5
+    result: autonomous
+free_tier_grade: A
+low_carbon:
+  scale_to_zero: true
+  green_compute: false
+  no_idle_infra: true
+maintenance_status: active

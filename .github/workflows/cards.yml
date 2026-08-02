@@ -1,0 +1,40 @@
+name: cards
+
+on:
+  push:
+    branches: [main]
+    paths: ["cards/**", "taxonomy.yaml", "tools/**", "evidence/**", ".github/workflows/cards.yml"]
+  pull_request:
+
+jobs:
+  card-conformance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: smallgreen-cloud/spec
+          ref: v0.2.1
+          path: .spec
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install --quiet jsonschema pyyaml
+      - name: 服務卡檢核（SVC-1/2/3/4/7）
+        run: python tools/check_cards.py --spec .spec
+      - name: Evidence Pack schema（全量重驗）
+        run: |
+          python - <<'EOF'
+          import json, sys
+          from pathlib import Path
+          from jsonschema import Draft202012Validator
+          schema = json.loads(Path(".spec/verification/evidence-pack.schema.json").read_text())
+          v = Draft202012Validator(schema)
+          bad = 0
+          for p in sorted(Path("evidence").rglob("*.json")):
+              errs = list(v.iter_errors(json.loads(p.read_text())))
+              for e in errs:
+                  print(f"✗ {p}: {e.json_path} {e.message[:80]}"); bad += 1
+          print(f"{'FAIL' if bad else 'ok'}: packs checked")
+          sys.exit(1 if bad else 0)
+          EOF

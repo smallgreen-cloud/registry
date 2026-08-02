@@ -1,0 +1,37 @@
+# 機械生成（tools/gen_cards.py）——editorial 欄位改 EDITORIAL 字典後重生，勿直接手改推導欄位
+id: microfeed
+name: microfeed
+one_liner: 輕量 feed/CMS（JSON/RSS feed＋admin 後台；無 R2 文字模式收錄版）
+categories:
+- publishing
+profile: small-app
+repo:
+  upstream: microfeed/microfeed
+  adapter: smallgreen-cloud/adapter-microfeed
+  license: AGPL-3.0
+components:
+  cloudflare:
+  - workers
+  - d1
+login_method: other
+data_flow:
+  external_services: []
+  disclosure: 內容（items、channel 設定）與 admin 帳號存 D1（珍貴資料）。login_method=other 說明——admin
+    後台走上游內建 better-auth email＋密碼（存 D1 auth_user 表，migrations/0002_better_auth.sql）；首組密碼由
+    CLI 產生 30 分鐘一次性連結設定，設定前後台回 403（manage-cli/com
+verification:
+  level: discovered
+  spec_version: 0.2.1
+  last_verified: '2026-08-02'
+  evidence_packs:
+  - evidence/microfeed/2026-08-02-sandbox-01.json
+  compatible_agents:
+  - agent: claude-code
+    model: claude-fable-5
+    result: autonomous
+free_tier_grade: C
+low_carbon:
+  scale_to_zero: true
+  green_compute: false
+  no_idle_infra: true
+maintenance_status: active

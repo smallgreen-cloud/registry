@@ -1,0 +1,41 @@
+# 機械生成（tools/gen_cards.py）——editorial 欄位改 EDITORIAL 字典後重生，勿直接手改推導欄位
+id: second-brain-cloudflare
+name: Second Brain
+one_liner: 個人知識庫＋MCP server（keyword-only 降級收錄版）
+categories:
+- sharing
+profile: small-app
+repo:
+  upstream: rahilp/second-brain-cloudflare
+  adapter: smallgreen-cloud/adapter-second-brain
+  license: MIT
+components:
+  cloudflare:
+  - workers
+  - d1
+  - kv
+  - workers-ai
+  - cron
+login_method: token
+data_flow:
+  external_services: []
+  disclosure: 筆記與知識圖譜存 D1（珍貴資料）；OAUTH_KV 存 MCP OAuth 狀態。本 adapter 為 keyword-only 降級版——Vectorize
+    binding 已由 patch 移除（token 無 Vectorize 權限的帳號適配，B run E43）：語意搜尋降為關鍵字搜尋（上游讀路徑原生 fallback），寫路徑
+    5 處補 non-fatal 防呆（上游 E44 缺口
+verification:
+  level: discovered
+  spec_version: 0.2.1
+  last_verified: '2026-08-02'
+  evidence_packs:
+  - evidence/second-brain-cloudflare/2026-08-02-sandbox-01.json
+  compatible_agents:
+  - agent: claude-code
+    model: claude-fable-5
+    result: autonomous
+free_tier_grade: C
+low_carbon:
+  scale_to_zero: true
+  green_compute: false
+  no_idle_infra: true
+maintenance_status: active
+quota_note: grade C 因 Workers AI（capture 的 embedding＋LLM 分類；10k Neurons/day）

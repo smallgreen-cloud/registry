@@ -1,0 +1,39 @@
+# 機械生成（tools/gen_cards.py）——editorial 欄位改 EDITORIAL 字典後重生，勿直接手改推導欄位
+id: serverless-dns
+name: serverless-dns
+one_liner: RethinkDNS 引擎的自架 DoH 解析端點（內建封鎖清單）
+categories:
+- utilities
+profile: small-app
+repo:
+  upstream: serverless-dns/serverless-dns
+  adapter: smallgreen-cloud/adapter-serverless-dns
+  license: MPL-2.0
+components:
+  cloudflare:
+  - workers
+login_method: none
+data_flow:
+  external_services:
+  - cloudflare-dns.com
+  - dns.google
+  - max.rethinkdns.com
+  - cfstore.rethinkdns.com
+  disclosure: 無狀態服務——不落地任何查詢紀錄（預設 env 無 AE/logpush binding，send_metrics=false）。封鎖清單於
+    build 期自 cfstore.rethinkdns.com 下載打包
+verification:
+  level: discovered
+  spec_version: 0.2.1
+  last_verified: '2026-08-02'
+  evidence_packs:
+  - evidence/serverless-dns/2026-08-02-sandbox-01.json
+  compatible_agents:
+  - agent: claude-code
+    model: claude-fable-5
+    result: autonomous
+free_tier_grade: A
+low_carbon:
+  scale_to_zero: true
+  green_compute: false
+  no_idle_infra: true
+maintenance_status: active

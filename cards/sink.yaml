@@ -1,0 +1,52 @@
+# 機械生成（tools/gen_cards.py）——editorial 欄位改 EDITORIAL 字典後重生，勿直接手改推導欄位
+id: sink
+name: Sink
+one_liner: 自架短網址服務，附 Analytics Engine 造訪統計
+categories:
+- utilities
+- analytics
+profile: small-app
+repo:
+  upstream: miantiao-me/Sink
+  adapter: smallgreen-cloud/adapter-sink
+  license: AGPL-3.0
+components:
+  cloudflare:
+  - workers
+  - kv
+  - analytics-engine
+  - workers-ai(選配)
+login_method: token
+data_flow:
+  external_services:
+  - api.cloudflare.com
+  - (user-directed)
+  - (user-configured)
+  disclosure: 自己帳號裡的短網址服務，附點擊統計儀表板
+verification:
+  level: discovered
+  spec_version: 0.2.0
+  last_verified: '2026-08-01'
+  evidence_packs:
+  - evidence/sink/2026-07-30-sandbox-01.json
+  - evidence/sink/2026-07-30-sandbox-02.json
+  - evidence/sink/2026-07-31-sandbox-03.json
+  - evidence/sink/2026-08-01-sandbox-04.json
+  compatible_agents:
+  - agent: agy
+    model: gemini（Antigravity CLI 預設，session 未指定）
+    result: assisted
+  - agent: agy
+    model: gemini（Antigravity Pro，session 預設）
+    result: autonomous
+  - agent: claude-code
+    model: claude-fable-5
+    result: autonomous
+free_tier_grade: C
+low_carbon:
+  scale_to_zero: true
+  green_compute: false
+  no_idle_infra: true
+maintenance_status: active
+quota_note: 前輪 assisted 的敗因確認為 Starter 額度撞頂（非標準缺陷）；agy 額度撞頂會先偽裝成 model overloaded，矩陣
+  run 前應跑額度探針

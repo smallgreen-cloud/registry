@@ -1,0 +1,40 @@
+# 機械生成（tools/gen_cards.py）——editorial 欄位改 EDITORIAL 字典後重生，勿直接手改推導欄位
+id: counterscale
+name: Counterscale
+one_liner: 自己帳號裡的網站流量分析（GA 替代）
+categories:
+- analytics
+profile: small-app
+repo:
+  upstream: benvinegar/counterscale
+  adapter: smallgreen-cloud/adapter-counterscale
+  license: MIT
+components:
+  cloudflare:
+  - workers
+  - analytics-engine
+login_method: token
+data_flow:
+  external_services:
+  - api.cloudflare.com
+  disclosure: 分析事件寫入 Analytics Engine（90 天保留）；v0.2 起 stored_in 直接標 analytics_engine（issue
+verification:
+  level: discovered
+  spec_version: 0.1.3
+  last_verified: '2026-07-30'
+  evidence_packs:
+  - evidence/counterscale/2026-07-30-sandbox-01.json
+  - evidence/counterscale/2026-07-30-sandbox-02.json
+  compatible_agents:
+  - agent: claude-code
+    model: claude-fable-5
+    result: autonomous
+  - agent: opencode
+    model: big-pickle
+    result: autonomous
+free_tier_grade: C
+low_carbon:
+  scale_to_zero: true
+  green_compute: false
+  no_idle_infra: true
+maintenance_status: slowing

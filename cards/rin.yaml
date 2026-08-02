@@ -1,0 +1,46 @@
+# 機械生成（tools/gen_cards.py）——editorial 欄位改 EDITORIAL 字典後重生，勿直接手改推導欄位
+id: rin
+name: Rin
+one_liner: 個人部落格系統（文章／評論／RSS／Queue 背景 AI 摘要）
+categories:
+- publishing
+profile: small-app
+repo:
+  upstream: openRin/Rin
+  adapter: smallgreen-cloud/adapter-rin
+  license: MIT
+components:
+  cloudflare:
+  - workers
+  - d1
+  - queues
+  - workers-ai
+  - cron
+login_method: other
+data_flow:
+  external_services:
+  - github.com
+  - 自訂 S3 端點（選配）
+  - 自訂 webhook URL（選配）
+  disclosure: 文章與評論存 D1；快取走 CACHE_STORAGE_MODE=database（本 adapter 預設，免 R2/S3）。媒體上傳需
+    R2 或外部 S3（選配——不設則圖片上傳不可用，文章功能不受影響）。AI 摘要走 Workers AI binding（免費 10k Neurons/day，SVC-4
+    等級標示適用）。背景任務走 Queue（免費層保留 24h——本專案任務即發即消，不依賴
+verification:
+  level: discovered
+  spec_version: 0.2.1
+  last_verified: '2026-08-02'
+  evidence_packs:
+  - evidence/rin/2026-08-02-sandbox-01.json
+  compatible_agents:
+  - agent: claude-code
+    model: claude-fable-5
+    result: autonomous
+free_tier_grade: C
+low_carbon:
+  scale_to_zero: true
+  green_compute: false
+  no_idle_infra: true
+maintenance_status: active
+quota_note: 首個帶 Queue 的 Evidence Pack（spec v0.2.1 Queues 條件式納入後）：producer/consumer
+  建立與消費全通，app 端 queue-status ground-truth completed 1/failed 0；grade C 因 Workers AI（10k
+  Neurons/day 額度緊，SVC-4 至多 C 條款）

@@ -1,0 +1,44 @@
+# 機械生成（tools/gen_cards.py）——editorial 欄位改 EDITORIAL 字典後重生，勿直接手改推導欄位
+id: cloudflare-imgbed
+name: CloudFlare-ImgBed
+one_liner: 圖床檔案管理站（External 外鏈降級收錄版，KV 中繼資料）
+categories:
+- sharing
+profile: small-app
+repo:
+  upstream: MarSeventh/CloudFlare-ImgBed
+  adapter: smallgreen-cloud/adapter-cloudflare-imgbed
+  license: MIT
+components:
+  cloudflare:
+  - workers
+  - kv
+login_method: token
+data_flow:
+  external_services:
+  - (user-directed)
+  - cn.bing.com
+  - o4507644548022272.ingest.us.sentry.io
+  - frozen-sentinel.pages.dev
+  - (user-configured)
+  disclosure: 本 adapter 為 External-only 降級版——沙盒實測（B run E51）儲存後端矩陣全滅：R2 未啟用、TG/S3/Discord/HF/WebDAV
+    皆需外部憑證。降級語義：上傳實體檔不可用（未配置渠道時明確失敗），僅「登記外部圖片 URL」（External 外鏈渠道，functions/upload/index.js
+    uploadFileToExternal）與檔案管理、
+verification:
+  level: discovered
+  spec_version: 0.2.1
+  last_verified: '2026-08-02'
+  evidence_packs:
+  - evidence/cloudflare-imgbed/2026-08-02-sandbox-01.json
+  compatible_agents:
+  - agent: claude-code
+    model: claude-fable-5
+    result: autonomous
+free_tier_grade: C
+low_carbon:
+  scale_to_zero: true
+  green_compute: false
+  no_idle_infra: true
+maintenance_status: active
+quota_note: deviation 已回饋：管理後台認證形狀＝adminLogin session cookie 非 HTTP Basic；KV writes
+  1k/day 為最緊限額（批量登記日留意）

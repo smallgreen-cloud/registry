@@ -1,0 +1,36 @@
+# 機械生成（tools/gen_cards.py）——editorial 欄位改 EDITORIAL 字典後重生，勿直接手改推導欄位
+id: hananalytics
+name: HanAnalytics
+one_liner: 輕量網站流量分析儀表板（Pages Functions＋AE）
+categories:
+- analytics
+profile: small-app
+repo:
+  upstream: uxiaohan/HanAnalytics
+  adapter: smallgreen-cloud/adapter-hananalytics
+  license: MIT
+components:
+  cloudflare:
+  - pages
+  - analytics-engine
+login_method: token
+data_flow:
+  external_services:
+  - api.cloudflare.com
+  disclosure: 訪客事件（站點、路徑、UA、國別）寫入 Analytics Engine dataset「AnalyticsDataset」（90 天保留）。儀表板密碼（CLOUDFLARE_WEBSITE_PWD）選配——不設則儀表板任何人可查
+verification:
+  level: discovered
+  spec_version: 0.2.1
+  last_verified: '2026-08-02'
+  evidence_packs:
+  - evidence/hananalytics/2026-08-02-sandbox-01.json
+  compatible_agents:
+  - agent: claude-code
+    model: claude-fable-5
+    result: autonomous
+free_tier_grade: C
+low_carbon:
+  scale_to_zero: true
+  green_compute: false
+  no_idle_infra: true
+maintenance_status: stalled

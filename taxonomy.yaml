@@ -1,0 +1,15 @@
+# 分類真值源（SVC-7：卡片 categories 必須 ⊆ 本檔；滿 3 個專案才立新類）
+# 首批 11 案分佈驗證：每類 ≥3（多重歸類允許）
+categories:
+  - id: analytics
+    name: 網站分析
+    members_at_creation: [counterscale, hananalytics, sink]
+  - id: publishing
+    name: 內容發佈（部落格／feed／聚合）
+    members_at_creation: [rin, microfeed, newsnow]
+  - id: sharing
+    name: 內容儲存與分享
+    members_at_creation: [pastebin-worker, cloudflare-imgbed, second-brain-cloudflare]
+  - id: utilities
+    name: 網路工具（DNS／監測／短網址）
+    members_at_creation: [serverless-dns, uptimeflare, sink]
