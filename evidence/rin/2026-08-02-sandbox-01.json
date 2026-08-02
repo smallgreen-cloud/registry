@@ -1,0 +1,79 @@
+{
+  "schema_version": "0.3.0",
+  "spec_version": "0.2.1",
+  "project_id": "rin",
+  "submitted_at": "2026-08-02T07:10:00Z",
+  "submitter": { "github_handle": "AlanChen75" },
+  "deploy_event": {
+    "date": "2026-08-02",
+    "profile": "small-app",
+    "path": "C-adapter",
+    "result": "success"
+  },
+  "maturity_reached": "D5a",
+  "code_metrics": {
+    "loc": 20453,
+    "dependency_count": 57,
+    "measured_at_commit": "9efc4fdb3e5448f05c93cbc2af00a0035cb07d3d",
+    "tool": "git ls-files（ts/tsx/js/mjs，排除 test/spec/.d.ts）+ wc -l；deps=root+client+server package.json dependencies 合計"
+  },
+  "conformance": {
+    "minutes": 0.5,
+    "result": "pass",
+    "ci_run_url": "https://github.com/smallgreen-cloud/adapter-rin/actions/runs/30732805420"
+  },
+  "low_carbon": {
+    "scale_to_zero": true,
+    "green_compute": false,
+    "no_idle_infra": true
+  },
+  "free_tier": {
+    "grade": "C",
+    "quota_notes": [
+      "W1 配對主軸 5/5 收官：deployer＝claude-code（與 rin-B-01 同引擎成對）；C 18 分 0 介入 vs B 55 分 1 介入——最重案的配對差距最大（B 側 bun 漏裝＋Queue 發現＋刪除互鎖全在 C 側被 adapter 前置消化）",
+      "首個帶 Queue 的 Evidence Pack（spec v0.2.1 Queues 條件式納入後）：producer/consumer 建立與消費全通，app 端 queue-status ground-truth completed 1/failed 0；grade C 因 Workers AI（10k Neurons/day 額度緊，SVC-4 至多 C 條款）",
+      "上游 Workers AI model 清單 9 個全數 deprecated（5028，2026-05-30 下架）——deployer 以 /api/config/test-ai 實測換 llama-3.3-70b-instruct-fp8-fast（ASSET-UPSTREAM 漂移新樣本，已回饋 AGENTS.md）",
+      "wrangler（4.71）與 REST 均無 queue backlog 欄位——Queue 驗證證據路徑改 app 端 queue-status（契約已修）；E36 bun 靜默漏裝本輪未再現（官方 registry 指示生效）",
+      "teardown 依 E38 SOP consumer→worker→queue（REST 三步）＋D1，五類歸零一次成功"
+    ]
+  },
+  "agent_matrix": [
+    {
+      "role": "deployer",
+      "agent": "claude-code",
+      "model": "claude-fable-5",
+      "version": "2.x",
+      "result": "autonomous",
+      "human_interventions": 0,
+      "stuck_state": null,
+      "retries": 3,
+      "date": "2026-08-02"
+    },
+    {
+      "role": "verifier",
+      "agent": "codex",
+      "model": "gpt-5.6-sol",
+      "version": "0.130.0",
+      "result": "autonomous",
+      "human_interventions": 0,
+      "stuck_state": null,
+      "retries": 0,
+      "date": "2026-08-02"
+    }
+  ],
+  "teardown": {
+    "performed": true,
+    "pass": true,
+    "residual_resources": [],
+    "method": "REST 依序刪 queue consumer→worker rin-server→queue rin-server-tasks→D1 rin（E38 SOP）；五類歸零 diff 為空",
+    "date": "2026-08-02"
+  },
+  "user_acceptance": [
+    { "task": "首頁 GET /（200，client 經 assets 服務）", "result": "pass", "date": "2026-08-02" },
+    { "task": "管理員登入取 JWT → POST /api/feed 發文 → 列表與文章頁可見", "result": "pass", "date": "2026-08-02" },
+    { "task": "訪客評論 → /api/comment/1 顯示", "result": "pass", "date": "2026-08-02" },
+    { "task": "Queue 消費：AI 摘要 pending→completed（<10s），queue-status completed 1/failed 0/pending 0", "result": "pass", "date": "2026-08-02" },
+    { "task": "裁判獨立複驗（/ 200＋feed/1 completed＋comment＋JWT queue-status）", "result": "pass", "date": "2026-08-02" },
+    { "task": "verifier 獨立複驗（6/6 pass 含登入與 queue-status 權限語義）", "result": "pass", "date": "2026-08-02" }
+  ]
+}
