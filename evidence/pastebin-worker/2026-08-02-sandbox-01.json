@@ -1,0 +1,78 @@
+{
+  "schema_version": "0.3.0",
+  "spec_version": "0.2.1",
+  "project_id": "pastebin-worker",
+  "submitted_at": "2026-08-02T05:20:00Z",
+  "submitter": { "github_handle": "AlanChen75" },
+  "deploy_event": {
+    "date": "2026-08-02",
+    "profile": "small-app",
+    "path": "C-adapter",
+    "result": "success"
+  },
+  "maturity_reached": "D5a",
+  "code_metrics": {
+    "loc": 6511,
+    "dependency_count": 14,
+    "measured_at_commit": "0835cac4ab8f974035d31845f5c2b93b0c85b5c6",
+    "tool": "git ls-files（ts/tsx/js/mjs，排除 test/spec/.d.ts）+ wc -l；deps=package.json dependencies"
+  },
+  "conformance": {
+    "minutes": 0.5,
+    "result": "pass",
+    "ci_run_url": "https://github.com/smallgreen-cloud/adapter-pastebin-worker/actions/runs/30731604274"
+  },
+  "low_carbon": {
+    "scale_to_zero": true,
+    "green_compute": false,
+    "no_idle_infra": true
+  },
+  "free_tier": {
+    "grade": "A",
+    "quota_notes": [
+      "W1 配對主軸 2/5：deployer＝claude-code（與 pastebin-worker-B-01 同引擎成對）；C 12 分 vs B 9 分，全程僅 1 個契約 deviation＋1 個 agent 自誤（quoting），零平台卡點",
+      "KV-only 降級 patch 一次走通：413 上限（21MB 實測）如實生效非沉默失敗；B run E40/E42 教訓（pnpm run deploy、R2_THRESHOLD 降級）被 AGENTS.md 前置後未再踩",
+      "deviation 已回饋 adapter：API 文件頁路由 /doc/api 非 /api（上游 handleRead.ts 只認 /doc 前綴）——verifier 以契約字面判 fail、裁判裁定契約誤植修契約（verifier 校準：契約漂移偵測的正面案例）"
+    ]
+  },
+  "agent_matrix": [
+    {
+      "role": "deployer",
+      "agent": "claude-code",
+      "model": "claude-fable-5",
+      "version": "2.x",
+      "result": "autonomous",
+      "human_interventions": 0,
+      "stuck_state": null,
+      "retries": 1,
+      "date": "2026-08-02"
+    },
+    {
+      "role": "verifier",
+      "agent": "codex",
+      "model": "gpt-5.6-sol",
+      "version": "0.130.0",
+      "result": "autonomous",
+      "human_interventions": 0,
+      "stuck_state": null,
+      "retries": 0,
+      "date": "2026-08-02"
+    }
+  ],
+  "teardown": {
+    "performed": true,
+    "pass": true,
+    "residual_resources": [],
+    "method": "REST 直刪 worker pb（force=true，vars 隨之移除）＋KV namespace PB；五類歸零 diff 為空",
+    "date": "2026-08-02"
+  },
+  "user_acceptance": [
+    { "task": "首頁 GET /（200）", "result": "pass", "date": "2026-08-02" },
+    { "task": "API 文件頁 GET /doc/api（200；契約原寫 /api 為誤植已修）", "result": "pass", "date": "2026-08-02" },
+    { "task": "建立 paste → JSON 含 url＋manageUrl＋location=KV", "result": "pass", "date": "2026-08-02" },
+    { "task": "讀回原文＝送出內容；manageUrl DELETE 後 GET 404", "result": "pass", "date": "2026-08-02" },
+    { "task": "21MB 上傳 → 413 payload too large（KV-only 上限如實生效）", "result": "pass", "date": "2026-08-02" },
+    { "task": "裁判獨立複驗（8 項含 create/read/delete 循環）", "result": "pass", "date": "2026-08-02" },
+    { "task": "verifier 獨立複驗（功能 6/6；契約 /api 漂移正確舉報）", "result": "pass", "date": "2026-08-02" }
+  ]
+}
