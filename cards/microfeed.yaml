@@ -22,12 +22,16 @@ data_flow:
 verification:
   level: discovered
   spec_version: 0.2.1
-  last_verified: '2026-08-02'
+  last_verified: '2026-08-03'
   evidence_packs:
   - evidence/microfeed/2026-08-02-sandbox-01.json
+  - evidence/microfeed/2026-08-03-shots-01.json
   compatible_agents:
   - agent: claude-code
     model: claude-fable-5
+    result: autonomous
+  - agent: claude-code
+    model: claude-opus-5
     result: autonomous
 free_tier_grade: C
 low_carbon:
@@ -35,3 +39,7 @@ low_carbon:
   green_compute: false
   no_idle_infra: true
 maintenance_status: active
+images:
+  screenshot:
+    path: evidence/microfeed/artifacts/2026-08-03-home.png
+    evidence_pack_ref: evidence/microfeed/2026-08-03-shots-01.json

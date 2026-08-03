@@ -27,9 +27,13 @@ verification:
   evidence_packs:
   - evidence/pastebin-worker/2026-08-02-sandbox-01.json
   - evidence/pastebin-worker/2026-08-03-sandbox-02.json
+  - evidence/pastebin-worker/2026-08-03-shots-01.json
   compatible_agents:
   - agent: claude-code
     model: claude-fable-5
+    result: autonomous
+  - agent: claude-code
+    model: claude-opus-5
     result: autonomous
   - agent: opencode
     model: big-pickle
@@ -42,5 +46,5 @@ low_carbon:
 maintenance_status: active
 images:
   screenshot:
-    path: evidence/pastebin-worker/artifacts/2026-08-03-home.png
-    evidence_pack_ref: evidence/pastebin-worker/2026-08-03-sandbox-02.json
+    path: evidence/pastebin-worker/artifacts/2026-08-03-paste.png
+    evidence_pack_ref: evidence/pastebin-worker/2026-08-03-shots-01.json

@@ -1,0 +1,76 @@
+{
+  "schema_version": "0.3.0",
+  "spec_version": "0.2.1",
+  "project_id": "pastebin-worker",
+  "submitted_at": "2026-08-03T14:00:00Z",
+  "submitter": {
+    "github_handle": "AlanChen75"
+  },
+  "deploy_event": {
+    "date": "2026-08-03",
+    "profile": "small-app",
+    "path": "C-adapter",
+    "result": "success"
+  },
+  "code_metrics": {
+    "loc": 6511,
+    "dependency_count": 14,
+    "measured_at_commit": "0835cac4ab8f974035d31845f5c2b93b0c85b5c6",
+    "tool": "git ls-files（ts/tsx/js/mjs，排除 test/spec/.d.ts）+ wc -l；deps=package.json dependencies"
+  },
+  "conformance": {
+    "minutes": 0.5,
+    "result": "pass",
+    "ci_run_url": "https://github.com/smallgreen-cloud/adapter-pastebin-worker/actions/runs/30731604274"
+  },
+  "low_carbon": {
+    "scale_to_zero": true,
+    "green_compute": false,
+    "no_idle_infra": true
+  },
+  "free_tier": {
+    "grade": "A",
+    "quota_notes": [
+      "SVC-8 截圖改善（取代前份的空編輯器首頁——無內容感不足以展示服務用途）：本張為實際 paste 的渲染頁",
+      "新卡點（已回饋 adapter）：部署後約 40 秒內 POST / 短暫回 1042（同期 GET / 已 200）——驗收腳本對 POST 應加 retry；顯示頁 role 前綴路由 /d/（高亮）、/a/（markdown）、/m/（metadata）、/（raw）AGENTS.md 未載已補",
+      "待複驗矛盾：本輪單次觀察 GET /doc/api 回 404，與 run 23 的 deployer＋verifier 雙重實測 200 相衝；worker 已 teardown 無法複驗，契約不改，留待下輪部署複驗"
+    ]
+  },
+  "agent_matrix": [
+    {
+      "role": "deployer",
+      "agent": "claude-code",
+      "model": "claude-opus-5",
+      "version": "2.x",
+      "result": "autonomous",
+      "human_interventions": 0,
+      "stuck_state": null,
+      "retries": 0,
+      "date": "2026-08-03"
+    }
+  ],
+  "teardown": {
+    "performed": true,
+    "pass": true,
+    "residual_resources": [
+      "pages:smallgreen-site（常駐基線例外）"
+    ],
+    "method": "agent 逐案 REST 直刪並實查歸零（microfeed: worker sgmf1＋D1；pastebin: worker pb＋KV）",
+    "date": "2026-08-03"
+  },
+  "user_acceptance": [
+    {
+      "task": "畫面目視確認（SVC-8 真實截圖）：paste 顯示頁 /d/~deploy-checklist.sh：帶行號的 22 行實際部署腳本（TOML 驗證、佔位符檢查、build、deploy、curl 健康檢查），含檔名與 711 Bytes 標示",
+      "result": "pass",
+      "date": "2026-08-03"
+    }
+  ],
+  "screenshots": {
+    "app_png": {
+      "path": "evidence/pastebin-worker/artifacts/2026-08-03-paste.png",
+      "sha256": "94d18c154d1b997044b89def584f3f85b0828964bcba1dbbb48b5b14881ccce2",
+      "tool": "shot-scraper（1280x800，部署在線時收取；主線目視 QC 通過）"
+    }
+  },
+  "supersedes": "evidence/pastebin-worker/2026-08-03-sandbox-02.json"
+}

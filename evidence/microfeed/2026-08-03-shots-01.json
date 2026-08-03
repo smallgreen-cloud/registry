@@ -1,0 +1,76 @@
+{
+  "schema_version": "0.3.0",
+  "spec_version": "0.2.1",
+  "project_id": "microfeed",
+  "submitted_at": "2026-08-03T14:00:00Z",
+  "submitter": {
+    "github_handle": "AlanChen75"
+  },
+  "deploy_event": {
+    "date": "2026-08-03",
+    "profile": "small-app",
+    "path": "C-adapter",
+    "result": "success"
+  },
+  "code_metrics": {
+    "loc": 17579,
+    "dependency_count": 29,
+    "measured_at_commit": "fa0dcbd2ccd63444f704b8902b6850398b664d2b",
+    "tool": "git ls-files（ts/tsx/js/astro/mjs，排除 test/spec/.d.ts）+ wc -l；deps=package.json dependencies"
+  },
+  "conformance": {
+    "minutes": 0.5,
+    "result": "pass",
+    "ci_run_url": "https://github.com/smallgreen-cloud/adapter-microfeed/actions/runs/30734795827"
+  },
+  "low_carbon": {
+    "scale_to_zero": true,
+    "green_compute": false,
+    "no_idle_infra": true
+  },
+  "free_tier": {
+    "grade": "C",
+    "quota_notes": [
+      "SVC-8 截圖補收部署（非完整驗收 run）：依 AGENTS.md 部署並建 channel 設定與 3 篇 text item 後收畫面",
+      "新卡點（已回饋 adapter）：POST /api/items/ 只認 x-microfeedapi-key 不吃 admin session（middleware.ts:86-106）——後台寫入實走 POST /admin/ajax/feed/；預設佈景 Latest 清單無 excerpt 欄位（web_feed.html:56-68），首頁摘要感靠 channel description",
+      "init 日誌印 Creating R2 bucket 字樣但實際未建桶（降級 patch 生效，spinner 標籤未更新）——顯示誤導非功能問題"
+    ]
+  },
+  "agent_matrix": [
+    {
+      "role": "deployer",
+      "agent": "claude-code",
+      "model": "claude-opus-5",
+      "version": "2.x",
+      "result": "autonomous",
+      "human_interventions": 0,
+      "stuck_state": null,
+      "retries": 2,
+      "date": "2026-08-03"
+    }
+  ],
+  "teardown": {
+    "performed": true,
+    "pass": true,
+    "residual_resources": [
+      "pages:smallgreen-site（常駐基線例外）"
+    ],
+    "method": "agent 逐案 REST 直刪並實查歸零（microfeed: worker sgmf1＋D1；pastebin: worker pb＋KV）",
+    "date": "2026-08-03"
+  },
+  "user_acceptance": [
+    {
+      "task": "畫面目視確認（SVC-8 真實截圖）：公開首頁完整站台：站名「SmallGreen 驗證誌」＋RSS/JSON 訂閱鈕、About 區塊三行站介紹、Latest 列出 3 篇已發佈文章（標題＋發佈日期）",
+      "result": "pass",
+      "date": "2026-08-03"
+    }
+  ],
+  "supersedes": "evidence/microfeed/2026-08-02-sandbox-01.json",
+  "screenshots": {
+    "app_png": {
+      "path": "evidence/microfeed/artifacts/2026-08-03-home.png",
+      "sha256": "9cec27179f0aa7ca63418803500a380e2662a15564e9e7dfa06256bcdaa2454f",
+      "tool": "shot-scraper（1280x800，部署在線時收取；主線目視 QC 通過）"
+    }
+  }
+}
