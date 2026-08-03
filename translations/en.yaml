@@ -1,0 +1,40 @@
+schema_version: "1.0"
+source_locale: zh-Hant-TW
+target_locale: en
+services:
+  business-card-mcp:
+    one_liner: An AI-native private business card library that identifies cards in ChatGPT or Claude and stores contacts in D1 and R2 in your own account
+    data_flow: A single-user self-hosted MCP for private business cards and contacts
+  cloudflare-imgbed:
+    one_liner: An image and file manager in its external-link fallback profile with KV metadata
+    data_flow: This verified fallback profile registers external image URLs and manages metadata in KV because no binary storage channel is configured
+  counterscale:
+    one_liner: Website analytics in your own account as an alternative to hosted analytics
+    data_flow: Analytics events are written to Analytics Engine under its configured retention policy
+  hananalytics:
+    one_liner: A lightweight website analytics dashboard using Pages Functions and Analytics Engine
+    data_flow: Site path browser and country events are written to Analytics Engine while dashboard password protection remains optional
+  microfeed:
+    one_liner: A lightweight feed and CMS in its text-only profile without R2
+    data_flow: Feed content channel settings and administrator authentication records are stored in D1
+  newsnow:
+    one_liner: A news ranking aggregator for more than 40 sources cached in your own D1
+    data_flow: D1 stores rebuildable source cache and optional signed-in preferences while the default deployment keeps login disabled
+  pastebin-worker:
+    one_liner: A curl-friendly self-hosted pastebin URL shortener and file-sharing service
+    data_flow: This KV-only fallback stores pastes in KV and does not support multipart uploads or R2 cleanup jobs
+  rin:
+    one_liner: A personal publishing system with posts comments RSS and queued AI summaries
+    data_flow: Posts and comments are stored in D1 while optional media and AI features use separately disclosed Cloudflare resources
+  second-brain-cloudflare:
+    one_liner: A personal knowledge base and MCP server in its keyword-search fallback profile
+    data_flow: Notes and the knowledge graph are stored in D1 while MCP authorization state is stored in KV and semantic search falls back to keywords
+  serverless-dns:
+    one_liner: A self-hosted DNS-over-HTTPS endpoint powered by the RethinkDNS engine with built-in blocklists
+    data_flow: The stateless default stores no DNS query history and packages its blocklists at build time
+  sink:
+    one_liner: A self-hosted URL shortener with Analytics Engine visit statistics
+    data_flow: Short links run in your account and aggregate visit statistics in Analytics Engine
+  uptimeflare:
+    one_liner: Service monitoring and a public status page with scheduled probes and D1 history
+    data_flow: Scheduled checks status history and optional outage notifications run in your own account

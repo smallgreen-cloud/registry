@@ -36,6 +36,7 @@ adapter-{project}/
 registry/
 ├── evidence/{project}/{date}-{environment}-{run}.json
 ├── cards/{project}.yaml                 # 由 generator 產生
+├── translations/en.yaml                 # 英文網站文案與資料流揭露
 └── assets/screenshots/{project}/...     # 有 UI 且 Evidence Pack 引用時才需要
 ```
 
@@ -50,6 +51,7 @@ registry/
 | 契約推導 | `profile`、`repo.upstream`、`license`、`login_method`、`external_services` | adapter `.smallgreen/profile.yaml` | 修改契約後重生卡片 |
 | Evidence 推導 | `spec_version`、`last_verified`、`evidence_packs`、`compatible_agents`、`free_tier_grade`、`low_carbon`、截圖引用 | 最新及歷史 Evidence Pack | 新增 append-only Pack 後重生卡片 |
 | Editorial | `name`、`one_liner`、`categories`、顯示元件、`maintenance_status` | `tools/gen_cards.py` 的 `EDITORIAL` | 修改 EDITORIAL 後重生卡片 |
+| Translation | 英文 `one_liner`、`data_flow` | `translations/en.yaml` | 新增服務時同步新增相同 ID 並通過 I18N Gate |
 
 禁止直接修改 `cards/{project}.yaml` 的推導欄位。檔案頂端已有生成警告；直接修改會在下一次重生時被覆寫。
 
@@ -104,6 +106,7 @@ Agent 是導遊不是裁判；`AGENTS.md` 不得自行宣告通過，通過與�
 2. 在 `EDITORIAL` 加入名稱、一般人看得懂的 one-liner、taxonomy categories、顯示用 Cloudflare components 與 maintenance status。
 3. one-liner 描述使用情境，不堆技術名詞，最長 120 字。
 4. category 只能引用 `taxonomy.yaml` 現有 ID；新增 taxonomy 必須獨立說明理由並檢查既有卡片影響。
+5. 在 `translations/en.yaml` 新增相同 project ID 的 `one_liner` 與 `data_flow`；網站程式碼不得保存逐服務翻譯。
 
 ### Step 6：重生服務卡
 
@@ -131,6 +134,7 @@ python3 tools/check_cards.py --spec ../spec
 - SVC-3：Low-carbon 與最新 Pack 往返一致。
 - SVC-4：Free-tier grade 一致。
 - SVC-7：Taxonomy 引用完整。
+- I18N：每張服務卡都有英文 `one_liner` 與 `data_flow`，且沒有孤立翻譯。
 - 所有 Evidence Pack 通過當前 Spec schema。
 
 ### Step 8：網站預覽

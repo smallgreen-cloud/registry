@@ -37,6 +37,24 @@ def main() -> int:
         print("no cards found", file=sys.stderr)
         return 1
 
+    translation_path = REG / "translations" / "en.yaml"
+    if not translation_path.is_file():
+        print("missing translations/en.yaml", file=sys.stderr)
+        return 1
+    translation_doc = yaml.safe_load(translation_path.read_text(encoding="utf-8"))
+    translations = translation_doc.get("services", {})
+    card_ids = {path.stem for path in cards}
+    missing_translations = sorted(card_ids - set(translations))
+    orphan_translations = sorted(set(translations) - card_ids)
+    if missing_translations:
+        fails.append(f"I18N: 缺少英文翻譯 {', '.join(missing_translations)}")
+    if orphan_translations:
+        fails.append(f"I18N: 找不到對應服務卡 {', '.join(orphan_translations)}")
+    for cid, localized in translations.items():
+        for field in ("one_liner", "data_flow"):
+            if not isinstance(localized.get(field), str) or not localized[field].strip():
+                fails.append(f"{cid} I18N: {field} 必須是非空字串")
+
     for cp in cards:
         card = yaml.safe_load(cp.read_text(encoding="utf-8"))
         cid = card.get("id", cp.stem)
@@ -80,7 +98,7 @@ def main() -> int:
         for f in fails:
             print(" ✗", f)
         return 1
-    print(f"all checks passed（{len(cards)} cards：SVC-1/2/3/4/7）")
+    print(f"all checks passed（{len(cards)} cards：SVC-1/2/3/4/7＋I18N）")
     return 0
 
 

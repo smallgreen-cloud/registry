@@ -27,3 +27,5 @@
 完整流程見 [PROJECT_PUBLISHING_STANDARD.md](PROJECT_PUBLISHING_STANDARD.md)：資格檢查 → adapter → conformance → 真實部署與 Evidence Pack → 機械生成服務卡 → Registry／網站 Gate → 人工 review → 發布。
 
 服務卡不得直接手填推導欄位；`cards/*.yaml` 由 adapter contract、Evidence Pack 與 `tools/gen_cards.py` 的 editorial 欄位決定性生成。
+
+網站英文服務內容由 `translations/en.yaml` 管理。每個服務 ID 必須同時具有英文 `one_liner` 與 `data_flow`，Registry Gate 會拒絕缺漏或孤立翻譯。
