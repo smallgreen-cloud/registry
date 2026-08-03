@@ -24,10 +24,14 @@ data_flow:
 verification:
   level: discovered
   spec_version: 0.2.1
-  last_verified: '2026-08-02'
+  last_verified: '2026-08-03'
   evidence_packs:
   - evidence/serverless-dns/2026-08-02-sandbox-01.json
+  - evidence/serverless-dns/2026-08-03-sandbox-02.json
   compatible_agents:
+  - agent: agy
+    model: gemini(Antigravity Pro 預設)
+    result: autonomous
   - agent: claude-code
     model: claude-fable-5
     result: autonomous

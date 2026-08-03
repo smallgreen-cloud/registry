@@ -1,0 +1,85 @@
+{
+  "schema_version": "0.3.0",
+  "spec_version": "0.2.1",
+  "project_id": "serverless-dns",
+  "submitted_at": "2026-08-03T21:00:00Z",
+  "submitter": {
+    "github_handle": "AlanChen75"
+  },
+  "deploy_event": {
+    "date": "2026-08-03",
+    "profile": "small-app",
+    "path": "C-adapter",
+    "result": "success"
+  },
+  "maturity_reached": "D5a",
+  "code_metrics": {
+    "loc": 13361,
+    "dependency_count": 7,
+    "measured_at_commit": "b0b7fe52ecc053562d1fc425f9c5c6f984d37e11",
+    "tool": "git ls-files（js/ts/mjs，排除 test/spec/.d.ts）+ wc -l；deps=package.json dependencies"
+  },
+  "conformance": {
+    "minutes": 0.5,
+    "result": "pass",
+    "ci_run_url": "https://github.com/smallgreen-cloud/adapter-serverless-dns/actions/runs/30732298098"
+  },
+  "low_carbon": {
+    "scale_to_zero": true,
+    "green_compute": false,
+    "no_idle_infra": true
+  },
+  "free_tier": {
+    "grade": "A",
+    "quota_notes": [
+      "引擎矩陣收官格 agy/gemini(Antigravity Pro)×serverless-dns：autonomous 約 5 分、零卡點、deviations=none——四引擎（claude/opencode/codex/agy）在新案覆蓋達標（research#1 完結）",
+      "C run 1 的全部契約修復（GET?dns= smoke、E35 全範圍、prepare 手動跑、curl-only 警語）跨引擎零踩雷——deviation 迴圈第五案實證",
+      "無 UI 服務：依雙圖制走 profile 生成架構 SVG 副圖，不收截圖；與對方 imgbed 素材循環並行無干擾"
+    ]
+  },
+  "agent_matrix": [
+    {
+      "role": "deployer",
+      "agent": "agy",
+      "model": "gemini(Antigravity Pro 預設)",
+      "version": "1.1.9",
+      "result": "autonomous",
+      "human_interventions": 0,
+      "stuck_state": null,
+      "retries": 0,
+      "date": "2026-08-03"
+    }
+  ],
+  "teardown": {
+    "performed": true,
+    "pass": true,
+    "residual_resources": [
+      "pages:smallgreen-site（常駐基線例外）",
+      "並行 session worker:imgbed-bfp＋kv×1（不動）"
+    ],
+    "method": "REST 直刪 worker serverless-dns；本 run 產物歸零實查",
+    "date": "2026-08-03"
+  },
+  "user_acceptance": [
+    {
+      "task": "RFC 8484 GET ?dns= → 200 NOERROR",
+      "result": "pass",
+      "date": "2026-08-03"
+    },
+    {
+      "task": "POST wireformat example.com＋5 domains（cloudflare/google/wikipedia/github/debian）全 NOERROR 附 answer IP",
+      "result": "pass",
+      "date": "2026-08-03"
+    },
+    {
+      "task": "無參數 GET 路徑一致 1102/503（已知限制記錄）",
+      "result": "pass",
+      "date": "2026-08-03"
+    },
+    {
+      "task": "裁判獨立複驗（curl wireformat NOERROR answers 1）",
+      "result": "pass",
+      "date": "2026-08-03"
+    }
+  ]
+}
