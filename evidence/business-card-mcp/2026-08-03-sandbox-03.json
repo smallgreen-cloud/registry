@@ -1,0 +1,114 @@
+{
+  "schema_version": "0.3.0",
+  "spec_version": "0.2.1",
+  "project_id": "business-card-mcp",
+  "submitted_at": "2026-08-03T16:40:00Z",
+  "submitter": {
+    "github_handle": "AlanChen75"
+  },
+  "deploy_event": {
+    "date": "2026-08-03",
+    "profile": "small-app",
+    "path": "A-template",
+    "result": "success"
+  },
+  "maturity_reached": "D5a",
+  "code_metrics": {
+    "loc": 1173,
+    "dependency_count": 3,
+    "measured_at_commit": "9c4bdaa89fac247b9d31ce4dba916d38b02f9025",
+    "tool": "git ls-files（ts/js，排除 test/spec/.d.ts/config.example）+ wc -l；deps=package.json dependencies"
+  },
+  "conformance": {
+    "minutes": 0.5,
+    "result": "pass",
+    "ci_run_url": "https://github.com/ai-cooperation/business-card-mcp/actions/runs/30788821767"
+  },
+  "low_carbon": {
+    "scale_to_zero": true,
+    "green_compute": false,
+    "no_idle_infra": true
+  },
+  "free_tier": {
+    "grade": "C",
+    "quota_notes": [
+      "**first-party Path A 首發**（原生採用：契約三檔＋AGENTS.md 隨程式碼同 repo，無 adapter 層）；亦為沙盒 R2 啟用後首案",
+      "驗證邊界如實揭露——無 Firebase 專案，故 Google 登入流程、登入後網頁卡片牆、MCP key 網頁發放/撤銷 UI、JWKS 驗證成功路徑、受保護縮圖回圖路徑**皆未驗**；核心以 KV 注入等效 key（AGENTS.md 載明作法）驗證：MCP 六工具、D1 寫入與 FTS5 中文搜尋、R2 縮圖與 markdown 物件、401 拒絕面",
+      "**歸因更正**（取代前份第 3 條）：本輪 Path A 驗證抓到的真缺陷僅 1 項——devDependencies 缺 @types/node 使 typecheck 開箱失敗（已 push 修復）。前份列為缺陷的另兩項更正如下：README 與 wrangler.jsonc 追蹤狀態「矛盾」實為**裁判自造**（本輪 commit 072fcf7 為過 SAP-1 而把 wrangler.jsonc 零值佔位版加入追蹤，卻未同步 README；原 README 敘述正確），acceptance「詳情頁需登入才可查看」屬**契約措辭不精確**（頁面回 200 送 SPA 外殼、名片內容阻擋在資料層 401，隱私無破口）而非功能缺陷。兩項的修復本身仍有效，但不應計為專案開箱缺陷",
+      "R2 teardown SOP 首次驗證：桶內有物件時直刪回 10008，須先逐物件刪除再刪桶——歸零 diff 自本案起擴為六類（workers/d1/kv/pages/queues/r2）",
+      "**根因查證補記**：@types/node 缺漏經乾淨 clone + npm ci 實測重現（node_modules/@types 僅 chai/deep-eql/estree、typecheck TS2307），確認為真缺陷而非環境問題——lockfile 有殘留條目但無套件依賴故 npm ci 不安裝；修復後實測 typecheck exit 0。本案暴露兩個標準缺口已開 issue：spec#11（CON-8 乾淨環境建置閘——標準無條款檢查專案在 clean clone 下能否通過自己宣告的驗證腳本）、spec#12（AGENTS agent 自主修復邊界——agent 修環境缺陷的權限與記錄義務未定義，最危險情境是「修了但不記」使 Pack 掩蓋專案缺陷）"
+    ]
+  },
+  "agent_matrix": [
+    {
+      "role": "deployer",
+      "agent": "claude-code",
+      "model": "claude-opus-5",
+      "version": "2.x",
+      "result": "autonomous",
+      "human_interventions": 0,
+      "stuck_state": null,
+      "retries": 2,
+      "date": "2026-08-03"
+    }
+  ],
+  "screenshots": {
+    "app_png": {
+      "path": "evidence/business-card-mcp/artifacts/2026-08-03-home.png",
+      "sha256": "88322849f120c7eee4a65b40e7f5e0cdc719d683ba788b6751241fe04c8d35e0",
+      "tool": "shot-scraper（1280x800，部署在線時收取；主線目視 QC：站名「我的名片庫」、Google 登入卡片、使用方式說明含 key 保密警語）"
+    }
+  },
+  "teardown": {
+    "performed": true,
+    "pass": true,
+    "residual_resources": [
+      "pages:smallgreen-site（常駐基線例外）"
+    ],
+    "method": "REST 直刪 worker＋D1＋KV；R2 先逐物件刪除（thumbnail.webp／contact.md）再刪桶（直刪回 10008 not empty）；六類歸零實查",
+    "date": "2026-08-03"
+  },
+  "user_acceptance": [
+    {
+      "task": "GET /healthz → 200",
+      "result": "pass",
+      "date": "2026-08-03"
+    },
+    {
+      "task": "MCP 建立名片（fixture）→ 200，電話正規化為 E.164",
+      "result": "pass",
+      "date": "2026-08-03"
+    },
+    {
+      "task": "D1 查詢確認寫入（company='測試公司' n=1）",
+      "result": "pass",
+      "date": "2026-08-03"
+    },
+    {
+      "task": "MCP search_contacts 中文姓名命中同一 id（FTS5）",
+      "result": "pass",
+      "date": "2026-08-03"
+    },
+    {
+      "task": "未帶 key／偽造 key → 401；/api/contacts 未登入 → 401",
+      "result": "pass",
+      "date": "2026-08-03"
+    },
+    {
+      "task": "R2 物件存在（thumbnail.webp 4 bytes RIFF、contact.md 內容正確）",
+      "result": "pass",
+      "date": "2026-08-03"
+    },
+    {
+      "task": "npm test 36 tests/9 files 全過（coverage lines 93.5%）",
+      "result": "pass",
+      "date": "2026-08-03"
+    },
+    {
+      "task": "裁判獨立複驗（healthz 200＋MCP 搜尋命中＋雙重 401）",
+      "result": "pass",
+      "date": "2026-08-03"
+    }
+  ],
+  "supersedes": "evidence/business-card-mcp/2026-08-03-sandbox-02.json"
+}
