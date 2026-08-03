@@ -26,6 +26,7 @@ verification:
   - evidence/counterscale/2026-07-30-sandbox-01.json
   - evidence/counterscale/2026-07-30-sandbox-02.json
   - evidence/counterscale/2026-08-03-sandbox-03.json
+  - evidence/counterscale/2026-08-03-shots-01.json
   compatible_agents:
   - agent: claude-code
     model: claude-fable-5
@@ -42,3 +43,8 @@ low_carbon:
   green_compute: false
   no_idle_infra: true
 maintenance_status: slowing
+images:
+  screenshot:
+    path: evidence/counterscale/artifacts/2026-08-03-dashboard.png
+    evidence_pack_ref: evidence/counterscale/2026-08-03-shots-01.json
+quota_note: 執行：claude-code deployer 批次（第 9 案 microfeed 因模型額度用盡中止，另案補收）；teardown 後沙盒五類歸零實查

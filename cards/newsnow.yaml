@@ -28,6 +28,7 @@ verification:
   evidence_packs:
   - evidence/newsnow/2026-08-02-sandbox-01.json
   - evidence/newsnow/2026-08-03-sandbox-02.json
+  - evidence/newsnow/2026-08-03-shots-01.json
   compatible_agents:
   - agent: claude-code
     model: claude-fable-5
@@ -44,4 +45,4 @@ maintenance_status: active
 images:
   screenshot:
     path: evidence/newsnow/artifacts/2026-08-03-home.png
-    evidence_pack_ref: evidence/newsnow/2026-08-03-sandbox-02.json
+    evidence_pack_ref: evidence/newsnow/2026-08-03-shots-01.json

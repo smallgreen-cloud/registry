@@ -1,0 +1,77 @@
+{
+  "schema_version": "0.3.0",
+  "spec_version": "0.2.1",
+  "project_id": "hananalytics",
+  "submitted_at": "2026-08-03T13:30:00Z",
+  "submitter": {
+    "github_handle": "AlanChen75"
+  },
+  "deploy_event": {
+    "date": "2026-08-03",
+    "profile": "small-app",
+    "path": "C-adapter",
+    "result": "success"
+  },
+  "code_metrics": {
+    "loc": 2089,
+    "dependency_count": 13,
+    "measured_at_commit": "531c3edfce19a3ab31e5571ddf02b1ef6f2bef78",
+    "tool": "git ls-files（ts/tsx/js/vue/mjs，排除 test/spec/.d.ts）+ wc -l；deps=package.json dependencies"
+  },
+  "conformance": {
+    "minutes": 0.5,
+    "result": "pass",
+    "ci_run_url": "https://github.com/smallgreen-cloud/adapter-hananalytics/actions/runs/30732006464"
+  },
+  "low_carbon": {
+    "scale_to_zero": true,
+    "green_compute": false,
+    "no_idle_infra": true
+  },
+  "free_tier": {
+    "grade": "C",
+    "quota_notes": [
+      "SVC-8 截圖補收部署（非完整驗收 run）：依 adapter AGENTS.md 部署並照 acceptance 種入資料後收畫面，驗收範圍僅『畫面內容目視確認』——完整功能驗收見本 Pack supersedes 的前份紀錄",
+      "重拍取代前份 Pack 的截圖：原圖是密碼登入牆，非服務實際畫面",
+      "畫面內容：登入後的完整儀表板：Views/Visitors/Visits 各 3、當日時間曲線、Pages 分頁明細（/、/pricing、/docs）、Referrers（google.com 100%）",
+      "執行：claude-code deployer 批次（第 9 案 microfeed 因模型額度用盡中止，另案補收）；teardown 後沙盒五類歸零實查"
+    ]
+  },
+  "agent_matrix": [
+    {
+      "role": "deployer",
+      "agent": "claude-code",
+      "model": "claude-fable-5",
+      "version": "2.x",
+      "result": "autonomous",
+      "human_interventions": 0,
+      "stuck_state": null,
+      "retries": 0,
+      "date": "2026-08-03"
+    }
+  ],
+  "teardown": {
+    "performed": true,
+    "pass": true,
+    "residual_resources": [
+      "pages:smallgreen-site（常駐基線例外）"
+    ],
+    "method": "批次 agent 逐案 teardown；主線 REST 實查五類歸零（含補刪 agent 中止遺留的 sgfeed worker 與 D1）",
+    "date": "2026-08-03"
+  },
+  "user_acceptance": [
+    {
+      "task": "畫面目視確認（SVC-8 真實截圖）：登入後的完整儀表板：Views/Visitors/Visits 各 3、當日時間曲線、Pages 分頁明細（/、/pricing、/docs）、Referrers（google.com 100%）",
+      "result": "pass",
+      "date": "2026-08-03"
+    }
+  ],
+  "screenshots": {
+    "app_png": {
+      "path": "evidence/hananalytics/artifacts/2026-08-03-dashboard.png",
+      "sha256": "2db6d28403c5dd15e2e658eedf8fc9f602806c11b27f130021fb8d50ca7ceb85",
+      "tool": "shot-scraper（1280x800，部署在線時收取；主線逐張目視 QC 通過）"
+    }
+  },
+  "supersedes": "evidence/hananalytics/2026-08-03-sandbox-02.json"
+}

@@ -24,4 +24,6 @@
 
 ## 提交新專案
 
-流程建置中：PR 提交 → conformance CI 初審 → 社群成員實測 → 上架。參考 winget-pkgs 模式。
+完整流程見 [PROJECT_PUBLISHING_STANDARD.md](PROJECT_PUBLISHING_STANDARD.md)：資格檢查 → adapter → conformance → 真實部署與 Evidence Pack → 機械生成服務卡 → Registry／網站 Gate → 人工 review → 發布。
+
+服務卡不得直接手填推導欄位；`cards/*.yaml` 由 adapter contract、Evidence Pack 與 `tools/gen_cards.py` 的 editorial 欄位決定性生成。

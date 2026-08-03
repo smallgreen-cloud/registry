@@ -28,9 +28,10 @@ data_flow:
 verification:
   level: discovered
   spec_version: 0.2.1
-  last_verified: '2026-08-02'
+  last_verified: '2026-08-03'
   evidence_packs:
   - evidence/rin/2026-08-02-sandbox-01.json
+  - evidence/rin/2026-08-03-shots-01.json
   compatible_agents:
   - agent: claude-code
     model: claude-fable-5
@@ -41,6 +42,8 @@ low_carbon:
   green_compute: false
   no_idle_infra: true
 maintenance_status: active
-quota_note: 首個帶 Queue 的 Evidence Pack（spec v0.2.1 Queues 條件式納入後）：producer/consumer
-  建立與消費全通，app 端 queue-status ground-truth completed 1/failed 0；grade C 因 Workers AI（10k
-  Neurons/day 額度緊，SVC-4 至多 C 條款）
+images:
+  screenshot:
+    path: evidence/rin/artifacts/2026-08-03-home.png
+    evidence_pack_ref: evidence/rin/2026-08-03-shots-01.json
+quota_note: 執行：claude-code deployer 批次（第 9 案 microfeed 因模型額度用盡中止，另案補收）；teardown 後沙盒五類歸零實查

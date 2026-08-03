@@ -1,0 +1,76 @@
+{
+  "schema_version": "0.2.0",
+  "spec_version": "0.2.0",
+  "project_id": "sink",
+  "submitted_at": "2026-08-03T13:30:00Z",
+  "supersedes": "evidence/sink/2026-08-01-sandbox-04.json",
+  "submitter": {
+    "github_handle": "AlanChen75"
+  },
+  "deploy_event": {
+    "date": "2026-08-03",
+    "profile": "small-app",
+    "path": "C-adapter",
+    "result": "success"
+  },
+  "code_metrics": {
+    "loc": 47033,
+    "dependency_count": 64,
+    "measured_at_commit": "3f8d30ae8c917f269249d6c7c1c3894fc8d8af91",
+    "tool": "git ls-files + wc -l（ts/vue/js/mjs，排除 docs/ tests/）"
+  },
+  "conformance": {
+    "minutes": 0.9,
+    "result": "pass",
+    "ci_run_url": "https://github.com/smallgreen-cloud/adapter-sink/actions/runs/30546814574"
+  },
+  "low_carbon": {
+    "scale_to_zero": true,
+    "green_compute": false,
+    "no_idle_infra": true
+  },
+  "free_tier": {
+    "grade": "C",
+    "quota_notes": [
+      "SVC-8 截圖補收部署（非完整驗收 run）：依 adapter AGENTS.md 部署並照 acceptance 種入資料後收畫面，驗收範圍僅『畫面內容目視確認』——完整功能驗收見本 Pack supersedes 的前份紀錄",
+      "畫面內容：登入後短鏈管理台：2 條實際短鏈（github.com／developers.cloudflare.com），其一已累計 1 次造訪統計",
+      "執行：claude-code deployer 批次（第 9 案 microfeed 因模型額度用盡中止，另案補收）；teardown 後沙盒五類歸零實查"
+    ]
+  },
+  "agent_matrix": [
+    {
+      "role": "deployer",
+      "agent": "claude-code",
+      "model": "claude-fable-5",
+      "version": "2.x",
+      "result": "autonomous",
+      "human_interventions": 0,
+      "stuck_state": null,
+      "retries": 0,
+      "date": "2026-08-03"
+    }
+  ],
+  "teardown": {
+    "performed": true,
+    "pass": true,
+    "residual_resources": [
+      "pages:smallgreen-site（常駐基線例外）"
+    ],
+    "method": "批次 agent 逐案 teardown；主線 REST 實查五類歸零（含補刪 agent 中止遺留的 sgfeed worker 與 D1）",
+    "date": "2026-08-03"
+  },
+  "user_acceptance": [
+    {
+      "task": "畫面目視確認（SVC-8 真實截圖）：登入後短鏈管理台：2 條實際短鏈（github.com／developers.cloudflare.com），其一已累計 1 次造訪統計",
+      "result": "pass",
+      "date": "2026-08-03"
+    }
+  ],
+  "screenshots": {
+    "app_png": {
+      "path": "evidence/sink/artifacts/2026-08-03-dashboard.png",
+      "sha256": "106e6c5b46f673302c9604e11142899f25bac9b224ae923971528438ff98e13b",
+      "tool": "shot-scraper（1280x800，部署在線時收取；主線逐張目視 QC 通過）"
+    }
+  }
+}
