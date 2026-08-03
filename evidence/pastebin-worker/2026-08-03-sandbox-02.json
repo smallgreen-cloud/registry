@@ -1,0 +1,91 @@
+{
+  "schema_version": "0.3.0",
+  "spec_version": "0.2.1",
+  "project_id": "pastebin-worker",
+  "submitted_at": "2026-08-03T19:10:00Z",
+  "submitter": {
+    "github_handle": "AlanChen75"
+  },
+  "deploy_event": {
+    "date": "2026-08-03",
+    "profile": "small-app",
+    "path": "C-adapter",
+    "result": "success"
+  },
+  "maturity_reached": "D5a",
+  "code_metrics": {
+    "loc": 6511,
+    "dependency_count": 14,
+    "measured_at_commit": "0835cac4ab8f974035d31845f5c2b93b0c85b5c6",
+    "tool": "git ls-files（ts/tsx/js/mjs，排除 test/spec/.d.ts）+ wc -l；deps=package.json dependencies"
+  },
+  "conformance": {
+    "minutes": 0.5,
+    "result": "pass",
+    "ci_run_url": "https://github.com/smallgreen-cloud/adapter-pastebin-worker/actions/runs/30731604274"
+  },
+  "low_carbon": {
+    "scale_to_zero": true,
+    "green_compute": false,
+    "no_idle_infra": true
+  },
+  "free_tier": {
+    "grade": "A",
+    "quota_notes": [
+      "引擎矩陣新格 opencode/big-pickle×pastebin-worker：autonomous 約 14 分、零 gate 重試、deviations=none——C run 1 契約修復（/doc/api）跨引擎零踩雷（deviation 迴圈第三案實證）",
+      "KV-only 降級 patch 跨引擎再走通：21MiB 上傳 413 如實；TOS 佔位符中性測試值",
+      "SVC-8 真實截圖第二張（teardown 前 shot-scraper，UI 目視確認）；SANDBOX.lock 互斥協定下無並行干擾"
+    ]
+  },
+  "agent_matrix": [
+    {
+      "role": "deployer",
+      "agent": "opencode",
+      "model": "big-pickle",
+      "version": "1.15.12",
+      "result": "autonomous",
+      "human_interventions": 0,
+      "stuck_state": null,
+      "retries": 1,
+      "date": "2026-08-03"
+    }
+  ],
+  "teardown": {
+    "performed": true,
+    "pass": true,
+    "residual_resources": [
+      "pages:smallgreen-site（常駐基線例外）"
+    ],
+    "method": "REST 直刪 worker pb＋KV PB；本 run 產物歸零實查",
+    "date": "2026-08-03"
+  },
+  "user_acceptance": [
+    {
+      "task": "GET /（200）與 /doc/api（200；/api 正確 404）",
+      "result": "pass",
+      "date": "2026-08-03"
+    },
+    {
+      "task": "create→read→manageUrl DELETE→404 全循環",
+      "result": "pass",
+      "date": "2026-08-03"
+    },
+    {
+      "task": "21MiB 上傳 → 413（KV-only 上限如實）",
+      "result": "pass",
+      "date": "2026-08-03"
+    },
+    {
+      "task": "裁判獨立複驗（同循環＋截圖同時段）",
+      "result": "pass",
+      "date": "2026-08-03"
+    }
+  ],
+  "screenshots": {
+    "app_png": {
+      "path": "evidence/pastebin-worker/artifacts/2026-08-03-home.png",
+      "sha256": "84a412bdf160807f7544e0b681920da57ee82aa95a89c2b15d6deed5b4d64aeb",
+      "tool": "shot-scraper（1280x800，teardown 前收，UI 實載目視確認）"
+    }
+  }
+}

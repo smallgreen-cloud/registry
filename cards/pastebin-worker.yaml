@@ -23,12 +23,16 @@ data_flow:
 verification:
   level: discovered
   spec_version: 0.2.1
-  last_verified: '2026-08-02'
+  last_verified: '2026-08-03'
   evidence_packs:
   - evidence/pastebin-worker/2026-08-02-sandbox-01.json
+  - evidence/pastebin-worker/2026-08-03-sandbox-02.json
   compatible_agents:
   - agent: claude-code
     model: claude-fable-5
+    result: autonomous
+  - agent: opencode
+    model: big-pickle
     result: autonomous
 free_tier_grade: A
 low_carbon:
@@ -36,3 +40,7 @@ low_carbon:
   green_compute: false
   no_idle_infra: true
 maintenance_status: active
+images:
+  screenshot:
+    path: evidence/pastebin-worker/artifacts/2026-08-03-home.png
+    evidence_pack_ref: evidence/pastebin-worker/2026-08-03-sandbox-02.json
