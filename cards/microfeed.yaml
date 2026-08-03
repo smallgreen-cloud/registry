@@ -17,8 +17,7 @@ login_method: other
 data_flow:
   external_services: []
   disclosure: 內容（items、channel 設定）與 admin 帳號存 D1（珍貴資料）。login_method=other 說明——admin
-    後台走上游內建 better-auth email＋密碼（存 D1 auth_user 表，migrations/0002_better_auth.sql）；首組密碼由
-    CLI 產生 30 分鐘一次性連結設定，設定前後台回 403（manage-cli/com
+    後台走上游內建 better-auth email＋密碼（存 D1 auth_user 表，migrations/0002_better_auth.sql）；…
 verification:
   level: discovered
   spec_version: 0.2.1

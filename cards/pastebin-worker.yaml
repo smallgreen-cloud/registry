@@ -19,7 +19,7 @@ data_flow:
   external_services: []
   disclosure: 本 adapter 為 KV-only 降級（上游雙層儲存 KV+R2；未啟用 R2 的帳號適配）——R2_THRESHOLD 拉至 R2_MAX_ALLOWED（20M），所有
     paste 走 KV（KV 單值上限 25MB 內）。副作用：大檔分段上傳（MPU）API 不可用；每日 R2 清理 cron 已移除。paste 預設 7
-    天過期（MAX 90 天）。管理權採 manageUrl（建立
+    天過期（MAX 90 天）。…
 verification:
   level: discovered
   spec_version: 0.2.1

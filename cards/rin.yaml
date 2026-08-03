@@ -24,7 +24,7 @@ data_flow:
   - 自訂 webhook URL（選配）
   disclosure: 文章與評論存 D1；快取走 CACHE_STORAGE_MODE=database（本 adapter 預設，免 R2/S3）。媒體上傳需
     R2 或外部 S3（選配——不設則圖片上傳不可用，文章功能不受影響）。AI 摘要走 Workers AI binding（免費 10k Neurons/day，SVC-4
-    等級標示適用）。背景任務走 Queue（免費層保留 24h——本專案任務即發即消，不依賴
+    等級標示適用）。…
 verification:
   level: discovered
   spec_version: 0.2.1

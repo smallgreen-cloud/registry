@@ -22,8 +22,7 @@ data_flow:
   - frozen-sentinel.pages.dev
   - (user-configured)
   disclosure: 本 adapter 為 External-only 降級版——沙盒實測（B run E51）儲存後端矩陣全滅：R2 未啟用、TG/S3/Discord/HF/WebDAV
-    皆需外部憑證。降級語義：上傳實體檔不可用（未配置渠道時明確失敗），僅「登記外部圖片 URL」（External 外鏈渠道，functions/upload/index.js
-    uploadFileToExternal）與檔案管理、
+    皆需外部憑證。降級語義：上傳實體檔不可用（未配置渠道時明確失敗），僅「登記外部圖片 URL」（External 外鏈渠道，functions/upload/index.…
 verification:
   level: discovered
   spec_version: 0.2.1

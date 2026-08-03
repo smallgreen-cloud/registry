@@ -120,10 +120,32 @@ EDITORIAL = {
 
 
 def latest_pack(pid: str) -> dict:
+    """卡片的機械欄位取自「最新的一份 Pack」——依事件日期＋提交時刻排序，不用檔名。
+
+    檔名排序會出錯：同日的 `…-shots-01` 排在 `…-sandbox-02` 之後，卡片的 spec_version／
+    等級／成熟度就被截圖用 Pack 主導（2026-08-03 second-brain 實際踩到）。
+    """
     packs = sorted((REG / "evidence" / pid).glob("*.json"))
     if not packs:
         raise SystemExit(f"{pid}: 無 Evidence Pack")
-    return json.loads(packs[-1].read_text(encoding="utf-8")), packs[-1]
+
+    def key(p):
+        d = json.loads(p.read_text(encoding="utf-8"))
+        return ((d.get("deploy_event") or {}).get("date") or "",
+                d.get("submitted_at") or "", p.name)
+
+    newest = max(packs, key=key)
+    return json.loads(newest.read_text(encoding="utf-8")), newest
+
+
+def clip(text: str, limit: int = 200) -> str:
+    """在句讀邊界截斷並補省略號——直接切會停在半句（「binding 不存在才」），讀者無法判斷是被截還是寫壞。"""
+    text = (text or "").strip()
+    if len(text) <= limit:
+        return text
+    head = text[:limit]
+    cut = max(head.rfind(c) for c in "。；！？;.")
+    return (head[:cut + 1] if cut > limit // 2 else head.rstrip()) + "…"
 
 
 def load_profile(pid: str) -> dict:
@@ -173,7 +195,7 @@ def build_card(pid: str) -> dict:
         "login_method": prof.get("login_method", "none"),
         "data_flow": {
             "external_services": ext,
-            "disclosure": ((prof.get("data", {}).get("notes") or prof.get("summary", {}).get("purpose") or "")[:200]),
+            "disclosure": clip(prof.get("data", {}).get("notes") or prof.get("summary", {}).get("purpose") or ""),
         },
         "verification": {
             "level": "discovered",  # SVC-2：晉級需具名 verifier＋scenario story（blocked-on-real-users）
@@ -186,15 +208,19 @@ def build_card(pid: str) -> dict:
         "low_carbon": pack["low_carbon"],
         "maintenance_status": ed["maintenance_status"],
     }
-    shot = (pack.get("screenshots") or {}).get("app_png")
-    if shot:
-        card["images"] = {"screenshot": {"path": shot["path"],
-                                          "evidence_pack_ref": str(pack_path.relative_to(REG))}}
+    # 截圖取自「最新一份**帶截圖**的 Pack」，不是最新的 Pack——驗證輪與截圖輪常是不同 Pack，
+    # 只看最新一份會讓卡片在下一次驗證後掉圖（2026-08-03 second-brain 實際踩到）。
+    for pp in reversed(all_packs):
+        shot = (json.loads(pp.read_text(encoding="utf-8")).get("screenshots") or {}).get("app_png")
+        if shot:
+            card["images"] = {"screenshot": {"path": shot["path"],
+                                             "evidence_pack_ref": str(pp.relative_to(REG))}}
+            break
     if card["free_tier_grade"] in ("C", "D"):
         notes = pack["free_tier"].get("quota_notes") or []
         quota = next((n for n in notes if any(k in n for k in ("額度", "/day", "limit", "Neurons", "writes"))), None)
         if quota:
-            card["quota_note"] = quota[:200]
+            card["quota_note"] = clip(quota)
     return card
 
 

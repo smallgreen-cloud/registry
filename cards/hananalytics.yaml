@@ -43,4 +43,3 @@ images:
   screenshot:
     path: evidence/hananalytics/artifacts/2026-08-03-dashboard.png
     evidence_pack_ref: evidence/hananalytics/2026-08-03-shots-01.json
-quota_note: 執行：claude-code deployer 批次（第 9 案 microfeed 因模型額度用盡中止，另案補收）；teardown 後沙盒五類歸零實查
