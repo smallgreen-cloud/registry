@@ -1,0 +1,125 @@
+{
+  "schema_version": "0.4.0",
+  "spec_version": "0.3.0",
+  "project_id": "tapcard-mcp",
+  "submitted_at": "2026-08-03T20:40:00Z",
+  "submitter": {
+    "github_handle": "AlanChen75"
+  },
+  "deploy_event": {
+    "date": "2026-08-03",
+    "profile": "small-app",
+    "path": "A-template",
+    "result": "success"
+  },
+  "maturity_reached": "D5a",
+  "code_metrics": {
+    "loc": 1611,
+    "dependency_count": 3,
+    "measured_at_commit": "9a8c706bda40ce695f28dd879aa8b4f266f64575",
+    "tool": "git ls-files（ts/js，排除 test/spec/.d.ts/config.example）+ wc -l；deps=package.json dependencies"
+  },
+  "conformance": {
+    "minutes": 0.5,
+    "result": "pass",
+    "ci_run_url": "https://github.com/ai-cooperation/tapcard-mcp/actions/runs/30813993847"
+  },
+  "low_carbon": {
+    "scale_to_zero": true,
+    "green_compute": false,
+    "no_idle_infra": true
+  },
+  "free_tier": {
+    "grade": "C",
+    "quota_notes": [
+      "first-party Path A 第二案，**spec v0.3.0 首次全套適用**：profile 宣告 build_requirements（三個閘門指令，順序固定）→ CON-8 乾淨環境閘全綠 → AGT-3 self_repairs 如實記錄 → Pack 使用 v0.4.0 欄位。6 分鐘完成、零未驗項",
+      "**CON-8 上架前即攔下缺陷**：tapcard 繼承 business-card 的 package.json 結構，同樣缺 @types/node——本次由 CI 閘門在部署前抓到（對比 business-card 是部署到一半才發現），三環閉環的偵測環首次生效",
+      "契約品質修正（上架前）：原 acceptance 複製自 business-card，**漏掉 NFC／QR 公開面**（/p/:slug、contact.json、vCard、qr.svg 全未驗）——已補齊公開面／私人面邊界驗收",
+      "AGENTS.md 缺陷（我方撰寫時憑推測，經本 run 實測更正）：PublicProfileSchema 是 strict 且欄位為 name 非 display_name（送錯回 400）；/mcp 只認 KV 的 bc_ key 不吃 ADMIN_TOKEN——兩處已修並 push",
+      "無外部身分供應商依賴（ADMIN_TOKEN＋自發 MCP key），故 unverified_scope 為空——對比 business-card 的 5 個 Firebase 相依未驗面向"
+    ]
+  },
+  "agent_matrix": [
+    {
+      "role": "deployer",
+      "agent": "claude-code",
+      "model": "claude-opus-5",
+      "version": "2.x",
+      "result": "autonomous",
+      "human_interventions": 0,
+      "stuck_state": null,
+      "retries": 0,
+      "date": "2026-08-03",
+      "self_repairs": [
+        {
+          "action": "GET /healthz 首次 1042 後重試",
+          "reason": "部署傳播窗口（AGENTS.md 步驟 4 已預告）",
+          "kind": "transient-retry"
+        },
+        {
+          "action": "GET /p/sgverify/qr.svg 首次 1042 後重試",
+          "reason": "同上傳播期暫態",
+          "kind": "transient-retry"
+        }
+      ]
+    }
+  ],
+  "screenshots": {
+    "app_png": {
+      "path": "evidence/tapcard-mcp/artifacts/2026-08-03-public-profile.png",
+      "sha256": "0fcee7c155cf95af5fc3f2d7368070d8cfd9ca2f9d58a3efbe30d9ee23734e31",
+      "tool": "shot-scraper（1280x800，部署在線時收取；主線目視 QC：完整電子名片頁——頭像、姓名、簡介、QR code、加入聯絡人／分享／AI 匯入指令）"
+    }
+  },
+  "teardown": {
+    "performed": true,
+    "pass": true,
+    "residual_resources": [
+      "pages:smallgreen-site（常駐基線例外）"
+    ],
+    "method": "R2 先逐物件刪（thumbnail.webp／contact.md）再刪桶（E78 SOP）；REST 直刪 worker＋D1＋KV；六類歸零實查",
+    "date": "2026-08-03"
+  },
+  "user_acceptance": [
+    {
+      "task": "PUT /api/profile 建立公開簡介（slug sgverify）→ 200",
+      "result": "pass",
+      "date": "2026-08-03"
+    },
+    {
+      "task": "GET /p/sgverify → 200（NFC／QR 目標網址）",
+      "result": "pass",
+      "date": "2026-08-03"
+    },
+    {
+      "task": "contact.json（schema tapcard.contact.v1）／contact.vcf（合法 VCARD 4.0）／qr.svg（合法 SVG）",
+      "result": "pass",
+      "date": "2026-08-03"
+    },
+    {
+      "task": "MCP key 發放 → create_contact → D1 查得 → search_contacts 回同一 id",
+      "result": "pass",
+      "date": "2026-08-03"
+    },
+    {
+      "task": "未帶 token 的 /api/contacts 與 /mcp 皆 401；帶 ADMIN_TOKEN 回 200（公私邊界）",
+      "result": "pass",
+      "date": "2026-08-03"
+    },
+    {
+      "task": "R2 物件存在（thumbnail.webp＋contact.md）",
+      "result": "pass",
+      "date": "2026-08-03"
+    },
+    {
+      "task": "CON-8 三閘門（wrangler types→typecheck→test）全 exit 0，coverage 88.47%",
+      "result": "pass",
+      "date": "2026-08-03"
+    },
+    {
+      "task": "裁判獨立複驗（公開面四項＋私人面 401/200 邊界）",
+      "result": "pass",
+      "date": "2026-08-03"
+    }
+  ]
+}

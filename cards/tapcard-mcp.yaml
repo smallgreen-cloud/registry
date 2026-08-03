@@ -1,0 +1,41 @@
+# 機械生成（tools/gen_cards.py）——editorial 欄位改 EDITORIAL 字典後重生，勿直接手改推導欄位
+id: tapcard-mcp
+name: TapCard MCP
+one_liner: 自架 NFC／QR 電子名片＋私人 AI 名片庫：公開頁掃即得，收到的名片存自己帳號
+categories:
+- sharing
+profile: small-app
+repo:
+  upstream: ai-cooperation/tapcard-mcp
+  license: MIT
+components:
+  cloudflare:
+  - workers
+  - d1
+  - r2
+  - kv
+login_method: other
+data_flow:
+  external_services:
+  - (user-directed)
+  disclosure: NFC／QR 公開電子名片與 AI 原生私人名片庫
+verification:
+  level: discovered
+  spec_version: 0.3.0
+  last_verified: '2026-08-03'
+  evidence_packs:
+  - evidence/tapcard-mcp/2026-08-03-sandbox-01.json
+  compatible_agents:
+  - agent: claude-code
+    model: claude-opus-5
+    result: autonomous
+free_tier_grade: C
+low_carbon:
+  scale_to_zero: true
+  green_compute: false
+  no_idle_infra: true
+maintenance_status: active
+images:
+  screenshot:
+    path: evidence/tapcard-mcp/artifacts/2026-08-03-public-profile.png
+    evidence_pack_ref: evidence/tapcard-mcp/2026-08-03-sandbox-01.json

@@ -33,6 +33,7 @@ PROJECTS = {
 # first-party（Path A）：契約隨程式碼同 repo，無 adapter 層；profile 自 GitHub raw 取得
 FIRST_PARTY = {
     "business-card-mcp": "ai-cooperation/business-card-mcp",
+    "tapcard-mcp": "ai-cooperation/tapcard-mcp",
 }
 
 # 編輯欄位（維護狀態依 candidates/batch-01 last_push，核對日 2026-07-30）
@@ -99,6 +100,12 @@ EDITORIAL = {
     },
     "business-card-mcp": {
         "name": "Business Card MCP", "one_liner": "AI 原生的私人名片庫：在 ChatGPT／Claude 辨識名片並寫入自己帳號的 D1／R2",
+        "categories": ["sharing"],
+        "components": ["workers", "d1", "r2", "kv"],
+        "maintenance_status": "active", "license": "MIT",
+    },
+    "tapcard-mcp": {
+        "name": "TapCard MCP", "one_liner": "自架 NFC／QR 電子名片＋私人 AI 名片庫：公開頁掃即得，收到的名片存自己帳號",
         "categories": ["sharing"],
         "components": ["workers", "d1", "r2", "kv"],
         "maintenance_status": "active", "license": "MIT",
@@ -199,7 +206,7 @@ def main():
         (out / f"{pid}.yaml").write_text(
             "# 機械生成（tools/gen_cards.py）——editorial 欄位改 EDITORIAL 字典後重生，勿直接手改推導欄位\n"
             + yaml.safe_dump(card, allow_unicode=True, sort_keys=False), encoding="utf-8")
-    print(f"generated {len(PROJECTS)} cards")
+    print(f"generated {len(PROJECTS) + len(FIRST_PARTY)} cards（含 {len(FIRST_PARTY)} 張 first-party）")
 
 
 if __name__ == "__main__":

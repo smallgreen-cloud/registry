@@ -35,6 +35,9 @@ services:
   sink:
     one_liner: A self-hosted URL shortener with Analytics Engine visit statistics
     data_flow: Short links run in your account and aggregate visit statistics in Analytics Engine
+  tapcard-mcp:
+    one_liner: A self-hosted NFC and QR business card with a private AI card wall — public page on tap, received cards stored in your own account
+    data_flow: NFC and QR profile pages are public; received contacts, thumbnails and MCP keys stay private in your own D1, R2 and KV
   uptimeflare:
     one_liner: Service monitoring and a public status page with scheduled probes and D1 history
     data_flow: Scheduled checks status history and optional outage notifications run in your own account
