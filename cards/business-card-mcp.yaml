@@ -1,0 +1,43 @@
+# 機械生成（tools/gen_cards.py）——editorial 欄位改 EDITORIAL 字典後重生，勿直接手改推導欄位
+id: business-card-mcp
+name: Business Card MCP
+one_liner: AI 原生的私人名片庫：在 ChatGPT／Claude 辨識名片並寫入自己帳號的 D1／R2
+categories:
+- sharing
+profile: small-app
+repo:
+  upstream: ai-cooperation/business-card-mcp
+  license: MIT
+components:
+  cloudflare:
+  - workers
+  - d1
+  - r2
+  - kv
+login_method: other
+data_flow:
+  external_services:
+  - www.googleapis.com
+  - www.gstatic.com
+  - firebaseapp.com
+  disclosure: AI 原生、單人自架的私人名片與聯絡人 MCP
+verification:
+  level: discovered
+  spec_version: 0.2.1
+  last_verified: '2026-08-03'
+  evidence_packs:
+  - evidence/business-card-mcp/2026-08-03-sandbox-01.json
+  compatible_agents:
+  - agent: claude-code
+    model: claude-opus-5
+    result: autonomous
+free_tier_grade: C
+low_carbon:
+  scale_to_zero: true
+  green_compute: false
+  no_idle_infra: true
+maintenance_status: active
+images:
+  screenshot:
+    path: evidence/business-card-mcp/artifacts/2026-08-03-home.png
+    evidence_pack_ref: evidence/business-card-mcp/2026-08-03-sandbox-01.json

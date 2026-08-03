@@ -15,7 +15,7 @@ import yaml
 REG = Path(__file__).resolve().parent.parent
 ADAPTER_ROOT = REG.parent  # /Users/user/projects/smallgreen-cloud/
 
-# project_id -> (adapter dir, adapter repo slug)
+# project_id -> (adapter dir, adapter repo slug)；first-party（Path A）用 FIRST_PARTY
 PROJECTS = {
     "sink": ("adapter-sink", "smallgreen-cloud/adapter-sink"),
     "uptimeflare": ("adapter-uptimeflare", "smallgreen-cloud/adapter-uptimeflare"),
@@ -28,6 +28,11 @@ PROJECTS = {
     "second-brain-cloudflare": ("adapter-second-brain", "smallgreen-cloud/adapter-second-brain"),
     "cloudflare-imgbed": ("adapter-cloudflare-imgbed", "smallgreen-cloud/adapter-cloudflare-imgbed"),
     "microfeed": ("adapter-microfeed", "smallgreen-cloud/adapter-microfeed"),
+}
+
+# first-party（Path A）：契約隨程式碼同 repo，無 adapter 層；profile 自 GitHub raw 取得
+FIRST_PARTY = {
+    "business-card-mcp": "ai-cooperation/business-card-mcp",
 }
 
 # 編輯欄位（維護狀態依 candidates/batch-01 last_push，核對日 2026-07-30）
@@ -92,6 +97,12 @@ EDITORIAL = {
         "components": ["workers", "kv"],
         "maintenance_status": "active",  # 2026-07-29
     },
+    "business-card-mcp": {
+        "name": "Business Card MCP", "one_liner": "AI 原生的私人名片庫：在 ChatGPT／Claude 辨識名片並寫入自己帳號的 D1／R2",
+        "categories": ["sharing"],
+        "components": ["workers", "d1", "r2", "kv"],
+        "maintenance_status": "active", "license": "MIT",
+    },
     "microfeed": {
         "name": "microfeed", "one_liner": "輕量 feed/CMS（JSON/RSS feed＋admin 後台；無 R2 文字模式收錄版）",
         "categories": ["publishing"],
@@ -109,7 +120,11 @@ def latest_pack(pid: str) -> dict:
 
 
 def load_profile(pid: str) -> dict:
-    d, _ = PROJECTS[pid][0], None
+    if pid in FIRST_PARTY:
+        import urllib.request
+        url = f"https://raw.githubusercontent.com/{FIRST_PARTY[pid]}/main/.smallgreen/profile.yaml"
+        with urllib.request.urlopen(url, timeout=20) as r:
+            return yaml.safe_load(r.read().decode("utf-8"))
     p = ADAPTER_ROOT / PROJECTS[pid][0] / ".smallgreen" / "profile.yaml"
     return yaml.safe_load(p.read_text(encoding="utf-8"))
 
@@ -133,17 +148,20 @@ def build_card(pid: str) -> dict:
                 seen[key] = a["result"]
     agents = [{"agent": k[0], "model": k[1], "result": v}
               for k, v in sorted(seen.items())]
+    is_fp = pid in FIRST_PARTY
+    repo = {"upstream": FIRST_PARTY[pid] if is_fp else prof["upstream"]["repo"]}
+    if not is_fp:
+        repo["adapter"] = PROJECTS[pid][1]
+        repo["license"] = prof["upstream"]["license"]
+    else:
+        repo["license"] = ed.get("license", "")
     card = {
         "id": pid,
         "name": ed["name"],
         "one_liner": ed["one_liner"],
         "categories": ed["categories"],
         "profile": prof["profile"],
-        "repo": {
-            "upstream": prof["upstream"]["repo"],
-            "adapter": PROJECTS[pid][1],
-            "license": prof["upstream"]["license"],
-        },
+        "repo": repo,
         "components": {"cloudflare": ed["components"]},
         "login_method": prof.get("login_method", "none"),
         "data_flow": {
@@ -176,7 +194,7 @@ def build_card(pid: str) -> dict:
 def main():
     out = REG / "cards"
     out.mkdir(exist_ok=True)
-    for pid in PROJECTS:
+    for pid in list(PROJECTS) + list(FIRST_PARTY):
         card = build_card(pid)
         (out / f"{pid}.yaml").write_text(
             "# 機械生成（tools/gen_cards.py）——editorial 欄位改 EDITORIAL 字典後重生，勿直接手改推導欄位\n"
