@@ -2,6 +2,44 @@
 id: second-brain-cloudflare
 name: Second Brain
 one_liner: 個人知識庫＋MCP server（keyword-only 降級收錄版）
+product_summary:
+  project_type:
+    zh-tw: 自架個人知識庫與 MCP 服務
+    en: A self-hosted personal knowledge base with an MCP server
+  problem:
+    zh-tw: 筆記與知識散落在不同工具，AI 無法透過受控介面搜尋自己的內容
+    en: Notes and knowledge are scattered across tools and AI lacks a controlled interface
+      to search them
+  audience:
+    zh-tw:
+    - 顧問、研究者與創作者
+    - 需要保留工作記憶的小型團隊
+    en:
+    - Consultants, researchers and creators
+    - Small teams that need durable working knowledge
+  capabilities:
+    zh-tw:
+    - 保存筆記與知識關聯
+    - 提供關鍵字搜尋與 MCP 存取
+    - 以自己的 D1 與 KV 管理資料及授權
+    en:
+    - Store notes and knowledge relationships
+    - Provide keyword search and MCP access
+    - Manage data and authorization in your own D1 and KV
+  deployment_requirements:
+    zh-tw:
+    - 需要 Cloudflare Worker、D1 與 KV
+    - 需要自行設定 MCP 授權與備份方式
+    en:
+    - A Cloudflare Worker, D1 and KV
+    - The deployer configures MCP authorization and backups
+  limitations:
+    zh-tw:
+    - 目前是關鍵字搜尋降級版，不等同向量搜尋
+    - 資料保留與備份責任由部署者承擔
+    en:
+    - The catalogue profile is keyword-search based, not vector search
+    - The deployer owns retention and backup responsibilities
 categories:
 - sharing
 profile: small-app

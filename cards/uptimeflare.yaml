@@ -2,6 +2,44 @@
 id: uptimeflare
 name: UptimeFlare
 one_liner: 自架服務監測與狀態頁（cron 探測＋D1 歷史）
+product_summary:
+  project_type:
+    zh-tw: 自架網站與 API 監測、狀態頁服務
+    en: A self-hosted website and API monitor with a public status page
+  problem:
+    zh-tw: 小型團隊通常在客戶回報後才知道服務中斷，缺少可查的狀態歷史
+    en: Small teams often learn about outages from customers and lack a simple status
+      history to inspect
+  audience:
+    zh-tw:
+    - 小型 SaaS 團隊
+    - 接案工作室與需要公開狀態頁的服務商
+    en:
+    - Small SaaS teams
+    - Studios and service providers that need a public status page
+  capabilities:
+    zh-tw:
+    - 定期探測指定網址
+    - 保存 D1 狀態歷史
+    - 提供公開狀態頁與可選通知
+    en:
+    - Probe configured URLs on a schedule
+    - Store status history in D1
+    - Publish a status page with optional notifications
+  deployment_requirements:
+    zh-tw:
+    - 需要 Cloudflare Workers、Pages、D1、KV 與 Cron
+    - 需要自行設定被監測網址與通知方式
+    en:
+    - Cloudflare Workers, Pages, D1, KV and Cron
+    - The deployer configures monitored URLs and notification targets
+  limitations:
+    zh-tw:
+    - 不是完整的 incident management 或 SLA 平台
+    - 探測頻率受帳號額度與排程限制
+    en:
+    - It is not a full incident-management or SLA platform
+    - Probe frequency is limited by account quotas and schedules
 categories:
 - utilities
 profile: small-app

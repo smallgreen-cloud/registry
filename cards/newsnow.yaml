@@ -2,6 +2,44 @@
 id: newsnow
 name: NewsNow
 one_liner: 40+ 來源新聞熱榜聚合站，快取存自己的 D1
+product_summary:
+  project_type:
+    zh-tw: 自架新聞來源聚合與排行網站
+    en: A self-hosted news-source aggregator and ranking site
+  problem:
+    zh-tw: 團隊需要持續掌握多個來源，卻沒有簡單且可自有部署的閱讀入口
+    en: A team needs to follow many sources but lacks a simple reading entry point
+      it can deploy and control
+  audience:
+    zh-tw:
+    - 需要產業情報的小型企業
+    - 研究、內容與社群團隊
+    en:
+    - Small businesses tracking industry news
+    - Research, content and community teams
+  capabilities:
+    zh-tw:
+    - 聚合多個新聞來源
+    - 把可重建的來源快取存入自己的 D1
+    - 依來源與排行提供閱讀入口
+    en:
+    - Aggregate multiple news sources
+    - Cache rebuildable source data in your own D1
+    - Provide a source and ranking view for reading
+  deployment_requirements:
+    zh-tw:
+    - 需要 Cloudflare Pages 與 D1
+    - 需要自行維護來源清單與來源可用性
+    en:
+    - Cloudflare Pages and D1
+    - The deployer maintains the source list and accepts source availability risk
+  limitations:
+    zh-tw:
+    - 只保存來源快取，不擁有第三方新聞內容
+    - 更新速度受來源 RSS 與排程影響
+    en:
+    - It caches source data but does not own third-party news content
+    - Freshness depends on source feeds and schedules
 categories:
 - publishing
 profile: small-app

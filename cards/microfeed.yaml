@@ -2,6 +2,44 @@
 id: microfeed
 name: microfeed
 one_liner: 輕量 feed/CMS（JSON/RSS feed＋admin 後台；無 R2 文字模式收錄版）
+product_summary:
+  project_type:
+    zh-tw: 自架輕量內容發布與 RSS 平台
+    en: A self-hosted lightweight publishing and RSS platform
+  problem:
+    zh-tw: 小型組織需要自己的內容與 feed 入口，不想維護大型 CMS
+    en: A small organization needs its own content and feed entry point without maintaining
+      a large CMS
+  audience:
+    zh-tw:
+    - 個人品牌、協會與小型團隊
+    - 需要文字發布與 RSS 的網站
+    en:
+    - Personal brands, associations and small teams
+    - Websites that need text publishing and RSS
+  capabilities:
+    zh-tw:
+    - 管理文字內容與管理後台
+    - 輸出 JSON 與 RSS feed
+    - 將內容與管理資料保存於自己的 D1
+    en:
+    - Manage text content through an admin interface
+    - Publish JSON and RSS feeds
+    - Keep content and administration data in your own D1
+  deployment_requirements:
+    zh-tw:
+    - 需要 Cloudflare Workers 與 D1
+    - 目前收錄設定是不使用 R2 的文字模式
+    en:
+    - Cloudflare Workers and D1
+    - The catalogue profile uses the no-R2 text-only mode
+  limitations:
+    zh-tw:
+    - 目前文字模式停用媒體上傳
+    - 不是高流量新聞或企業內容管理平台
+    en:
+    - Media upload is disabled in the text-only profile
+    - It is not a high-traffic news or enterprise content-management platform
 categories:
 - publishing
 profile: small-app

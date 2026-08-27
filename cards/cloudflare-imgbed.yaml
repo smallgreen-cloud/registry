@@ -2,6 +2,44 @@
 id: cloudflare-imgbed
 name: CloudFlare-ImgBed
 one_liner: 圖床檔案管理站（External 外鏈降級收錄版，KV 中繼資料）
+product_summary:
+  project_type:
+    zh-tw: 自架圖片與檔案管理入口
+    en: A self-hosted image and file management entry point
+  problem:
+    zh-tw: 網站圖片與檔案管理依賴外部圖床，連結與中繼資料不在自己的帳號
+    en: Website images and files depend on a hosted image service, leaving links and
+      metadata outside the deployer's account
+  audience:
+    zh-tw:
+    - 小型網站與內容團隊
+    - 需要簡單圖床管理的創作者
+    en:
+    - Small websites and content teams
+    - Creators who need a simple image-management tool
+  capabilities:
+    zh-tw:
+    - 管理圖片中繼資料與分享連結
+    - 在自己的 KV 保存管理資料
+    - 以降級模式配合外部圖片網址
+    en:
+    - Manage image metadata and sharing links
+    - Store management metadata in your own KV
+    - Operate in a fallback mode using external image URLs
+  deployment_requirements:
+    zh-tw:
+    - 需要 Cloudflare Worker 與 KV
+    - 部署者要確認外部圖片來源與連結可用性
+    en:
+    - A Cloudflare Worker and KV
+    - The deployer reviews external image origins and link availability
+  limitations:
+    zh-tw:
+    - 目前卡片是外鏈降級模式，不等於私有二進位儲存
+    - 外部圖片來源失效時，服務無法保證內容可用
+    en:
+    - The catalogue card describes an external-link fallback, not private binary storage
+    - Content availability depends on external image origins
 categories:
 - sharing
 profile: small-app

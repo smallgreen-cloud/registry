@@ -2,12 +2,51 @@
 id: business-card-mcp
 name: Business Card MCP
 one_liner: AI 原生的私人名片庫：在 ChatGPT／Claude 辨識名片並寫入自己帳號的 D1／R2
+product_summary:
+  project_type:
+    zh-tw: 自架 AI 聯絡人與名片管理 MCP
+    en: A self-hosted AI contact and business-card MCP
+  problem:
+    zh-tw: 收到的名片與聯絡資料散落各處，人工整理後仍難以在 AI 對話中查找
+    en: Received business cards and contact details are scattered, and manual entry
+      still leaves them hard to find in AI conversations
+  audience:
+    zh-tw:
+    - 顧問與業務工作者
+    - 需要自己掌握聯絡資料的小型企業
+    en:
+    - Consultants and sales professionals
+    - Small businesses that need control of contact data
+  capabilities:
+    zh-tw:
+    - 在 AI 工具中辨識與整理名片
+    - 把聯絡人保存到自己的 D1 與 R2
+    - 提供私人搜尋與名片詳情
+    en:
+    - Identify and organize cards in AI tools
+    - Store contacts in your own D1 and R2
+    - Provide private contact search and details
+  deployment_requirements:
+    zh-tw:
+    - 需要自己的 Cloudflare Workers、D1、R2 與 KV
+    - 目前以單人自架與 Remote MCP 連線為主要情境
+    en:
+    - Your own Cloudflare Workers, D1, R2 and KV
+    - The current target is single-owner self-hosting with a Remote MCP connection
+  limitations:
+    zh-tw:
+    - 目前不是多人 CRM 或完整銷售自動化平台
+    - 名片辨識與 AI 使用仍需部署者確認資料與權限邊界
+    en:
+    - It is not a multi-user CRM or full sales-automation platform
+    - The deployer must review data and permission boundaries for card recognition
+      and AI use
 categories:
 - sharing
 profile: small-app
 repo:
   upstream: ai-cooperation/business-card-mcp
-  license: MIT
+  license: Apache-2.0
 components:
   cloudflare:
   - workers
@@ -16,10 +55,7 @@ components:
   - kv
 login_method: other
 data_flow:
-  external_services:
-  - www.googleapis.com
-  - www.gstatic.com
-  - firebaseapp.com
+  external_services: []
   disclosure: AI 原生、單人自架的私人名片與聯絡人 MCP
 verification:
   level: discovered

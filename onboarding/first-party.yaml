@@ -1,0 +1,148 @@
+schema_version: "0.1.0"
+title:
+  zh-tw: 自有專案上架清單
+  en: First-party projects entering the catalogue
+projects:
+  - id: homebox-edge
+    name: HomeBox Edge
+    state: contract-needed
+    state_label:
+      zh-tw: 上架準備中
+      en: Preparing for catalogue entry
+    product_summary:
+      project_type:
+        zh-tw: 自架的家庭與工作室資產管理小型專案
+        en: A self-hosted asset inventory for homes and small studios
+      problem:
+        zh-tw: 解決設備、位置、保固與照片分散在試算表、訊息與雲端相簿，查找與交接都很困難的問題
+        en: Solves the problem of household and studio asset data being scattered across spreadsheets, messages and photo albums
+      audience:
+        zh-tw: [家庭、工作室、需要管理設備的人]
+        en: [Households, studios, people managing equipment]
+      capabilities:
+        zh-tw:
+          - 資產新增、搜尋、編輯、封存與還原
+          - HomeBox CSV／TSV 預覽、確認後匯入與匯出
+          - 私有照片、縮圖與可撤銷的 AI 連線
+        en:
+          - Create, search, edit, archive and restore assets
+          - Preview, confirm and exchange HomeBox CSV or TSV
+          - Keep private photos and thumbnails with revocable AI connectors
+      deployment_requirements:
+        zh-tw: [Cloudflare Workers、D1、R2、KV 與 Images binding；需要自有 Cloudflare 帳號]
+        en: [Cloudflare Workers, D1, R2, KV and Images binding; a Cloudflare account is required]
+      limitations:
+        zh-tw: [上架前仍需完成正式 release、部署驗收、teardown 與 Evidence Pack；AI 連線需自行管理供應商與費用]
+        en: [A release, live acceptance, teardown and Evidence Pack are still required; AI connectors require your own provider and cost controls]
+    architecture:
+      cloudflare: [workers, d1, r2, kv, images]
+      external_services: []
+    current_stage:
+      zh-tw: v0.2 功能已完成，正在補 SmallGreen 上架契約與公開驗證證據
+      en: v0.2 features are implemented; SmallGreen contracts and public evidence are next
+    next_steps:
+      zh-tw:
+        - 固定可上架的 main／release commit
+        - 補 profile、acceptance、maintenance 與 Agent 部署引導
+        - 完成真實部署、驗收、teardown 與 Evidence Pack
+      en:
+        - Freeze the publishable main or release commit
+        - Add profile, acceptance, maintenance and Agent deployment guidance
+        - Complete live deployment, acceptance, teardown and an Evidence Pack
+    product_family: personal-vault
+
+  - id: kb-vault
+    name: Free Second Brain（kb-vault）
+    state: canonical-repo-needed
+    state_label:
+      zh-tw: 整理後上架
+      en: Canonicalisation before entry
+    product_summary:
+      project_type:
+        zh-tw: 以 Markdown、D1 與 Remote MCP 組成的個人知識庫專案
+        en: A personal knowledge base built from Markdown, D1 and Remote MCP
+      problem:
+        zh-tw: 解決研究、顧問與 AI 工作經驗散落在不同工具，日後無法搜尋、連結與重用的問題
+        en: Solves the problem of research, consulting and AI work knowledge being fragmented across tools and difficult to search, connect and reuse
+      audience:
+        zh-tw: [研究者、顧問、創作者、需要累積 AI 工作記憶的人]
+        en: [Researchers, consultants, creators, people building durable AI memory]
+      capabilities:
+        zh-tw:
+          - Markdown 卡片、標籤、雙向連結與圖譜
+          - D1 全文搜尋與 Remote MCP 讀寫
+          - RSS 收集，以及選配的 Notion／GitHub 備份
+        en:
+          - Markdown cards, tags, bidirectional links and a graph view
+          - D1 full-text search and Remote MCP read/write access
+          - RSS collection plus optional Notion or GitHub backup
+      deployment_requirements:
+        zh-tw: [Cloudflare Workers、Pages、D1、KV、選配 R2 與 Cron；需要 OAuth、RSS 或備份服務的憑證時另行設定]
+        en: [Cloudflare Workers, Pages, D1, KV, optional R2 and Cron; credentials are needed for OAuth, RSS or backup services]
+      limitations:
+        zh-tw: [目前有兩個 checkout，需先凍結 canonical repo；Notion、GitHub 與 RSS 是外部依賴，需各自驗證權限與資料邊界]
+        en: [Two checkouts still need to be reconciled into one canonical repo; Notion, GitHub and RSS are external dependencies with separate permission and data-boundary checks]
+    architecture:
+      cloudflare: [workers, pages, d1, kv, r2, cron]
+      external_services: [Google OAuth, RSS sources, Notion API (optional), GitHub API (optional)]
+    current_stage:
+      zh-tw: Worker、UI、MCP 與基本同步功能已存在，但目前有兩個 checkout，尚未凍結上架真相源
+      en: Worker, UI, MCP and basic sync features exist, but two checkouts must be reconciled before publishing
+    next_steps:
+      zh-tw:
+        - 決定 canonical repo 與 release commit
+        - 補 SmallGreen 三檔契約、Agent 引導與外部服務揭露
+        - 完成登入、MCP、RSS、同步與 teardown 的 Evidence Pack
+      en:
+        - Choose the canonical repository and release commit
+        - Add the three SmallGreen contracts, Agent guidance and external-service disclosure
+        - Produce an Evidence Pack covering login, MCP, RSS, sync and teardown
+    product_family: personal-vault
+
+  - id: meeting-capture-kit
+    name: Meeting Capture Kit
+    state: evidence-needed
+    state_label:
+      zh-tw: 等待公開驗證
+      en: Awaiting public verification
+    product_summary:
+      project_type:
+        zh-tw: 以 LINE、Cloudflare Worker 與 GitHub Actions 串成的會議紀錄處理流程
+        en: A meeting-record pipeline connecting LINE, a Cloudflare Worker and GitHub Actions
+      problem:
+        zh-tw: 解決會議音訊留在聊天工具、難以轉錄整理，且敏感紀錄不希望集中在第三方 SaaS 的問題
+        en: Solves the problem of meeting audio staying in chat tools, being hard to structure, and sensitive notes needing a private system of record
+      audience:
+        zh-tw: [需要掌握會議資料的顧問、團隊與個人工作者]
+        en: [Consultants, teams and solo operators who need control of meeting records]
+      capabilities:
+        zh-tw:
+          - LINE webhook 驗簽與使用者 allowlist
+          - GitHub Actions 執行語音轉錄、術語校正與摘要
+          - Private repo 留存會議 Markdown，並可回傳 LINE 通知
+        en:
+          - Signed LINE webhooks with an explicit user allowlist
+          - GitHub Actions for transcription, terminology correction and summaries
+          - Retain meeting Markdown in a private repo and send LINE notifications
+      deployment_requirements:
+        zh-tw: [Cloudflare Workers、KV、GitHub Actions 與 Private GitHub repository；需要 LINE、Groq 與 Gemini 憑證]
+        en: [Cloudflare Workers, KV, GitHub Actions and a private GitHub repository; LINE, Groq and Gemini credentials are required]
+      limitations:
+        zh-tw: [仍需人工確認 provider 資料流、secret 與費用限制；目前以合成音訊驗收，尚未完成公開 Evidence Pack]
+        en: [Provider data flows, secrets and cost limits still need human review; acceptance currently uses synthetic audio and the public Evidence Pack is not complete]
+    architecture:
+      cloudflare: [workers, kv]
+      external_services: [LINE, GitHub Actions, Groq, Gemini]
+    current_stage:
+      zh-tw: 已有 Worker、pipeline、契約與合成驗收案例，但尚未建立 Registry 卡片與公開 Evidence Pack
+      en: Worker, pipeline, contracts and synthetic acceptance cases exist, but no Registry card or public Evidence Pack exists yet
+    next_steps:
+      zh-tw:
+        - 固定可上架的 template release commit 與公開資料邊界
+        - 完成外部 provider 資料流、secret 與費用限制的人工 review
+        - 用合成音訊完成真實部署、驗收、teardown 與 Evidence Pack
+      en:
+        - Freeze a publishable template release and its public data boundary
+        - Human-review provider data flows, secrets and cost limits
+        - Complete a live deployment, acceptance, teardown and Evidence Pack with synthetic audio
+    product_family: pipeline
