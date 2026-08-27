@@ -5,10 +5,10 @@ title:
 projects:
   - id: homebox-edge
     name: HomeBox Edge
-    state: contract-needed
+    state: evidence-needed
     state_label:
-      zh-tw: 上架準備中
-      en: Preparing for catalogue entry
+      zh-tw: 等待公開驗證
+      en: Awaiting public verification
     product_summary:
       project_type:
         zh-tw: 自架的家庭與工作室資產管理小型專案
@@ -38,17 +38,17 @@ projects:
       cloudflare: [workers, d1, r2, kv, images]
       external_services: []
     current_stage:
-      zh-tw: v0.2 功能已完成，正在補 SmallGreen 上架契約與公開驗證證據
-      en: v0.2 features are implemented; SmallGreen contracts and public evidence are next
+      zh-tw: v0.2 功能與 SmallGreen 三份契約已完成，等待正確 Cloudflare 帳號下的真實部署與公開 Evidence Pack
+      en: v0.2 features and the three SmallGreen contracts are complete; live deployment in the correct Cloudflare account and a public Evidence Pack remain
     next_steps:
       zh-tw:
-        - 固定可上架的 main／release commit
-        - 補 profile、acceptance、maintenance 與 Agent 部署引導
-        - 完成真實部署、驗收、teardown 與 Evidence Pack
+        - 確認可存取既有 Worker 與 D1、KV、R2、Images 資源的 Cloudflare 帳號
+        - 固定可上架的 main／release commit，並記錄部署前 migration 與資料備份狀態
+        - 完成真實部署、照片與 CSV／MCP 驗收、teardown 與 Evidence Pack
       en:
-        - Freeze the publishable main or release commit
-        - Add profile, acceptance, maintenance and Agent deployment guidance
-        - Complete live deployment, acceptance, teardown and an Evidence Pack
+        - Confirm the Cloudflare account that can access the existing Worker and D1, KV, R2 and Images resources
+        - Freeze the publishable main or release commit and record pre-deploy migrations and backups
+        - Complete live deployment, photo plus CSV/MCP acceptance, teardown and an Evidence Pack
     product_family: personal-vault
 
   - id: kb-vault
