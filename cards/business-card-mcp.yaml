@@ -1,46 +1,50 @@
 # 機械生成（tools/gen_cards.py）——editorial 欄位改 EDITORIAL 字典後重生，勿直接手改推導欄位
 id: business-card-mcp
 name: Business Card MCP
-one_liner: AI 原生的私人名片庫：在 ChatGPT／Claude 辨識名片並寫入自己帳號的 D1／R2
+one_liner: 把 AI 辨識的名片整理成自己帳號裡可搜尋、可控的私人聯絡人庫
 product_summary:
   project_type:
     zh-tw: 自架 AI 聯絡人與名片管理 MCP
     en: A self-hosted AI contact and business-card MCP
   problem:
-    zh-tw: 收到的名片與聯絡資料散落各處，人工整理後仍難以在 AI 對話中查找
-    en: Received business cards and contact details are scattered, and manual entry
-      still leaves them hard to find in AI conversations
+    zh-tw: 名片資料散落在相簿、聊天與紙本，整理後仍難以在日常工作中快速查找與更新
+    en: Business-card data is scattered across photos, chats and paper, and remains
+      hard to find or update after manual entry
   audience:
     zh-tw:
-    - 顧問與業務工作者
-    - 需要自己掌握聯絡資料的小型企業
+    - 想把開源小型專案變成自己能運行服務的人
+    - 需要整理私人聯絡資料的顧問、業務與自由工作者
     en:
-    - Consultants and sales professionals
-    - Small businesses that need control of contact data
+    - People who want to turn an open-source small project into a service they can
+      run
+    - Consultants, sales professionals and freelancers who need a private contact
+      library
   capabilities:
     zh-tw:
-    - 在 AI 工具中辨識與整理名片
-    - 把聯絡人保存到自己的 D1 與 R2
-    - 提供私人搜尋與名片詳情
+    - 在 ChatGPT／Claude 中辨識並確認名片
+    - 把資料與 480px WebP 縮圖保存到自己的 D1／R2
+    - 提供私人搜尋、詳情、編輯、封存與 MCP 存取
     en:
-    - Identify and organize cards in AI tools
-    - Store contacts in your own D1 and R2
-    - Provide private contact search and details
+    - Identify and confirm cards in ChatGPT or Claude
+    - Store contact data and 480px WebP thumbnails in your own D1/R2
+    - Provide private search, details, editing, archiving and MCP access
   deployment_requirements:
     zh-tw:
     - 需要自己的 Cloudflare Workers、D1、R2 與 KV
-    - 目前以單人自架與 Remote MCP 連線為主要情境
+    - 網頁管理需要 Gmail allowlist、Turnstile 與 Email Service binding；MCP 仍以可撤銷 key 連線
     en:
     - Your own Cloudflare Workers, D1, R2 and KV
-    - The current target is single-owner self-hosting with a Remote MCP connection
+    - Web management needs a Gmail allowlist, Turnstile and an Email Service binding;
+      MCP connections still use revocable keys
   limitations:
     zh-tw:
-    - 目前不是多人 CRM 或完整銷售自動化平台
-    - 名片辨識與 AI 使用仍需部署者確認資料與權限邊界
+    - 目前是單人私人聯絡人庫，不是多人 CRM 或銷售自動化平台
+    - 原始名片圖片不保存；縮圖必須由 ChatGPT／Claude 在寫入前產生，Worker 不做線上圖片轉換
     en:
-    - It is not a multi-user CRM or full sales-automation platform
-    - The deployer must review data and permission boundaries for card recognition
-      and AI use
+    - It is a single-owner private contact library, not a multi-user CRM or sales-automation
+      platform
+    - Original card images are not stored; ChatGPT or Claude must create the thumbnail
+      before writing, and the Worker performs no online image transformation
 categories:
 - sharing
 profile: small-app
@@ -53,10 +57,14 @@ components:
   - d1
   - r2
   - kv
-login_method: other
+  - email-service
+login_method: email-otp
 data_flow:
-  external_services: []
-  disclosure: AI 原生、單人自架的私人名片與聯絡人 MCP
+  external_services:
+  - challenges.cloudflare.com
+  disclosure: 網頁管理使用 allowlist 內的 Gmail OTP；OTP challenge 與 session digest 存在自己的 D1。ChatGPT／Claude
+    在呼叫 create_contact 前產生 480px WebP 縮圖；Worker 不呼叫 Images API、不保存原始名片圖片，只驗證並把 WebP
+    存入 R2。MCP 連線仍使用可撤銷的 bc_ key。
 verification:
   level: discovered
   spec_version: 0.2.1

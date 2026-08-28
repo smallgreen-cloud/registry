@@ -34,6 +34,19 @@ PROJECTS = {
 FIRST_PARTY = {
     "business-card-mcp": "ai-cooperation/business-card-mcp",
     "tapcard-mcp": "ai-cooperation/tapcard-mcp",
+    "homebox-edge": "smallgreen-cloud/homebox-edge",
+    "meeting-capture-kit": "ai-cooperation/meeting-capture-kit",
+    "kb-vault": "AlanChen75/kb-vault",
+}
+
+# first-party contracts may be staged locally before their public release commit is
+# available from GitHub. Once published, the remote profile remains the fallback
+# source, so card generation is still reproducible from the public repository.
+LOCAL_FIRST_PARTY_PROFILES = {
+    "business-card-mcp": ADAPTER_ROOT / "business-card-mcp" / ".smallgreen" / "profile.yaml",
+    "homebox-edge": ADAPTER_ROOT / "homebox-edge" / ".smallgreen" / "profile.yaml",
+    "meeting-capture-kit": ADAPTER_ROOT / "meeting-capture-kit" / ".smallgreen" / "profile.yaml",
+    "kb-vault": ADAPTER_ROOT.parent / "kb-vault" / "server" / ".smallgreen" / "profile.yaml",
 }
 
 # 編輯欄位（維護狀態依 candidates/batch-01 last_push，核對日 2026-07-30）
@@ -99,9 +112,9 @@ EDITORIAL = {
         "maintenance_status": "active",  # 2026-07-29
     },
     "business-card-mcp": {
-        "name": "Business Card MCP", "one_liner": "AI 原生的私人名片庫：在 ChatGPT／Claude 辨識名片並寫入自己帳號的 D1／R2",
+        "name": "Business Card MCP", "one_liner": "把 AI 辨識的名片整理成自己帳號裡可搜尋、可控的私人聯絡人庫",
         "categories": ["sharing"],
-        "components": ["workers", "d1", "r2", "kv"],
+        "components": ["workers", "d1", "r2", "kv", "email-service"],
         "maintenance_status": "active", "license": "Apache-2.0",
     },
     "tapcard-mcp": {
@@ -109,6 +122,24 @@ EDITORIAL = {
         "categories": ["sharing"],
         "components": ["workers", "d1", "r2", "kv"],
         "maintenance_status": "active", "license": "Apache-2.0",
+    },
+    "homebox-edge": {
+        "name": "HomeBox Edge", "one_liner": "把設備、位置、保固與照片收進自己帳號的資產管理服務",
+        "categories": ["utilities"],
+        "components": ["workers", "d1", "r2", "kv", "images"],
+        "maintenance_status": "active", "license": "Apache-2.0",
+    },
+    "meeting-capture-kit": {
+        "name": "Meeting Capture Kit", "one_liner": "把 LINE 會議音訊整理成部署者私有 GitHub repo 裡的會議紀錄",
+        "categories": ["publishing"],
+        "components": ["workers", "kv"],
+        "maintenance_status": "active", "license": "MIT",
+    },
+    "kb-vault": {
+        "name": "Free Second Brain", "one_liner": "把零散筆記整理成可搜尋、可連結，並能供 AI 取用的個人知識庫",
+        "categories": ["sharing"],
+        "components": ["workers", "pages", "d1", "kv", "cron"],
+        "maintenance_status": "active", "license": "MIT",
     },
     "microfeed": {
         "name": "microfeed", "one_liner": "輕量 feed/CMS（JSON/RSS feed＋admin 後台；無 R2 文字模式收錄版）",
@@ -211,11 +242,11 @@ PRODUCT_SUMMARY = {
     },
     "business-card-mcp": {
         "project_type": {"zh-tw": "自架 AI 聯絡人與名片管理 MCP", "en": "A self-hosted AI contact and business-card MCP"},
-        "problem": {"zh-tw": "收到的名片與聯絡資料散落各處，人工整理後仍難以在 AI 對話中查找", "en": "Received business cards and contact details are scattered, and manual entry still leaves them hard to find in AI conversations"},
-        "audience": {"zh-tw": ["顧問與業務工作者", "需要自己掌握聯絡資料的小型企業"], "en": ["Consultants and sales professionals", "Small businesses that need control of contact data"]},
-        "capabilities": {"zh-tw": ["在 AI 工具中辨識與整理名片", "把聯絡人保存到自己的 D1 與 R2", "提供私人搜尋與名片詳情"], "en": ["Identify and organize cards in AI tools", "Store contacts in your own D1 and R2", "Provide private contact search and details"]},
-        "deployment_requirements": {"zh-tw": ["需要自己的 Cloudflare Workers、D1、R2 與 KV", "目前以單人自架與 Remote MCP 連線為主要情境"], "en": ["Your own Cloudflare Workers, D1, R2 and KV", "The current target is single-owner self-hosting with a Remote MCP connection"]},
-        "limitations": {"zh-tw": ["目前不是多人 CRM 或完整銷售自動化平台", "名片辨識與 AI 使用仍需部署者確認資料與權限邊界"], "en": ["It is not a multi-user CRM or full sales-automation platform", "The deployer must review data and permission boundaries for card recognition and AI use"]},
+        "problem": {"zh-tw": "名片資料散落在相簿、聊天與紙本，整理後仍難以在日常工作中快速查找與更新", "en": "Business-card data is scattered across photos, chats and paper, and remains hard to find or update after manual entry"},
+        "audience": {"zh-tw": ["想把開源小型專案變成自己能運行服務的人", "需要整理私人聯絡資料的顧問、業務與自由工作者"], "en": ["People who want to turn an open-source small project into a service they can run", "Consultants, sales professionals and freelancers who need a private contact library"]},
+        "capabilities": {"zh-tw": ["在 ChatGPT／Claude 中辨識並確認名片", "把資料與 480px WebP 縮圖保存到自己的 D1／R2", "提供私人搜尋、詳情、編輯、封存與 MCP 存取"], "en": ["Identify and confirm cards in ChatGPT or Claude", "Store contact data and 480px WebP thumbnails in your own D1/R2", "Provide private search, details, editing, archiving and MCP access"]},
+        "deployment_requirements": {"zh-tw": ["需要自己的 Cloudflare Workers、D1、R2 與 KV", "網頁管理需要 Gmail allowlist、Turnstile 與 Email Service binding；MCP 仍以可撤銷 key 連線"], "en": ["Your own Cloudflare Workers, D1, R2 and KV", "Web management needs a Gmail allowlist, Turnstile and an Email Service binding; MCP connections still use revocable keys"]},
+        "limitations": {"zh-tw": ["目前是單人私人聯絡人庫，不是多人 CRM 或銷售自動化平台", "原始名片圖片不保存；縮圖必須由 ChatGPT／Claude 在寫入前產生，Worker 不做線上圖片轉換"], "en": ["It is a single-owner private contact library, not a multi-user CRM or sales-automation platform", "Original card images are not stored; ChatGPT or Claude must create the thumbnail before writing, and the Worker performs no online image transformation"]},
     },
     "tapcard-mcp": {
         "project_type": {"zh-tw": "自架 NFC／QR 電子名片與私人名片庫 MCP", "en": "A self-hosted NFC/QR business card and private card-wall MCP"},
@@ -224,6 +255,30 @@ PRODUCT_SUMMARY = {
         "capabilities": {"zh-tw": ["發布 NFC／QR 公開電子名片", "下載 vCard 並分享公開個人頁", "預覽、確認、匯入、搜尋與匯出私人名片"], "en": ["Publish an NFC/QR public business card", "Share a public profile and download vCards", "Preview, confirm, import, search and export private cards"]},
         "deployment_requirements": {"zh-tw": ["需要自己的 Workers、D1、R2 與 KV", "需要部署者管理憑證，私人 MCP key 只能由部署者保存"], "en": ["Your own Workers, D1, R2 and KV", "The deployer manages the admin credential and private MCP keys"]},
         "limitations": {"zh-tw": ["目前尚未支援向量搜尋、多人團隊與 NFC 寫卡 App", "URL 匯入只適用於符合規格的公開 TapCard"], "en": ["Vector search, multi-user teams and an NFC-writing app are not in the current scope", "URL import is limited to public TapCards that meet the contract"]},
+    },
+    "homebox-edge": {
+        "project_type": {"zh-tw": "自架家庭與工作室資產管理服務", "en": "A self-hosted asset inventory for homes and studios"},
+        "problem": {"zh-tw": "設備、位置、保固與照片分散在不同工具，查找、盤點與交接都很困難", "en": "Equipment, locations, warranties and photos are scattered across tools, making inventory, lookup and handover difficult"},
+        "audience": {"zh-tw": ["家庭與工作室", "需要自己管理設備資料的人"], "en": ["Households and studios", "People who need to manage their own equipment records"]},
+        "capabilities": {"zh-tw": ["新增、搜尋、編輯、封存與還原資產", "預覽、確認匯入與匯出 HomeBox CSV／TSV", "保存私人照片並提供 Remote MCP 存取"], "en": ["Create, search, edit, archive and restore assets", "Preview, confirm, import and export HomeBox CSV/TSV", "Keep private photos and provide Remote MCP access"]},
+        "deployment_requirements": {"zh-tw": ["需要自己的 Cloudflare Workers、D1、R2、KV 與 Images binding", "需要自行管理單一 owner 憑證與照片資料"], "en": ["Your own Cloudflare Workers, D1, R2 and Images binding", "The deployer manages the single-owner credential and photo data"]},
+        "limitations": {"zh-tw": ["目前不是多人資產管理或完整 HomeBox collection ZIP 相容層", "照片縮圖需要確認 Cloudflare Images 方案與費用"], "en": ["It is not a multi-user asset manager or a complete HomeBox collection ZIP compatibility layer", "Photo thumbnails require review of the Cloudflare Images plan and cost"]},
+    },
+    "meeting-capture-kit": {
+        "project_type": {"zh-tw": "自架會議音訊轉錄與紀錄流程", "en": "A self-hosted meeting-audio transcription and notes pipeline"},
+        "problem": {"zh-tw": "會議音訊留在聊天工具，難以整理成可搜尋的紀錄；敏感內容也不希望集中在第三方 SaaS", "en": "Meeting audio stays in chat tools and is hard to turn into searchable notes, while sensitive content may not belong in a centralized SaaS"},
+        "audience": {"zh-tw": ["顧問與團隊工作者", "需要保留會議資料控制權的人"], "en": ["Consultants and team workers", "People who need control over their meeting records"]},
+        "capabilities": {"zh-tw": ["接收 LINE webhook 並驗證使用者", "用 GitHub Actions 執行轉錄、術語校正與摘要", "把會議 Markdown 留在自己的 Private repo"], "en": ["Receive LINE webhooks and verify allowed users", "Run transcription, terminology correction and summarization in GitHub Actions", "Keep meeting Markdown in your own private repository"]},
+        "deployment_requirements": {"zh-tw": ["需要自己的 Cloudflare Worker、KV、LINE channel 與 Private GitHub repo", "需要自行設定 STT、摘要 provider 與各自的 secrets"], "en": ["Your own Cloudflare Worker, KV, LINE channel and private GitHub repository", "The deployer configures the STT, summarization provider and each secret"]},
+        "limitations": {"zh-tw": ["音訊與逐字稿會依流程送往部署者選定的外部 provider", "目前以合成音訊驗收，不代表所有 provider 或語言都已驗證"], "en": ["Audio and transcripts are sent to the external providers selected by the deployer", "Acceptance currently uses synthetic audio and does not verify every provider or language"]},
+    },
+    "kb-vault": {
+        "project_type": {"zh-tw": "自架 Markdown 知識庫與 Remote MCP 服務", "en": "A self-hosted Markdown knowledge base with Remote MCP"},
+        "problem": {"zh-tw": "研究、顧問與 AI 工作記憶散落在不同工具，之後難以搜尋、連結與重用", "en": "Research, consulting and AI work knowledge is scattered across tools and difficult to search, connect and reuse later"},
+        "audience": {"zh-tw": ["研究者、顧問與創作者", "想累積可長期使用 AI 工作記憶的人"], "en": ["Researchers, consultants and creators", "People building durable working knowledge for AI-assisted work"]},
+        "capabilities": {"zh-tw": ["保存 Markdown 筆記、標籤與雙向連結", "以 D1 搜尋並查看知識圖譜", "透過 Remote MCP 讓 AI 受控讀寫，並可選擇 RSS／備份同步"], "en": ["Store Markdown notes, tags and bidirectional links", "Search D1 and inspect the knowledge graph", "Give AI controlled read/write access through Remote MCP, with optional RSS and backup sync"]},
+        "deployment_requirements": {"zh-tw": ["需要自己的 Cloudflare Worker、Pages、D1、KV 與 Private repo", "啟用 OAuth、RSS、Notion 或 GitHub 備份時，需另設各自憑證"], "en": ["Your own Cloudflare Worker, Pages, D1, KV and private repository", "OAuth, RSS, Notion or GitHub backup require their own credentials when enabled"]},
+        "limitations": {"zh-tw": ["canonical repo 與上架 release 必須先固定，不能混用不同 checkout", "外部同步與備份是選配功能，資料邊界與權限需逐項確認"], "en": ["The canonical repository and release must be fixed before publishing; different checkouts cannot be mixed", "External sync and backup are optional and require separate boundary and permission review"]},
     },
 }
 
@@ -258,6 +313,9 @@ def clip(text: str, limit: int = 200) -> str:
 
 
 def load_profile(pid: str) -> dict:
+    local = LOCAL_FIRST_PARTY_PROFILES.get(pid)
+    if local and local.is_file():
+        return yaml.safe_load(local.read_text(encoding="utf-8"))
     if pid in FIRST_PARTY:
         import urllib.request
         url = f"https://raw.githubusercontent.com/{FIRST_PARTY[pid]}/main/.smallgreen/profile.yaml"
