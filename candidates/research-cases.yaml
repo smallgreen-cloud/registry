@@ -2,7 +2,7 @@ schema_version: "0.1.0"
 title:
   zh-tw: 研究中候選案例
   en: Research-stage candidate cases
-checked_on: "2026-08-27"
+checked_on: "2026-08-28"
 projects:
   - id: cloud-mail
     name: Cloud Mail
@@ -530,3 +530,20 @@ projects:
     architecture: {github: [issues, api], external_services: [GitHub OAuth]}
     current_stage: {zh-tw: 產品模式與依賴已整理, 尚未完成與 giscus 的選型比較, en: Product model and dependencies are mapped; comparison with giscus is pending}
     next_steps: {zh-tw: [比較 Issues 與 Discussions 的資料邊界, 測試頁面映射與刪除, 依維護狀態決定是否保留], en: [Compare Issues and Discussions boundaries, test mapping and deletion, decide whether to keep it based on maintenance]}
+
+  - id: foreclosure-map
+    name: 法拍地圖
+    axis: github-runtime
+    state: content-research
+    state_label: {zh-tw: 研究中／待部署驗證, en: In research / deployment verification pending}
+    source: {repository: ai-cooperation/foreclosure-map, license: Apache-2.0, default_branch: main, last_push: "2026-08-29", checked_on: "2026-08-29"}
+    product_summary:
+      project_type: {zh-tw: 將台灣法院法拍物件整理成可篩選的互動地圖與週期資料管線, en: An interactive map and weekly data pipeline for Taiwan court-auction properties}
+      problem: {zh-tw: 法拍公告分散在多個法院系統，使用者難以用地理位置與條件快速查找, en: Court-auction notices are spread across multiple court systems, making geographic and condition-based search difficult}
+      audience: {zh-tw: [想查詢法拍屋與法拍土地的個人, 不動產從業者, 不動產市場研究者], en: [People searching for auctioned homes and land, real-estate professionals, property-market researchers]}
+      capabilities: {zh-tw: [在地圖瀏覽有座標的法拍物件, 依物件類型法院縣市拍別與底價篩選, 開啟法院公告原文, 保留每週資料快照與歷史索引], en: [Browse geocoded auction properties on a map, filter by type court county auction round and price, open court notices, retain weekly snapshots and a history index]}
+      deployment_requirements: {zh-tw: [Python 3、Playwright 與 Chromium, 可執行每週排程的 runner, 靜態 hosting 或 GitHub Pages, 需先核對法院與地理編碼服務的使用條款], en: [Python 3, Playwright and Chromium, a runner for weekly scheduling, static hosting or GitHub Pages, and review of court and geocoding service terms]}
+      limitations: {zh-tw: [地理編碼成功率與資料新鮮度會受外部服務與排程影響, 公開快照的保存與再散布政策待確認, 第三方資料與外部服務不因上游 Apache-2.0 而改變授權, 不構成法律估價或投資建議], en: [Geocoding coverage and freshness depend on external services and scheduling, public snapshot retention and redistribution policies need confirmation, third-party data and external services remain under their own terms despite the upstream Apache-2.0 license, and the tool is not legal valuation or investment advice]}
+    architecture: {github: [repository, pages], external_services: [司法院法拍公告系統, twland.ronny.tw, 國土測繪中心 NLSC, Leaflet CDN, Google tag, optional Telegram, optional SMTP]}
+    current_stage: {zh-tw: 已核對上游公開 repo、GitHub Pages 與 b7345422e2f63e815c4a8e27fefdbcf27e5d81d6；上游已補 Apache-2.0 LICENSE 與 README 邊界說明，但可攜部署契約、資料條款與 SmallGreen 實機驗證尚未完成, en: The public upstream repository, GitHub Pages site and commit b7345422e2f63e815c4a8e27fefdbcf27e5d81d6 are checked; upstream now includes an Apache-2.0 LICENSE and README boundary disclosure, but portable deployment contracts, data terms and SmallGreen live verification are incomplete}
+    next_steps: {zh-tw: [建立不含上游程式的 SmallGreen adapter 並把 runner 路徑改為可設定, 核對司法院 twland NLSC 與 CDN 的條款及抓取頻率, 用固定 fixture 驗證 scrape geocode build 與重跑冪等, 完成真實部署驗收與 teardown 後再評估升級], en: [Build a SmallGreen adapter without redistributing upstream code and make runner paths configurable, review court twland NLSC and CDN terms and request rates, verify scrape geocode build and rerun idempotency with fixed fixtures, then complete live deployment and teardown before considering promotion]}
