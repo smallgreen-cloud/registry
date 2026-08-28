@@ -38,15 +38,6 @@ services:
   tapcard-mcp:
     one_liner: A self-hosted NFC and QR business card with a private AI card wall — public page on tap, received cards stored in your own account
     data_flow: NFC and QR profile pages are public; received contacts, thumbnails and MCP keys stay private in your own D1, R2 and KV
-  homebox-edge:
-    one_liner: An asset manager that keeps equipment, locations, warranties and photos in your own account
-    data_flow: Asset metadata and MCP credentials stay in your D1/KV while private originals and thumbnails stay in R2; image transformation uses the configured Images binding
-  meeting-capture-kit:
-    one_liner: A pipeline that turns LINE meeting audio into notes in your private GitHub repository
-    data_flow: LINE audio is processed by the deployer's selected STT and summary providers; Worker state stays in KV and the resulting Markdown stays in the deployer's private repository
-  kb-vault:
-    one_liner: A personal Markdown knowledge base that gives AI controlled search and MCP access
-    data_flow: Notes and graph data stay in the deployer's D1/KV and optional synchronization sends only the configured data to separately reviewed services
   uptimeflare:
     one_liner: Service monitoring and a public status page with scheduled probes and D1 history
     data_flow: Scheduled checks status history and optional outage notifications run in your own account
