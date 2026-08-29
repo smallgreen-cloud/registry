@@ -1,0 +1,122 @@
+{
+  "schema_version": "0.4.0",
+  "spec_version": "0.4.0",
+  "project_id": "fluxgate",
+  "submitted_at": "2026-08-28T16:42:34Z",
+  "deploy_event": {
+    "date": "2026-08-29",
+    "profile": "small-app",
+    "path": "A-template",
+    "result": "success"
+  },
+  "maturity_reached": "D5a",
+  "code_metrics": {
+    "loc": 1421,
+    "dependency_count": 1,
+    "measured_at_commit": "156874a4362a939ae2587ce7fc1ce7d9bf712301",
+    "tool": "find src scripts -type f (js/mjs) + wc -l；deps=package.json dependencies+devDependencies；工作樹含尚未提交的 open-source prep 變更"
+  },
+  "conformance": {
+    "minutes": 0,
+    "result": "not-run"
+  },
+  "low_carbon": {
+    "scale_to_zero": true,
+    "green_compute": false,
+    "no_idle_infra": true
+  },
+  "free_tier": {
+    "grade": "C",
+    "quota_notes": [
+      "Workers AI 是遠端、配額／費用敏感的依賴；本次 E2E 僅使用合成 prompt，未宣稱帳號方案或固定 neuron 額度。",
+      "本次沒有 CI conformance run；本地 contract/profile/registry checks 已通過，需在維護者 commit 後由 CI 重跑。",
+      "本 Pack 的 live deployment 驗證包含一次 REST draft 生圖與一次 MCP 生圖；實際輸出尺寸由圖片 bytes 回讀，而非假設請求尺寸。"
+    ]
+  },
+  "unverified_scope": [
+    {
+      "surface": "乾淨 Cloudflare 測試帳號獨立重跑",
+      "reason": "本次使用已登入帳號中的隔離 Worker、KV namespace 與 R2 bucket；帳號原有資源保留，未宣稱 clean-account coverage。",
+      "blocker_kind": "requires-human"
+    },
+    {
+      "surface": "Firebase 會員登入、live tier 與用量寫入",
+      "reason": "Firebase 整合是選配，本次部署留空 Firebase 變數並使用部署者手動 key。",
+      "blocker_kind": "external-dependency"
+    },
+    {
+      "surface": "Cron 七日保留期與失敗 Telegram 告警",
+      "reason": "本次未等待七日，也未設定 Telegram 選配 secrets。",
+      "blocker_kind": "cost"
+    },
+    {
+      "surface": "R2 備份／還原流程",
+      "reason": "本次驗證圖片可由 Worker URL 讀取與 teardown；未執行外部 S3 相容備份與還原。",
+      "blocker_kind": "other"
+    },
+    {
+      "surface": "匿名首頁限制與跨站拒絕",
+      "reason": "本次功能驗收使用手動 key，未覆蓋匿名 IP cooldown 與 same-site 邊界。",
+      "blocker_kind": "other"
+    }
+  ],
+  "agent_matrix": [
+    {
+      "role": "deployer",
+      "agent": "codex",
+      "model": "GPT-5",
+      "version": "Codex desktop",
+      "result": "assisted",
+      "human_interventions": 1,
+      "stuck_state": null,
+      "retries": 2,
+      "date": "2026-08-29",
+      "self_repairs": [
+        {
+          "action": "在 Apple Silicon PATH 下補安裝 @cloudflare/workerd-darwin-arm64，未改 package.json 或 lockfile",
+          "reason": "初始 npx wrangler 使用了 x64 workerd，與目前 arm64 Node 平台不相容。",
+          "kind": "other"
+        }
+      ]
+    }
+  ],
+  "teardown": {
+    "performed": true,
+    "pass": true,
+    "residual_resources": [],
+    "method": "刪除隔離 E2E Worker、KV namespace 與 R2 bucket；R2 先以一次性 cleanup Worker 刪除 2 個物件，再刪除 bucket；測試 URL 隨後回 HTTP 404。帳號既有資源未動。",
+    "date": "2026-08-29"
+  },
+  "user_acceptance": [
+    {
+      "task": "GET /health → HTTP 200 且 status=ok",
+      "result": "pass",
+      "date": "2026-08-29"
+    },
+    {
+      "task": "部署者手動 key 寫入遠端 KV，完成後清除該 key",
+      "result": "pass",
+      "date": "2026-08-29"
+    },
+    {
+      "task": "REST /generate draft 合成 prompt → HTTP 200、image_url 可讀，圖片 HTTP 200 image/jpeg",
+      "result": "pass",
+      "date": "2026-08-29"
+    },
+    {
+      "task": "MCP generate_image → check_job → 圖片 URL，兩個 MCP 回應與圖片均可讀",
+      "result": "pass",
+      "date": "2026-08-29"
+    },
+    {
+      "task": "隔離資源 teardown → Worker、KV、R2 皆刪除，測試 endpoint HTTP 404",
+      "result": "pass",
+      "date": "2026-08-29"
+    }
+  ],
+  "verifier_verdict": {
+    "by": "Codex",
+    "usable": true,
+    "note": "在已登入 Cloudflare 帳號中，FluxGate 的健康檢查、手動 key、REST draft 生圖、MCP 兩步驟生圖與圖片 HTTP 讀取均通過；隔離資源已完整清除。這是可用的隔離 E2E 證據，不等同於乾淨帳號或正式公開 release 審查。"
+  }
+}
