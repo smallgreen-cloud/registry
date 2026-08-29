@@ -1,0 +1,130 @@
+{
+  "schema_version": "0.4.0",
+  "spec_version": "0.4.0",
+  "project_id": "foreclosure-map",
+  "submitted_at": "2026-08-29T14:15:17Z",
+  "deploy_event": {
+    "date": "2026-08-29",
+    "profile": "small-app+pipeline",
+    "path": "C-adapter",
+    "result": "success",
+    "failure_note": "部署成功的是 6 筆真實資料的 smoke artifact；9,942 筆全量 geocode 因 twland DNS／連線與 NLSC network failure 未完成，未宣稱全量發布。"
+  },
+  "maturity_reached": "D4-degraded",
+  "code_metrics": {
+    "loc": 3489,
+    "dependency_count": 2,
+    "measured_at_commit": "b7345422e2f63e815c4a8e27fefdbcf27e5d81d6",
+    "tool": "git ls-files（py/sh/html/js/css/md/txt）+ wc -l；scripts/requirements.txt dependencies=2"
+  },
+  "conformance": {
+    "minutes": 0,
+    "result": "pass",
+    "ci_run_url": "https://github.com/ai-cooperation/foreclosure-map/commit/b7345422e2f63e815c4a8e27fefdbcf27e5d81d6"
+  },
+  "low_carbon": {
+    "scale_to_zero": true,
+    "green_compute": false,
+    "no_idle_infra": true
+  },
+  "free_tier": {
+    "grade": "C",
+    "quota_notes": [
+      "Cloudflare Pages sandbox deployment is static and has no declared runtime secret.",
+      "每筆 geocode 會呼叫 twland 或 NLSC；本次全量測試受到第三方服務可用性與網路錯誤影響，未作固定額度或效能保證。"
+    ]
+  },
+  "unverified_scope": [
+    {
+      "surface": "9,942 筆全量 geocode 與全量 build",
+      "reason": "分片與重跑均觀測到 twland DNS／connection failure，NLSC 也出現 network unreachable／TLS timeout；完整 geocoded JSON 未產生。",
+      "blocker_kind": "external-dependency"
+    },
+    {
+      "surface": "每週自動 run.sh 與 GitHub push",
+      "reason": "上游 run.sh 含固定本機路徑與 push／通知副作用，本次以隔離目錄逐步執行，未觸發自動推送。",
+      "blocker_kind": "other"
+    },
+    {
+      "surface": "公開資料保存、再散布與刪除政策",
+      "reason": "法院資料與 geocoder 的使用條款仍需維護者核對。",
+      "blocker_kind": "requires-human"
+    },
+    {
+      "surface": "Python runtime portability",
+      "reason": "Python 3.14／OpenSSL 3.6 對 NLSC 憑證失敗；macOS system Python 3.9／LibreSSL 可完成 6 筆 smoke，但 exact supported versions 尚未定義。",
+      "blocker_kind": "platform-limit"
+    }
+  ],
+  "agent_matrix": [
+    {
+      "role": "deployer",
+      "agent": "codex",
+      "model": "GPT-5",
+      "version": "Codex desktop",
+      "result": "assisted",
+      "human_interventions": 1,
+      "stuck_state": "full-geocode-external-service-failure",
+      "retries": 2,
+      "date": "2026-08-29",
+      "self_repairs": [
+        {
+          "action": "改用 macOS system Python 3.9 執行 geocode smoke，並將 22 法院 raw 按法院分片落檔。",
+          "reason": "Python 3.14／OpenSSL 3.6 無法通過 NLSC 憑證，且 upstream geocode.py 只在最後輸出完整檔案。",
+          "kind": "other"
+        }
+      ]
+    }
+  ],
+  "teardown": {
+    "performed": false,
+    "pass": false,
+    "residual_resources": [
+      "Pages project: foreclosure-map-sandbox（sandbox review deployment）"
+    ],
+    "method": "保留隔離 sandbox Pages 供人工檢視；正式目錄站 smallgreen-site 未覆蓋。",
+    "date": "2026-08-29"
+  },
+  "user_acceptance": [
+    {
+      "task": "上游 main 22 法院 scrape → 21 法院成功、LCD 無資料、raw 9,942 筆",
+      "result": "pass",
+      "date": "2026-08-29"
+    },
+    {
+      "task": "土地 3 筆＋建物 3 筆實際 geocode → 6/6 API success、0 failure",
+      "result": "pass",
+      "date": "2026-08-29"
+    },
+    {
+      "task": "6 筆 geocoded fixture → upstream build current.json，6 features、ID 唯一、座標完整",
+      "result": "pass",
+      "date": "2026-08-29"
+    },
+    {
+      "task": "sandbox Pages production URL 的首頁、map.html、data/current.json → HTTP 200",
+      "result": "pass",
+      "date": "2026-08-29"
+    },
+    {
+      "task": "無頭瀏覽器載入地圖、渲染 6 markers、土地篩選後 3 markers、page error=0",
+      "result": "pass",
+      "date": "2026-08-29"
+    },
+    {
+      "task": "9,942 筆全量 geocode → 完整輸出與 full build",
+      "result": "fail",
+      "date": "2026-08-29"
+    },
+    {
+      "task": "首頁硬編碼統計與 smoke current.json 一致",
+      "result": "fail",
+      "date": "2026-08-29"
+    }
+  ],
+  "verifier_verdict": {
+    "by": "Codex",
+    "usable": true,
+    "note": "本次證明上游 scrape、代表性 geocode、build、sandbox Pages 部署與地圖篩選可運行；全量 geocode 受外部服務阻塞，且首頁統計仍是硬編碼，故不得宣稱 SmallGreen Ready。"
+  }
+}
