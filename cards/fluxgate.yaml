@@ -1,0 +1,84 @@
+# 機械生成（tools/gen_cards.py）——editorial 欄位改 EDITORIAL 字典後重生，勿直接手改推導欄位
+id: fluxgate
+name: FluxGate
+one_liner: 把白話生圖意圖轉成 FLUX 圖片，透過 REST 與 MCP 提供自架生圖入口
+product_summary:
+  project_type:
+    zh-tw: 自架 Cloudflare AI 生圖閘道
+    en: A self-hosted Cloudflare AI image-generation gateway
+  problem:
+    zh-tw: 個人網站與 AI agent 需要一個可控的生圖入口，不想把 API key、圖片與用量資料交給不透明的第三方服務
+    en: Personal sites and AI agents need a controlled image-generation entry point
+      without handing keys, images and usage data to an opaque third party
+  audience:
+    zh-tw:
+    - 想在自己 Cloudflare 帳號部署生圖工具的人
+    - 需要 REST 與 MCP 共用入口的教學者、創作者與小型團隊
+    en:
+    - People who want to deploy an image tool in their own Cloudflare account
+    - Educators, creators and small teams that need one REST and MCP entry point
+  capabilities:
+    zh-tw:
+    - 把白話意圖整理成風格、主體與 FLUX prompt
+    - 透過 REST 或 MCP 產生並提供圖片
+    - 以 KV 管理手動 key 與用量，以 R2 保存圖片，並由 Cron 清理舊圖
+    en:
+    - Turn plain-language intent into a style, subject and FLUX prompt
+    - Generate and serve images through REST or MCP
+    - Manage manual keys and usage in KV, store images in R2 and clean old images
+      with Cron
+  deployment_requirements:
+    zh-tw:
+    - 需要自己的 Cloudflare Workers、Workers AI、KV 與 R2
+    - 需要設定資源 binding；Firebase 會員登入與跨帳號轉發器是選配
+    en:
+    - Your own Cloudflare Workers, Workers AI, KV and R2
+    - Resource bindings are required; Firebase membership and a cross-account forwarder
+      are optional
+  limitations:
+    zh-tw:
+    - 版型尺寸是 composition policy 的目標，FLUX.1-schnell 實際輸出尺寸由模型決定
+    - 目前 card 是 discovered；乾淨 Cloudflare 帳號重跑、備份／還原與完整維運告警仍未完成獨立驗證
+    en:
+    - Layout dimensions are composition-policy targets; FLUX.1-schnell determines
+      the actual output size
+    - This card is currently discovered; a clean-account rerun, backup/restore and
+      full operational alerting still need independent verification
+categories:
+- utilities
+profile: small-app
+repo:
+  upstream: ai-cooperation/fluxgate
+  license: MIT
+components:
+  cloudflare:
+  - workers
+  - workers-ai
+  - kv
+  - r2
+  - cron
+login_method: token
+data_flow:
+  external_services:
+  - oauth2.googleapis.com
+  - firestore.googleapis.com
+  - www.googleapis.com
+  - api.telegram.org
+  disclosure: 開源預設為單一 Cloudflare 帳號；Firebase 會員整合與跨帳號轉發器皆為選配
+verification:
+  level: discovered
+  spec_version: 0.4.0
+  last_verified: '2026-08-29'
+  evidence_packs:
+  - evidence/fluxgate/2026-08-29-isolated-01.json
+  compatible_agents:
+  - agent: codex
+    model: GPT-5
+    result: assisted
+free_tier_grade: C
+low_carbon:
+  scale_to_zero: true
+  green_compute: false
+  no_idle_infra: true
+maintenance_status: active
+quota_note: Workers AI 是遠端、配額／費用敏感的依賴；本次 E2E 僅使用合成 prompt，未宣稱帳號方案或固定 neuron 額度。
