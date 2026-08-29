@@ -37,6 +37,7 @@ FIRST_PARTY = {
     "homebox-edge": "smallgreen-cloud/homebox-edge",
     "meeting-capture-kit": "ai-cooperation/meeting-capture-kit",
     "kb-vault": "AlanChen75/kb-vault",
+    "fluxgate": "ai-cooperation/fluxgate",
 }
 
 # first-party contracts may be staged locally before their public release commit is
@@ -139,6 +140,12 @@ EDITORIAL = {
         "name": "Free Second Brain", "one_liner": "把零散筆記整理成可搜尋、可連結，並能供 AI 取用的個人知識庫",
         "categories": ["sharing"],
         "components": ["workers", "pages", "d1", "kv", "cron"],
+        "maintenance_status": "active", "license": "MIT",
+    },
+    "fluxgate": {
+        "name": "FluxGate", "one_liner": "把白話生圖意圖轉成 FLUX 圖片，透過 REST 與 MCP 提供自架生圖入口",
+        "categories": ["utilities"],
+        "components": ["workers", "workers-ai", "kv", "r2", "cron"],
         "maintenance_status": "active", "license": "MIT",
     },
     "microfeed": {
@@ -280,6 +287,14 @@ PRODUCT_SUMMARY = {
         "deployment_requirements": {"zh-tw": ["需要自己的 Cloudflare Worker、Pages、D1、KV 與 Private repo", "啟用 OAuth、RSS、Notion 或 GitHub 備份時，需另設各自憑證"], "en": ["Your own Cloudflare Worker, Pages, D1, KV and private repository", "OAuth, RSS, Notion or GitHub backup require their own credentials when enabled"]},
         "limitations": {"zh-tw": ["canonical repo 與上架 release 必須先固定，不能混用不同 checkout", "外部同步與備份是選配功能，資料邊界與權限需逐項確認"], "en": ["The canonical repository and release must be fixed before publishing; different checkouts cannot be mixed", "External sync and backup are optional and require separate boundary and permission review"]},
     },
+    "fluxgate": {
+        "project_type": {"zh-tw": "自架 Cloudflare AI 生圖閘道", "en": "A self-hosted Cloudflare AI image-generation gateway"},
+        "problem": {"zh-tw": "個人網站與 AI agent 需要一個可控的生圖入口，不想把 API key、圖片與用量資料交給不透明的第三方服務", "en": "Personal sites and AI agents need a controlled image-generation entry point without handing keys, images and usage data to an opaque third party"},
+        "audience": {"zh-tw": ["想在自己 Cloudflare 帳號部署生圖工具的人", "需要 REST 與 MCP 共用入口的教學者、創作者與小型團隊"], "en": ["People who want to deploy an image tool in their own Cloudflare account", "Educators, creators and small teams that need one REST and MCP entry point"]},
+        "capabilities": {"zh-tw": ["把白話意圖整理成風格、主體與 FLUX prompt", "透過 REST 或 MCP 產生並提供圖片", "以 KV 管理手動 key 與用量，以 R2 保存圖片，並由 Cron 清理舊圖"], "en": ["Turn plain-language intent into a style, subject and FLUX prompt", "Generate and serve images through REST or MCP", "Manage manual keys and usage in KV, store images in R2 and clean old images with Cron"]},
+        "deployment_requirements": {"zh-tw": ["需要自己的 Cloudflare Workers、Workers AI、KV 與 R2", "需要設定資源 binding；Firebase 會員登入與跨帳號轉發器是選配"], "en": ["Your own Cloudflare Workers, Workers AI, KV and R2", "Resource bindings are required; Firebase membership and a cross-account forwarder are optional"]},
+        "limitations": {"zh-tw": ["版型尺寸是 composition policy 的目標，FLUX.1-schnell 實際輸出尺寸由模型決定", "目前 card 是 discovered；乾淨 Cloudflare 帳號重跑、備份／還原與完整維運告警仍未完成獨立驗證"], "en": ["Layout dimensions are composition-policy targets; FLUX.1-schnell determines the actual output size", "This card is currently discovered; a clean-account rerun, backup/restore and full operational alerting still need independent verification"]},
+    },
 }
 
 
@@ -392,15 +407,33 @@ def build_card(pid: str) -> dict:
     return card
 
 
+def projects_with_evidence(project_ids, registry_root=REG):
+    """Only projects with an append-only Pack can become service cards.
+
+    First-party onboarding entries may be public before deployment evidence exists.
+    They remain in onboarding/ and must not make the all-cards generator fail or
+    create a card that cannot satisfy the registry's Evidence-derived fields.
+    """
+    return [
+        pid for pid in project_ids
+        if any((registry_root / "evidence" / pid).glob("*.json"))
+    ]
+
+
 def main():
     out = REG / "cards"
     out.mkdir(exist_ok=True)
-    for pid in list(PROJECTS) + list(FIRST_PARTY):
+    project_ids = projects_with_evidence(list(PROJECTS) + list(FIRST_PARTY))
+    skipped = sorted((set(PROJECTS) | set(FIRST_PARTY)) - set(project_ids))
+    for pid in skipped:
+        print(f"skipped {pid}: no Evidence Pack (onboarding only)")
+    for pid in project_ids:
         card = build_card(pid)
         (out / f"{pid}.yaml").write_text(
             "# 機械生成（tools/gen_cards.py）——editorial 欄位改 EDITORIAL 字典後重生，勿直接手改推導欄位\n"
             + yaml.safe_dump(card, allow_unicode=True, sort_keys=False), encoding="utf-8")
-    print(f"generated {len(PROJECTS) + len(FIRST_PARTY)} cards（含 {len(FIRST_PARTY)} 張 first-party）")
+    first_party_cards = len(set(project_ids) & set(FIRST_PARTY))
+    print(f"generated {len(project_ids)} cards（含 {first_party_cards} 張 first-party；{len(skipped)} 張 onboarding-only）")
 
 
 if __name__ == "__main__":
