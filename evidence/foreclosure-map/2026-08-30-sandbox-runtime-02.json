@@ -1,0 +1,163 @@
+{
+  "schema_version": "0.4.0",
+  "spec_version": "0.4.0",
+  "project_id": "foreclosure-map",
+  "submitted_at": "2026-08-30T02:50:00Z",
+  "supersedes": "evidence/foreclosure-map/2026-08-29-sandbox-runtime-01.json",
+  "deploy_event": {
+    "date": "2026-08-30",
+    "profile": "small-app+pipeline",
+    "path": "C-adapter",
+    "result": "success",
+    "failure_note": "22 法院 raw 9,942 筆完成分片 geocode；8,176 筆有座標、1,766 筆 fail-closed。完整 build 與 Cloudflare sandbox Pages production deploy 已完成；部署 artifact 僅同步首頁本次 raw 統計 9,942，未改上游 commit。"
+  },
+  "maturity_reached": "D4-degraded",
+  "code_metrics": {
+    "loc": 3489,
+    "dependency_count": 2,
+    "measured_at_commit": "b7345422e2f63e815c4a8e27fefdbcf27e5d81d6",
+    "tool": "git ls-files（py/sh/html/js/css/md/txt）+ wc -l；scripts/requirements.txt dependencies=2"
+  },
+  "conformance": {
+    "minutes": 0,
+    "result": "pass",
+    "ci_run_url": "https://github.com/ai-cooperation/foreclosure-map/commit/b7345422e2f63e815c4a8e27fefdbcf27e5d81d6"
+  },
+  "low_carbon": {
+    "scale_to_zero": true,
+    "green_compute": false,
+    "no_idle_infra": true
+  },
+  "free_tier": {
+    "grade": "C",
+    "quota_notes": [
+      "Cloudflare Pages sandbox deployment is static and has no declared runtime secret.",
+      "全量 geocode 以單序列、0.6 秒節流執行；地理編碼服務為外部依賴，未作固定額度或效能保證。"
+    ]
+  },
+  "unverified_scope": [
+    {
+      "surface": "上游 run.sh 的每週自動執行、Git push 與通知副作用",
+      "reason": "本次以隔離 raw/geocode/build 逐步執行並部署 sandbox；未觸發上游固定本機路徑與自動 push。",
+      "blocker_kind": "other"
+    },
+    {
+      "surface": "公開法院資料與 geocoder 的保存、再散布及刪除政策",
+      "reason": "仍需維護者核對司法院與地理編碼服務的現行使用條款。",
+      "blocker_kind": "requires-human"
+    },
+    {
+      "surface": "SmallGreen 嚴格 no-external-runtime gate",
+      "reason": "map.html 動態引用 unpkg Leaflet／MarkerCluster、Google Tag Manager 與 NLSC WMTS；本次功能可用，但若該 gate 強制則仍需改成自帶資產與明確遙測政策。",
+      "blocker_kind": "other"
+    },
+    {
+      "surface": "Python 3.14 portability",
+      "reason": "Python 3.14／OpenSSL 3.6 對 NLSC 憑證仍有相容性問題；本次全量使用 macOS system Python 3.9／LibreSSL 完成。",
+      "blocker_kind": "platform-limit"
+    }
+  ],
+  "agent_matrix": [
+    {
+      "role": "deployer",
+      "agent": "codex",
+      "model": "GPT-5",
+      "version": "Codex desktop",
+      "result": "assisted",
+      "human_interventions": 1,
+      "stuck_state": null,
+      "retries": 3,
+      "date": "2026-08-30",
+      "self_repairs": [
+        {
+          "action": "改用 macOS system Python 3.9 執行 geocode，並按法院分片保存 JSON、cache 與 log。",
+          "reason": "Python 3.14／OpenSSL 3.6 無法穩定通過 NLSC 憑證，且上游 geocode.py 只在全批結束時輸出。",
+          "kind": "other"
+        },
+        {
+          "action": "為目前確認的 sandbox Cloudflare 帳號建立隔離 Pages project foreclosure-map-sandbox。",
+          "reason": "目前帳號內不存在先前同名 project，Cloudflare API 回傳 Project not found。",
+          "kind": "other"
+        }
+      ]
+    }
+  ],
+  "network_behavior_report": {
+    "declared_domains": [
+      "aomp109.judicial.gov.tw",
+      "twland.ronny.tw",
+      "api.nlsc.gov.tw",
+      "unpkg.com",
+      "www.googletagmanager.com",
+      "wmts.nlsc.gov.tw",
+      "maps.nlsc.gov.tw"
+    ],
+    "observed_domains": [
+      "aomp109.judicial.gov.tw",
+      "twland.ronny.tw",
+      "api.nlsc.gov.tw",
+      "unpkg.com",
+      "www.googletagmanager.com",
+      "wmts.nlsc.gov.tw",
+      "maps.nlsc.gov.tw"
+    ],
+    "undeclared": [],
+    "verdict": "pass"
+  },
+  "teardown": {
+    "performed": false,
+    "pass": false,
+    "residual_resources": [
+      "Pages project: foreclosure-map-sandbox（sandbox review deployment）"
+    ],
+    "method": "保留隔離 sandbox Pages 供人工檢視；正式目錄站 smallgreen-site 未覆蓋。",
+    "date": "2026-08-30"
+  },
+  "user_acceptance": [
+    {
+      "task": "上游 main 22 法院 scrape → raw 9,942 筆、21 法院成功、LCD 無資料",
+      "result": "pass",
+      "date": "2026-08-30"
+    },
+    {
+      "task": "9,942 筆全量分片 geocode → 8,176 筆成功、1,766 筆 fail-closed，合併輸出筆數完整",
+      "result": "pass",
+      "date": "2026-08-30"
+    },
+    {
+      "task": "full build → current.json 8,176 features、history 4,570 identifiers、week 2026-W34",
+      "result": "pass",
+      "date": "2026-08-30"
+    },
+    {
+      "task": "Cloudflare Pages production deploy → https://foreclosure-map-sandbox-htc.pages.dev，deployment 39f14e9f-2cc6-4443-b480-c6688019aa06，source b734542",
+      "result": "pass",
+      "date": "2026-08-30"
+    },
+    {
+      "task": "遠端 current.json SHA-256 與本地 build 一致 → 6496c258b994b05a1f4a5da6b4eb053ad11a180594aabb24d0d43de3d8a7f7ac",
+      "result": "pass",
+      "date": "2026-08-30"
+    },
+    {
+      "task": "瀏覽器載入 map、渲染 8,176 features、土地篩選 5,863 筆、console error=0",
+      "result": "pass",
+      "date": "2026-08-30"
+    },
+    {
+      "task": "部署 LICENSE → HTTP 200，內容為 Apache License Version 2.0",
+      "result": "pass",
+      "date": "2026-08-30"
+    },
+    {
+      "task": "首頁顯示本次 raw 統計 9,942，與實際抓取量一致",
+      "result": "pass",
+      "date": "2026-08-30"
+    }
+  ],
+  "verifier_verdict": {
+    "by": "Codex",
+    "usable": true,
+    "note": "已驗證上游 scrape、全量分片 geocode、合併、build、sandbox Pages deploy、遠端 SHA、HTTP、Apache-2.0 LICENSE 與瀏覽器篩選。1,766 筆保守無座標，且頁面仍依賴外部 CDN／GTM／WMTS；因此為可用的 D4-degraded sandbox，不宣稱 SmallGreen production Ready。"
+  }
+}
