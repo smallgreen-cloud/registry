@@ -2,7 +2,7 @@ schema_version: "0.1.0"
 title:
   zh-tw: 研究中候選案例
   en: Research-stage candidate cases
-checked_on: "2026-08-28"
+checked_on: "2026-09-15"
 projects:
   - id: cloud-mail
     name: Cloud Mail
@@ -547,3 +547,21 @@ projects:
     architecture: {github: [repository, pages], external_services: [司法院法拍公告系統, twland.ronny.tw, 國土測繪中心 NLSC, Leaflet CDN, Google tag, optional Telegram, optional SMTP]}
     current_stage: {zh-tw: 已核對上游公開 repo、GitHub Pages 與 b7345422e2f63e815c4a8e27fefdbcf27e5d81d6；上游已補 Apache-2.0 LICENSE 與 README 邊界說明，但可攜部署契約、資料條款與 SmallGreen 實機驗證尚未完成, en: The public upstream repository, GitHub Pages site and commit b7345422e2f63e815c4a8e27fefdbcf27e5d81d6 are checked; upstream now includes an Apache-2.0 LICENSE and README boundary disclosure, but portable deployment contracts, data terms and SmallGreen live verification are incomplete}
     next_steps: {zh-tw: [建立不含上游程式的 SmallGreen adapter 並把 runner 路徑改為可設定, 核對司法院 twland NLSC 與 CDN 的條款及抓取頻率, 用固定 fixture 驗證 scrape geocode build 與重跑冪等, 完成真實部署驗收與 teardown 後再評估升級], en: [Build a SmallGreen adapter without redistributing upstream code and make runner paths configurable, review court twland NLSC and CDN terms and request rates, verify scrape geocode build and rerun idempotency with fixed fixtures, then complete live deployment and teardown before considering promotion]}
+
+  - id: audio-notes-sites
+    name: Audio Notes
+    axis: cloudflare-native
+    state: content-research
+    state_label: {zh-tw: 開源候選／待完整驗證, en: Open-source candidate / full verification pending}
+    source: {repository: ai-cooperation/audio-notes-sites, license: MIT, default_branch: main, last_push: "2026-09-15", checked_on: "2026-09-15"}
+    product_summary:
+      project_type: {zh-tw: 由 ChatGPT Work、私人 Sites 與 Groq 組成的自有會議筆記系統, en: An owned meeting-notes system combining ChatGPT Work, a private Sites deployment and Groq}
+      problem: {zh-tw: 解決會議錄音交給外部筆記服務後，逐字稿、摘要、詞庫與待辦散落且難以自行掌握的問題, en: Solves the loss of control that occurs when recordings, transcripts, summaries, terminology and follow-ups are scattered across external note services}
+      audience: {zh-tw: [想把會議資料保存在自己服務的人, 已具備 ChatGPT Work 與 Sites 存取權的人, 願意自行設定 Groq Key 的個人或小型團隊], en: [People who want meeting data in their own service, people with ChatGPT Work and Sites access, individuals or small teams willing to configure their own Groq key]}
+      capabilities: {zh-tw: [在 Work 中處理會議錄音, 產生逐字稿、術語校正、摘要與後續待辦, 在私人 Sites 保存原稿、校正版、摘要與個人詞庫, 使用自己的 Groq 額度進行語音辨識], en: [Process meeting recordings in Work, produce transcripts terminology corrections summaries and follow-up tasks, store original and corrected transcripts summaries and terminology in private Sites, use the owner's Groq quota for speech recognition]}
+      deployment_requirements: {zh-tw: [可使用 ChatGPT Work 與 Sites 的帳戶, 私人 Sites 部署及其 D1、R2 資源, 使用者自行建立的 Groq API Key, 首次部署需設定加密金鑰並套用資料庫遷移], en: [An account with ChatGPT Work and Sites access, a private Sites deployment with D1 and R2, a user-created Groq API key, initial encryption-secret setup and database migrations]}
+      limitations: {zh-tw: [音訊會傳送至 Groq 進行辨識, Work 傳檔授權與全新帳戶端到端流程尚未獨立驗證, 不保證關閉對話後隔日自動續作, 遠端 MCP OAuth、完整備份還原與自動刪除尚未完成], en: [Audio is sent to Groq for recognition, Work upload authorization and a fresh-account end-to-end flow are not independently verified, unattended next-day continuation is not guaranteed, remote MCP OAuth full backup restore and automated deletion are incomplete]}
+    architecture: {cloudflare: [workers, d1, r2], external_services: [ChatGPT Work, Cloudflare Sites, Groq Speech-to-Text]}
+    current_stage: {zh-tw: 已公開 MIT 原碼並鎖定 d25f8a5998418f28cc9d8ade99fe89eb12ee179a；部署契約、限制與隔離測試已整理，但尚未完成全新帳戶的 Work 傳檔、真實 Groq 轉錄、資料讀回、teardown 與 SmallGreen Evidence Pack, en: MIT source is public and pinned to d25f8a5998418f28cc9d8ade99fe89eb12ee179a; deployment contracts limitations and isolated tests are documented, but fresh-account Work upload real Groq transcription data readback teardown and a SmallGreen Evidence Pack are incomplete}
+    verification_note: {zh-tw: 這是開源候選研究卡　目前證據只涵蓋原碼、文件與隔離測試　不是已驗證服務或 SmallGreen Ready, en: This is an open-source research candidate; current evidence covers source documentation and isolated tests, not a verified service or SmallGreen Ready}
+    next_steps: {zh-tw: [確認 Sites 與 Work 適用的 SmallGreen profile 及證據契約, 在乾淨沙盒帳戶完成部署、Groq 設定、合法傳檔與資料讀回, 驗證資源清除與憑證撤銷, 產出 Evidence Pack 與正式上線畫面後再評估升級], en: [Define the SmallGreen profile and evidence contract for Sites and Work, complete deployment Groq setup authorized upload and data readback in a clean sandbox account, verify resource removal and credential revocation, produce an Evidence Pack and live screenshot before promotion]}
