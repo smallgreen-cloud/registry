@@ -552,16 +552,70 @@ projects:
     name: Audio Notes
     axis: cloudflare-native
     state: content-research
-    state_label: {zh-tw: 開源候選／待完整驗證, en: Open-source candidate / full verification pending}
-    source: {repository: ai-cooperation/audio-notes-sites, license: MIT, default_branch: main, last_push: "2026-09-15", checked_on: "2026-09-15"}
+    state_label:
+      zh-tw: 開源候選／安裝契約待實測
+      en: Open-source candidate / install contract awaiting live verification
+    source:
+      repository: ai-cooperation/audio-notes-sites
+      license: MIT
+      default_branch: main
+      locked_commit: b484d674c8572ecfaf8f9649484fa59db98e2250
+      contract_commit: 9d29844c858c3619dda9d98e1aa5ddc3d42e3e76
+      last_push: "2026-09-16"
+      checked_on: "2026-09-16"
     product_summary:
-      project_type: {zh-tw: 由 ChatGPT Work、私人 Sites 與 Groq 組成的自有會議筆記系統, en: An owned meeting-notes system combining ChatGPT Work, a private Sites deployment and Groq}
-      problem: {zh-tw: 解決會議錄音交給外部筆記服務後，逐字稿、摘要、詞庫與待辦散落且難以自行掌握的問題, en: Solves the loss of control that occurs when recordings, transcripts, summaries, terminology and follow-ups are scattered across external note services}
-      audience: {zh-tw: [想把會議資料保存在自己服務的人, 已具備 ChatGPT Work 與 Sites 存取權的人, 願意自行設定 Groq Key 的個人或小型團隊], en: [People who want meeting data in their own service, people with ChatGPT Work and Sites access, individuals or small teams willing to configure their own Groq key]}
-      capabilities: {zh-tw: [在 Work 中處理會議錄音, 產生逐字稿、術語校正、摘要與後續待辦, 在私人 Sites 保存原稿、校正版、摘要與個人詞庫, 使用自己的 Groq 額度進行語音辨識], en: [Process meeting recordings in Work, produce transcripts terminology corrections summaries and follow-up tasks, store original and corrected transcripts summaries and terminology in private Sites, use the owner's Groq quota for speech recognition]}
-      deployment_requirements: {zh-tw: [可使用 ChatGPT Work 與 Sites 的帳戶, 私人 Sites 部署及其 D1、R2 資源, 使用者自行建立的 Groq API Key, 首次部署需設定加密金鑰並套用資料庫遷移], en: [An account with ChatGPT Work and Sites access, a private Sites deployment with D1 and R2, a user-created Groq API key, initial encryption-secret setup and database migrations]}
-      limitations: {zh-tw: [音訊會傳送至 Groq 進行辨識, Work 傳檔授權與全新帳戶端到端流程尚未獨立驗證, 不保證關閉對話後隔日自動續作, 遠端 MCP OAuth、完整備份還原與自動刪除尚未完成], en: [Audio is sent to Groq for recognition, Work upload authorization and a fresh-account end-to-end flow are not independently verified, unattended next-day continuation is not guaranteed, remote MCP OAuth full backup restore and automated deletion are incomplete]}
-    architecture: {cloudflare: [workers, d1, r2], external_services: [ChatGPT Work, Cloudflare Sites, Groq Speech-to-Text]}
-    current_stage: {zh-tw: 已公開 MIT 原碼並鎖定 d25f8a5998418f28cc9d8ade99fe89eb12ee179a；部署契約、限制與隔離測試已整理，但尚未完成全新帳戶的 Work 傳檔、真實 Groq 轉錄、資料讀回、teardown 與 SmallGreen Evidence Pack, en: MIT source is public and pinned to d25f8a5998418f28cc9d8ade99fe89eb12ee179a; deployment contracts limitations and isolated tests are documented, but fresh-account Work upload real Groq transcription data readback teardown and a SmallGreen Evidence Pack are incomplete}
-    verification_note: {zh-tw: 這是開源候選研究卡　目前證據只涵蓋原碼、文件與隔離測試　不是已驗證服務或 SmallGreen Ready, en: This is an open-source research candidate; current evidence covers source documentation and isolated tests, not a verified service or SmallGreen Ready}
-    next_steps: {zh-tw: [確認 Sites 與 Work 適用的 SmallGreen profile 及證據契約, 在乾淨沙盒帳戶完成部署、Groq 設定、合法傳檔與資料讀回, 驗證資源清除與憑證撤銷, 產出 Evidence Pack 與正式上線畫面後再評估升級], en: [Define the SmallGreen profile and evidence contract for Sites and Work, complete deployment Groq setup authorized upload and data readback in a clean sandbox account, verify resource removal and credential revocation, produce an Evidence Pack and live screenshot before promotion]}
+      project_type:
+        zh-tw: 由 ChatGPT Work 與私人 Sites 組成的自有會議筆記系統，語音辨識使用使用者自己的 Groq API Key
+        en: "An owned meeting-notes system that runs in ChatGPT Work and a private Sites deployment, using the owner's Groq API key for speech recognition"
+      problem:
+        zh-tw: 解決會議錄音交給外部筆記服務後，逐字稿、摘要、詞庫與待辦散落且難以自行掌握的問題
+        en: "Solves the loss of control that occurs when recordings, transcripts, summaries, terminology and follow-ups are scattered across external note services"
+      audience:
+        zh-tw: [想把會議資料保存在自己服務的人, 已具備 ChatGPT Work 與 Sites 存取權的人, 願意自行設定 Groq Key 的個人或小型團隊]
+        en: [People who want meeting data in their own service, People with ChatGPT Work and Sites access, Individuals or small teams willing to configure their own Groq key]
+      capabilities:
+        zh-tw: [在 Work 中處理會議錄音, 產生逐字稿、術語校正、摘要與後續待辦, 在私人 Sites 保存原稿、校正版、摘要與個人詞庫, 使用自己的 Groq 額度進行語音辨識]
+        en: [Process meeting recordings in Work, Produce transcripts terminology corrections summaries and follow-up tasks, Store original and corrected transcripts summaries and terminology in private Sites, Use the owner's Groq quota for speech recognition]
+      deployment_requirements:
+        zh-tw: [帳戶可使用 ChatGPT Work 與 Sites, Work 使用 Sites 受管的 D1 與 R2, 部署後由使用者登入網站自行設定 Groq API Key]
+        en: [An account with ChatGPT Work and Sites access, Sites-managed D1 and R2 provisioned by Work, A user-created Groq API key entered in the application after deployment]
+      limitations:
+        zh-tw: [音訊會傳送至 Groq 進行辨識, Work 傳檔授權與全新帳戶端到端流程尚未獨立驗證, 不保證關閉對話後隔日自動續作, 完整備份還原與自動刪除尚未完成]
+        en: [Audio is sent to Groq for recognition, Work upload authorization and a fresh-account end-to-end flow are not independently verified, Unattended next-day continuation is not guaranteed, Complete backup restore and automated deletion are incomplete]
+    architecture:
+      cloudflare: [workers, d1, r2]
+      external_services: [ChatGPT Work, Cloudflare Sites, Groq Speech-to-Text]
+    agent_install:
+      protocol: smallgreen-install/v1
+      status: candidate
+      deployment_ready: false
+      contract_url: https://raw.githubusercontent.com/ai-cooperation/audio-notes-sites/9d29844c858c3619dda9d98e1aa5ddc3d42e3e76/.smallgreen/install.yaml
+      trigger:
+        zh-tw: 依這網站，幫我部署到我的帳號
+        en: Deploy this service to my account from this page
+      target:
+        client: chatgpt-work
+        hosting: sites
+        execution_mode: native-sites
+      hosting:
+        managed_resources: [site, d1, r2]
+        external_infrastructure: []
+      runtime_setup:
+        name: GROQ_API_KEY
+        timing: after-deploy
+        entry_channel: application-ui
+        chat_handling: forbidden
+        setup_path: /#groq-settings
+      blockers:
+        - 尚未完成全新 Work／Sites 帳號從服務卡啟動的獨立部署驗收
+        - 尚未驗證 Work 對私人 Site 的持久合法附件傳輸授權
+        - 尚未完成 Sites 受管 D1／R2 的全量備份、還原與 teardown zero-diff 驗收
+    current_stage:
+      zh-tw: 已公開 MIT 原碼，新增 SmallGreen 核心契約與 Sites-only Agent Install Contract；來源鎖定 b484d674c8572ecfaf8f9649484fa59db98e2250，契約 commit 為 9d29844c858c3619dda9d98e1aa5ddc3d42e3e76。尚未完成全新帳戶的 Work 傳檔、真實 Groq 轉錄、資料讀回、teardown 與 Evidence Pack
+      en: "MIT source is public with the core SmallGreen contracts and a Sites-only Agent Install Contract. Source is pinned to b484d674c8572ecfaf8f9649484fa59db98e2250 and the contract commit is 9d29844c858c3619dda9d98e1aa5ddc3d42e3e76. Fresh-account Work upload, real Groq transcription, data readback, teardown and an Evidence Pack remain incomplete"
+    verification_note:
+      zh-tw: 這是具有候選安裝契約的研究卡。目前只驗證契約 schema、原碼、文件與隔離測試，不是已驗證服務或 SmallGreen Ready
+      en: "This research card now has a candidate install contract. Current evidence covers contract schema, source, documentation and isolated tests; it is not a verified service or SmallGreen Ready"
+    next_steps:
+      zh-tw: [在乾淨沙盒帳戶用一句話啟動並完成 Sites 部署, 由使用者登入網站後自行設定 Groq Key, 驗證 Work 合法傳檔與四種文件讀回, 驗證資源清除並產出 Evidence Pack 與正式上線畫面]
+      en: [Start and complete the Sites deployment from one sentence in a clean sandbox account, Let the user configure the Groq key in the deployed application, Verify authorized Work upload and four-document readback, Verify resource removal and produce an Evidence Pack plus a live screenshot]

@@ -1,6 +1,6 @@
 # SmallGreen 候選：Audio Notes
 
-狀態：Candidate。原碼已公開；正式部署驗收與 SmallGreen 發布仍待完成。此頁不是服務卡或 Ready 徽章。
+狀態：Candidate。原碼與 Sites-only Agent Install Contract 已公開；正式部署驗收與 SmallGreen Ready 晉級仍待完成。此頁不是 Ready 徽章。
 
 提交日期：2026-09-15；提交帳號：`ai-cooperation`。
 
@@ -19,12 +19,13 @@ Requires actual Work/Sites access and initial Groq key setup. Audio is sent to G
 ## 提交位置與資格
 
 - 公開原碼：[ai-cooperation/audio-notes-sites](https://github.com/ai-cooperation/audio-notes-sites)。
-- 版本：0.1.0 開源候選；鎖定 commit：[`d25f8a5998418f28cc9d8ade99fe89eb12ee179a`](https://github.com/ai-cooperation/audio-notes-sites/tree/d25f8a5998418f28cc9d8ade99fe89eb12ee179a)。
+- 版本：0.1.0 開源候選；部署來源鎖定 commit：[`b484d674c8572ecfaf8f9649484fa59db98e2250`](https://github.com/ai-cooperation/audio-notes-sites/tree/b484d674c8572ecfaf8f9649484fa59db98e2250)；候選安裝契約 commit：[`9d29844c858c3619dda9d98e1aa5ddc3d42e3e76`](https://github.com/ai-cooperation/audio-notes-sites/tree/9d29844c858c3619dda9d98e1aa5ddc3d42e3e76)。
 - 自有程式採 [MIT](https://github.com/ai-cooperation/audio-notes-sites/blob/d25f8a5998418f28cc9d8ade99fe89eb12ee179a/LICENSE)，保留第三方聲明；155 份原碼與文件，全新單一 root 歷史，不含私人營運庫。
 - [Work 部署契約](https://github.com/ai-cooperation/audio-notes-sites/blob/d25f8a5998418f28cc9d8ade99fe89eb12ee179a/docs/WORK_DEPLOY.md)與[限制](https://github.com/ai-cooperation/audio-notes-sites/blob/d25f8a5998418f28cc9d8ade99fe89eb12ee179a/docs/LIMITATIONS.md)必須一起閱讀。
 - 候選介紹提交 `smallgreen-cloud/registry/candidates/audio-notes-sites.md`。
 - 正式網站由 `smallgreen-cloud/site` 的既有生成流程發布，不另建手工頁。
-- Sites是平台代管資源，Work是互動執行端，Groq是外部服務。不能直接偽稱已符合目前需要wrangler契約的Small App/Pipeline Profile；需維護者接受對應profile與證據方式。
+- Sites 是唯一託管環境，Work 是互動執行端；不要求使用者建立外部 Cloudflare 帳號、提供 Cloudflare API Token、部署 GitHub Actions 或其他主機。Groq 是執行期語音辨識 API，Key 只由使用者登入部署後網站自行貼入後台。
+- [候選 Agent Install Contract](https://github.com/ai-cooperation/audio-notes-sites/blob/9d29844c858c3619dda9d98e1aa5ddc3d42e3e76/.smallgreen/install.yaml) 已把一句話觸發、Sites 資源、確認、Secret 邊界、部署步驟、分階段驗收及 blockers 機械化。
 
 遵循 [發布標準](https://github.com/smallgreen-cloud/registry/blob/main/PROJECT_PUBLISHING_STANDARD.md)：公開授權來源與鎖定版本→adapter契約→conformance→真實部署/驗收/獨立複驗/teardown→append-only evidence→generator→registry gate→雙語網站→人工review。任何門檻未過，維持候選。
 
