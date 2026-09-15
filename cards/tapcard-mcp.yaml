@@ -1,0 +1,80 @@
+# 機械生成（tools/gen_cards.py）——editorial 欄位改 EDITORIAL 字典後重生，勿直接手改推導欄位
+id: tapcard-mcp
+name: TapCard MCP
+one_liner: 自架 NFC／QR 電子名片＋私人 AI 名片庫：公開頁掃即得，收到的名片存自己帳號
+product_summary:
+  project_type:
+    zh-tw: 自架 NFC／QR 電子名片與私人名片庫 MCP
+    en: A self-hosted NFC/QR business card and private card-wall MCP
+  problem:
+    zh-tw: 紙本名片會過時，公開個人資訊與收到的聯絡資料也缺少同一個可控入口
+    en: Paper cards become outdated, while public profile sharing and received contacts
+      lack one controlled entry point
+  audience:
+    zh-tw:
+    - 顧問、業務與自由工作者
+    - 需要公開名片又要保留私人聯絡資料的小型團隊
+    en:
+    - Consultants, sales professionals and freelancers
+    - Small teams that need public profiles and private contact storage
+  capabilities:
+    zh-tw:
+    - 發布 NFC／QR 公開電子名片
+    - 下載 vCard 並分享公開個人頁
+    - 預覽、確認、匯入、搜尋與匯出私人名片
+    en:
+    - Publish an NFC/QR public business card
+    - Share a public profile and download vCards
+    - Preview, confirm, import, search and export private cards
+  deployment_requirements:
+    zh-tw:
+    - 需要自己的 Workers、D1、R2 與 KV
+    - 需要部署者管理憑證，私人 MCP key 只能由部署者保存
+    en:
+    - Your own Workers, D1, R2 and KV
+    - The deployer manages the admin credential and private MCP keys
+  limitations:
+    zh-tw:
+    - 目前尚未支援向量搜尋、多人團隊與 NFC 寫卡 App
+    - URL 匯入只適用於符合規格的公開 TapCard
+    en:
+    - Vector search, multi-user teams and an NFC-writing app are not in the current
+      scope
+    - URL import is limited to public TapCards that meet the contract
+categories:
+- sharing
+profile: small-app
+repo:
+  upstream: ai-cooperation/tapcard-mcp
+  license: Apache-2.0
+components:
+  cloudflare:
+  - workers
+  - d1
+  - r2
+  - kv
+login_method: other
+data_flow:
+  external_services:
+  - (user-directed)
+  disclosure: NFC／QR 公開電子名片與 AI 原生私人名片庫
+verification:
+  level: discovered
+  spec_version: 0.3.0
+  last_verified: '2026-08-03'
+  evidence_packs:
+  - evidence/tapcard-mcp/2026-08-03-sandbox-01.json
+  compatible_agents:
+  - agent: claude-code
+    model: claude-opus-5
+    result: autonomous
+free_tier_grade: C
+low_carbon:
+  scale_to_zero: true
+  green_compute: false
+  no_idle_infra: true
+maintenance_status: active
+images:
+  screenshot:
+    path: evidence/tapcard-mcp/artifacts/2026-08-03-public-profile.png
+    evidence_pack_ref: evidence/tapcard-mcp/2026-08-03-sandbox-01.json

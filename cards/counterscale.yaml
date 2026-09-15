@@ -2,6 +2,44 @@
 id: counterscale
 name: Counterscale
 one_liner: 自己帳號裡的網站流量分析（GA 替代）
+product_summary:
+  project_type:
+    zh-tw: 自架網站流量分析服務
+    en: A self-hosted website analytics service
+  problem:
+    zh-tw: 網站需要基本流量洞察，但不想把分析資料交給外部 SaaS
+    en: A website needs basic traffic insight without handing its analytics data to
+      a hosted SaaS
+  audience:
+    zh-tw:
+    - 公司官網與內容網站
+    - 重視資料掌控的小型團隊
+    en:
+    - Company and content websites
+    - Small teams that want control of analytics data
+  capabilities:
+    zh-tw:
+    - 收集網站使用統計
+    - 在自己的 Analytics Engine 查詢分析
+    - 以低維運方式提供分析儀表板
+    en:
+    - Collect website usage metrics
+    - Query analytics in your own Analytics Engine
+    - Operate a lightweight analytics dashboard
+  deployment_requirements:
+    zh-tw:
+    - 需要 Cloudflare Workers 與 Analytics Engine
+    - 需要在網站加入分析程式碼或事件入口
+    en:
+    - Cloudflare Workers and Analytics Engine
+    - A site integration or event endpoint is required
+  limitations:
+    zh-tw:
+    - 不等同完整的使用者行為重播或行銷自動化平台
+    - 分析保存與查詢能力受平台政策限制
+    en:
+    - It is not a full session-replay or marketing-automation platform
+    - Retention and query capability follow platform policies
 categories:
 - analytics
 profile: small-app
@@ -47,4 +85,3 @@ images:
   screenshot:
     path: evidence/counterscale/artifacts/2026-08-03-dashboard.png
     evidence_pack_ref: evidence/counterscale/2026-08-03-shots-01.json
-quota_note: 執行：claude-code deployer 批次（第 9 案 microfeed 因模型額度用盡中止，另案補收）；teardown 後沙盒五類歸零實查

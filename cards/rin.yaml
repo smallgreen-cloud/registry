@@ -2,6 +2,44 @@
 id: rin
 name: Rin
 one_liner: 個人部落格系統（文章／評論／RSS／Queue 背景 AI 摘要）
+product_summary:
+  project_type:
+    zh-tw: 自架個人或小型團隊發布平台
+    en: A self-hosted publishing platform for individuals or small teams
+  problem:
+    zh-tw: 內容、評論與 RSS 依賴外部平台，團隊想保留自己的發布資料與流程
+    en: Content, comments and RSS depend on an external platform while the team wants
+      to keep its publishing data and workflow
+  audience:
+    zh-tw:
+    - 個人品牌與內容團隊
+    - 需要簡單發布能力的小型企業
+    en:
+    - Personal brands and content teams
+    - Small businesses that need simple publishing
+  capabilities:
+    zh-tw:
+    - 管理文章、評論與 RSS
+    - 以 Queue 處理背景摘要工作
+    - 在自己的 Cloudflare 帳號保存內容
+    en:
+    - Manage posts, comments and RSS
+    - Process background summaries with a Queue
+    - Keep content in the deployer's Cloudflare account
+  deployment_requirements:
+    zh-tw:
+    - 需要 Workers、D1、Queues 與 Cron
+    - AI 摘要功能需要另外確認 Workers AI 與額度
+    en:
+    - Workers, D1, Queues and Cron
+    - AI summaries require separate review of Workers AI and quotas
+  limitations:
+    zh-tw:
+    - 定位是輕量發布平台，不是企業 CMS
+    - AI 摘要不是必要核心功能，會增加資源與維護範圍
+    en:
+    - It is a lightweight publishing platform, not an enterprise CMS
+    - AI summaries are optional and expand resource and maintenance scope
 categories:
 - publishing
 profile: small-app
@@ -24,7 +62,7 @@ data_flow:
   - 自訂 webhook URL（選配）
   disclosure: 文章與評論存 D1；快取走 CACHE_STORAGE_MODE=database（本 adapter 預設，免 R2/S3）。媒體上傳需
     R2 或外部 S3（選配——不設則圖片上傳不可用，文章功能不受影響）。AI 摘要走 Workers AI binding（免費 10k Neurons/day，SVC-4
-    等級標示適用）。背景任務走 Queue（免費層保留 24h——本專案任務即發即消，不依賴
+    等級標示適用）。…
 verification:
   level: discovered
   spec_version: 0.2.1

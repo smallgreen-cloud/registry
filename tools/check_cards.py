@@ -64,6 +64,17 @@ def main() -> int:
         for e in errs:
             fails.append(f"{cid} SVC-1: {e.json_path} {e.message[:100]}")
 
+        # CAT-1 人看服務卡的必要摘要；內容與契約／Evidence 分層，不能用技術欄位代替。
+        summary = card.get("product_summary")
+        required_summary = ("project_type", "problem", "audience", "capabilities",
+                            "deployment_requirements", "limitations")
+        if not isinstance(summary, dict) or any(
+                not isinstance(summary.get(field), dict)
+                or not summary[field].get("zh-tw")
+                or not summary[field].get("en")
+                for field in required_summary):
+            fails.append(f"{cid} CAT-1: product_summary 需包含雙語 project_type/problem/audience/capabilities/deployment_requirements/limitations")
+
         # SVC-7 taxonomy
         for c in card.get("categories", []):
             if c not in cat_ids:

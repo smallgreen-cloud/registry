@@ -2,6 +2,44 @@
 id: hananalytics
 name: HanAnalytics
 one_liner: 輕量網站流量分析儀表板（Pages Functions＋AE）
+product_summary:
+  project_type:
+    zh-tw: 輕量自架網站分析儀表板
+    en: A lightweight self-hosted website analytics dashboard
+  problem:
+    zh-tw: 中小企業需要看懂網站流量，但不想導入複雜或過度追蹤的分析平台
+    en: Small businesses need understandable website metrics without adopting a complex
+      or overly tracking-heavy analytics platform
+  audience:
+    zh-tw:
+    - 中文網站經營者
+    - 需要基本流量報表的中小企業
+    en:
+    - Chinese-language website operators
+    - Small businesses that need basic traffic reports
+  capabilities:
+    zh-tw:
+    - 收集頁面與地區等基本事件
+    - 用 Analytics Engine 查詢資料
+    - 提供輕量儀表板與可選密碼保護
+    en:
+    - Collect basic page and geography events
+    - Query data through Analytics Engine
+    - Provide a lightweight dashboard with optional password protection
+  deployment_requirements:
+    zh-tw:
+    - 需要 Pages Functions 與 Analytics Engine
+    - 要自行決定儀表板是否需要密碼保護
+    en:
+    - Pages Functions and Analytics Engine
+    - The deployer must choose whether dashboard protection is required
+  limitations:
+    zh-tw:
+    - 不是完整的產品分析或使用者行為重播平台
+    - 未設定保護時，儀表板與回報入口可能是公開的
+    en:
+    - It is not a full product-analytics or session-replay platform
+    - Without protection, the dashboard and collection endpoint may be public
 categories:
 - analytics
 profile: small-app
@@ -43,4 +81,3 @@ images:
   screenshot:
     path: evidence/hananalytics/artifacts/2026-08-03-dashboard.png
     evidence_pack_ref: evidence/hananalytics/2026-08-03-shots-01.json
-quota_note: 執行：claude-code deployer 批次（第 9 案 microfeed 因模型額度用盡中止，另案補收）；teardown 後沙盒五類歸零實查

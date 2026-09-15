@@ -70,4 +70,4 @@
 3. **3 項原始 repo 消失**（#22/23/33）：印證「上游會死」是常態——維護狀態追蹤與復活機制不是理論需求。
 
 ---
-資料產生：SmallGreen Cloud 計畫，gh api 即時核對。本檔為 registry 原料，非最終服務卡。
+資料產生：SmallGreen 計畫，gh api 即時核對。本檔為 registry 原料，非最終服務卡。

@@ -2,6 +2,45 @@
 id: pastebin-worker
 name: Pastebin Worker
 one_liner: curl 友善的自架 pastebin／短網址／檔案分享
+product_summary:
+  project_type:
+    zh-tw: 自架文字貼上、短網址與分享服務
+    en: A self-hosted paste, short-link and sharing service
+  problem:
+    zh-tw: 開發與營運團隊需要暫時分享文字或連結，不想使用不可控的第三方貼上服務
+    en: Development and operations teams need to share text or links temporarily without
+      relying on an uncontrolled third-party paste service
+  audience:
+    zh-tw:
+    - 開發與維運團隊
+    - 需要簡單分享入口的小型公司
+    en:
+    - Development and operations teams
+    - Small companies that need a simple sharing endpoint
+  capabilities:
+    zh-tw:
+    - 以 curl 建立與讀取文字內容
+    - 產生短網址與管理連結
+    - 依期限讓內容自動過期
+    en:
+    - Create and read text with curl
+    - Generate short links and management links
+    - Expire content after a configured lifetime
+  deployment_requirements:
+    zh-tw:
+    - 需要 Cloudflare Worker 與 KV
+    - 部署者要決定內容可見性與過期政策
+    en:
+    - A Cloudflare Worker and KV
+    - The deployer chooses visibility and expiration policies
+  limitations:
+    zh-tw:
+    - 目前免費層降級版不支援 R2 multipart 檔案上傳
+    - 知道連結的人可能可以讀取內容，需先確認分享邊界
+    en:
+    - The free-tier fallback does not support R2 multipart uploads
+    - Anyone with a readable link may access content, so sharing boundaries must be
+      reviewed
 categories:
 - sharing
 - utilities
@@ -19,7 +58,7 @@ data_flow:
   external_services: []
   disclosure: 本 adapter 為 KV-only 降級（上游雙層儲存 KV+R2；未啟用 R2 的帳號適配）——R2_THRESHOLD 拉至 R2_MAX_ALLOWED（20M），所有
     paste 走 KV（KV 單值上限 25MB 內）。副作用：大檔分段上傳（MPU）API 不可用；每日 R2 清理 cron 已移除。paste 預設 7
-    天過期（MAX 90 天）。管理權採 manageUrl（建立
+    天過期（MAX 90 天）。…
 verification:
   level: discovered
   spec_version: 0.2.1

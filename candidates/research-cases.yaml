@@ -1,0 +1,532 @@
+schema_version: "0.1.0"
+title:
+  zh-tw: 研究中候選案例
+  en: Research-stage candidate cases
+checked_on: "2026-08-27"
+projects:
+  - id: cloud-mail
+    name: Cloud Mail
+    axis: cloudflare-native
+    state: content-research
+    state_label: {zh-tw: 研究中, en: In research}
+    source: {repository: maillab/cloud-mail, license: MIT, default_branch: main, last_push: "2026-08-26", checked_on: "2026-08-27"}
+    product_summary:
+      project_type: {zh-tw: 建立在 Cloudflare 上的簡易網域郵件服務, en: A simple domain email service built on Cloudflare}
+      problem: {zh-tw: 解決自有網域收發郵件與附件需要維護完整郵件伺服器的問題, en: Solves the need to run a full mail server just to send and receive mail for a domain}
+      audience: {zh-tw: [需要自有網域郵件的小型團隊, 需要自行掌握郵件資料的人], en: [Small teams needing domain email, people who want control of mail data]}
+      capabilities: {zh-tw: [收發郵件與附件, 綁定單一網域, 以 Worker 部署郵件服務], en: [Send and receive mail with attachments, bind one domain, deploy the mail service on Workers]}
+      deployment_requirements: {zh-tw: [Cloudflare Workers, 自有網域與 Email Routing, 需依上游文件設定郵件路由], en: [Cloudflare Workers, a domain and Email Routing, upstream mail-routing configuration]}
+      limitations: {zh-tw: [郵件路由與遞送可靠性仍需實際驗證, 單一網域限制需確認], en: [Mail routing and delivery reliability still need live verification, the one-domain limit needs confirmation]}
+    architecture: {cloudflare: [workers, email-routing]}
+    current_stage: {zh-tw: 已完成 README 與 metadata 研究, 尚未完成部署契約與實機驗證, en: README and metadata research is complete; the deployment contract and live verification are pending}
+    next_steps: {zh-tw: [確認郵件路由與附件資料流, 建立可重現部署步驟, 完成收發與 teardown 驗收], en: [Confirm mail-routing and attachment data flows, write reproducible deployment steps, verify send receive and teardown]}
+
+  - id: cloudflare-temp-email
+    name: Cloudflare Temporary Email
+    axis: cloudflare-native
+    state: content-research
+    state_label: {zh-tw: 研究中, en: In research}
+    source: {repository: dreamhunter2333/cloudflare_temp_email, license: MIT, default_branch: main, last_push: "2026-08-25", checked_on: "2026-08-27"}
+    product_summary:
+      project_type: {zh-tw: 建立在 Cloudflare 上的臨時信箱服務, en: A temporary email service built on Cloudflare}
+      problem: {zh-tw: 解決短期註冊或測試需要一次性收件地址，又不想使用第三方臨時信箱的問題, en: Solves the need for disposable addresses during signups or tests without relying on a third-party inbox}
+      audience: {zh-tw: [軟體測試者, 需要短期收件地址的人], en: [Software testers, people needing short-lived inboxes]}
+      capabilities: {zh-tw: [建立臨時信箱, 收發郵件與附件, IMAP／SMTP 與 Telegram Bot 整合], en: [Create temporary inboxes, handle mail and attachments, integrate IMAP SMTP and a Telegram bot]}
+      deployment_requirements: {zh-tw: [Cloudflare Worker, 網域與郵件設定, 需核對外部郵件與 Telegram 設定], en: [A Cloudflare Worker, a domain and mail configuration, external mail and Telegram settings]}
+      limitations: {zh-tw: [臨時信箱的保存期限與濫用防護需實測, 外部郵件遞送不由 Worker 單獨保證], en: [Retention and abuse controls need testing, external mail delivery is not guaranteed by the Worker alone]}
+    architecture: {cloudflare: [workers, email-routing], external_services: [IMAP, SMTP, Telegram Bot]}
+    current_stage: {zh-tw: 上游功能與部署線索已整理, 尚未建立 SmallGreen 研究以外的驗證證據, en: Upstream features and deployment clues are mapped; SmallGreen verification evidence is not started}
+    next_steps: {zh-tw: [核對郵件供應商與資料保存位置, 驗證建立收件與過期流程, 設計濫用與 teardown 測試], en: [Confirm mail providers and data retention, verify inbox creation and expiry, design abuse and teardown tests]}
+
+  - id: chatgpt-telegram-workers
+    name: ChatGPT Telegram Workers
+    axis: cloudflare-native
+    state: content-research
+    state_label: {zh-tw: 研究中, en: In research}
+    source: {repository: tbxark/ChatGPT-Telegram-Workers, license: MIT, default_branch: master, last_push: "2026-04-06", checked_on: "2026-08-27"}
+    product_summary:
+      project_type: {zh-tw: 以 Cloudflare Worker 執行的自有 Telegram AI Bot, en: A self-hosted Telegram AI bot running on a Cloudflare Worker}
+      problem: {zh-tw: 解決把 Telegram 對話接到指定 AI 服務時需要自行維護後端的問題, en: Solves the backend burden of connecting Telegram conversations to a chosen AI service}
+      audience: {zh-tw: [想擁有自己 Telegram Bot 的人, 需要多模型切換的開發者], en: [People wanting their own Telegram bot, developers needing model switching]}
+      capabilities: {zh-tw: [多 AI provider, 模型切換與串流, 自訂指令與多 Bot], en: [Multiple AI providers, model switching and streaming, custom commands and multiple bots]}
+      deployment_requirements: {zh-tw: [Cloudflare Workers, Telegram Bot Token, AI provider 憑證], en: [Cloudflare Workers, a Telegram Bot Token and AI provider credentials]}
+      limitations: {zh-tw: [外部 AI provider 會產生成本與資料流風險, Bot 權限與公開 webhook 需額外防護], en: [External AI providers add cost and data-flow risk, bot permissions and public webhooks need hardening]}
+    architecture: {cloudflare: [workers], external_services: [Telegram, AI providers]}
+    current_stage: {zh-tw: 單檔 Worker 與功能範圍已確認, 尚未驗證各 provider 的部署差異, en: The single-file Worker and feature scope are confirmed; provider-specific deployment differences are unverified}
+    next_steps: {zh-tw: [固定 provider 與 secret 邊界, 驗證 webhook 與模型切換, 補成本與資料刪除驗收], en: [Fix provider and secret boundaries, verify webhooks and model switching, add cost and data-deletion acceptance]}
+
+  - id: agentic-inbox
+    name: Agentic Inbox
+    axis: cloudflare-native
+    state: content-research
+    state_label: {zh-tw: 研究中, en: In research}
+    source: {repository: cloudflare/agentic-inbox, license: Apache-2.0, default_branch: main, last_push: "2026-04-23", checked_on: "2026-08-27"}
+    product_summary:
+      project_type: {zh-tw: 結合 Email Routing、Durable Object 與 AI Agent 的自架信箱, en: A self-hosted inbox combining Email Routing Durable Objects and an AI agent}
+      problem: {zh-tw: 解決郵件閱讀、搜尋與回覆草稿散落在 SaaS，無法掌握信箱資料與自動化邊界的問題, en: Solves the loss of data control and automation boundaries when inbox work is scattered across SaaS tools}
+      audience: {zh-tw: [需要自有信箱工作流的人, 想測試郵件 AI Agent 的開發者], en: [People needing an owned inbox workflow, developers testing email AI agents]}
+      capabilities: {zh-tw: [每個信箱獨立儲存, 郵件搜尋與附件保存, Agent 讀取搜尋與草擬回覆], en: [Per-mailbox storage, email search and attachment retention, agent read search and reply drafting]}
+      deployment_requirements: {zh-tw: [Cloudflare Workers, Email Routing, Durable Objects SQLite, R2, Workers AI 或 Agents SDK], en: [Cloudflare Workers, Email Routing, Durable Objects SQLite, R2, Workers AI or the Agents SDK]}
+      limitations: {zh-tw: [部署按鈕後仍需多項設定, AI 回覆與郵件資料邊界必須人工審查], en: [More configuration is needed after the deploy button, AI reply and email-data boundaries need human review]}
+    architecture: {cloudflare: [workers, durable-objects, r2, workers-ai, email-routing], external_services: [Email Routing]}
+    current_stage: {zh-tw: 上游架構與資料流清楚, 尚未完成小型部署與 AI 權限驗證, en: Upstream architecture and data flow are clear; a small deployment and AI-permission review are pending}
+    next_steps: {zh-tw: [驗證 Durable Object mailbox 隔離, 確認附件與 AI 資料流, 完成部署後的設定與 teardown], en: [Verify Durable Object mailbox isolation, confirm attachment and AI data flows, complete post-deploy setup and teardown]}
+
+  - id: moemail
+    name: MoeMail
+    axis: cloudflare-native
+    state: content-research
+    state_label: {zh-tw: 研究中, en: In research}
+    source: {repository: beilunyang/moemail, license: MIT, default_branch: master, last_push: "2026-07-30", checked_on: "2026-08-27"}
+    product_summary:
+      project_type: {zh-tw: 以 Next.js 與 Cloudflare 組成的臨時信箱服務, en: A temporary email service built with Next.js and Cloudflare}
+      problem: {zh-tw: 解決開發測試需要快速建立短期信箱的問題, en: Solves the need to quickly create short-lived inboxes for development and testing}
+      audience: {zh-tw: [開發者, 測試者, 需要臨時收件的人], en: [Developers, testers, people needing temporary inboxes]}
+      capabilities: {zh-tw: [建立與查看臨時信箱, 提供 API, 以 Cloudflare 部署前後端], en: [Create and inspect temporary inboxes, expose an API, deploy frontend and backend on Cloudflare]}
+      deployment_requirements: {zh-tw: [Cloudflare Pages 或 Workers, Next.js 建置流程, 依文件設定環境變數], en: [Cloudflare Pages or Workers, a Next.js build flow and documented environment variables]}
+      limitations: {zh-tw: [郵件保存與遞送規則需核對, Next.js 部署方式可能隨平台設定變動], en: [Mail retention and delivery rules need confirmation, the Next.js deployment path may vary with platform settings]}
+    architecture: {cloudflare: [workers, pages], external_services: [Email provider]}
+    current_stage: {zh-tw: 產品與部署文件已完成初步研究, 尚未驗證 Cloudflare 版本的完整郵件流程, en: Product and deployment docs are mapped; the complete Cloudflare mail flow is unverified}
+    next_steps: {zh-tw: [確認 Cloudflare adapter 與 bindings, 實測信箱生命週期, 記錄外部郵件依賴], en: [Confirm the Cloudflare adapter and bindings, test inbox lifecycle, record external mail dependencies]}
+
+  - id: cf-workers-status-page
+    name: Cloudflare Worker Status Page
+    axis: cloudflare-native
+    state: content-research
+    state_label: {zh-tw: 研究中, en: In research}
+    source: {repository: eidam/cf-workers-status-page, license: MIT, default_branch: main, last_push: "2024-08-21", checked_on: "2026-08-27"}
+    product_summary:
+      project_type: {zh-tw: 以 Worker 與 Cron 監測網站的狀態頁, en: A status page that monitors websites with Workers and Cron}
+      problem: {zh-tw: 解決小型服務需要公開可讀的可用性歷史與通知頁面的問題, en: Solves the need for a readable public availability history and notification page for small services}
+      audience: {zh-tw: [維護個人服務的人, 需要公開狀態頁的小型團隊], en: [People maintaining personal services, small teams needing a public status page]}
+      capabilities: {zh-tw: [定期檢查網站, 保存歷史狀態, 發送 Slack 或 Discord 通知], en: [Check websites on a schedule, keep status history, send Slack or Discord notifications]}
+      deployment_requirements: {zh-tw: [Cloudflare Workers, Cron, KV, 自有網域；通知服務為選配], en: [Cloudflare Workers, Cron, KV and a domain; notification services are optional]}
+      limitations: {zh-tw: [上游長期未更新, 監測結果與通知延遲需實測], en: [The upstream has been inactive for a long time, monitoring results and notification latency need testing]}
+    architecture: {cloudflare: [workers, kv, cron], external_services: [Slack or Discord webhooks]}
+    current_stage: {zh-tw: 架構與維護風險已確認, 尚未決定是否值得進入部署驗證, en: Architecture and maintenance risk are known; its value for deployment verification is not decided}
+    next_steps: {zh-tw: [確認目前 Cloudflare API 相容性, 實測 Cron 與 KV 歷史資料, 依維護風險決定去留], en: [Check current Cloudflare API compatibility, test Cron and KV history, decide whether maintenance risk is acceptable]}
+
+  - id: vmail
+    name: VMAIL
+    axis: cloudflare-native
+    state: content-research
+    state_label: {zh-tw: 研究中, en: In research}
+    source: {repository: oiov/vmail, license: GPL-3.0, default_branch: main, last_push: "2026-07-16", checked_on: "2026-08-27"}
+    product_summary:
+      project_type: {zh-tw: 以 Email Worker、D1 與 React 組成的臨時郵件服務, en: A temporary email service built from an Email Worker D1 and React frontend}
+      problem: {zh-tw: 解決需要多網域臨時收件、API 與簡易管理介面的問題, en: Solves the need for multi-domain temporary mailboxes with an API and simple management interface}
+      audience: {zh-tw: [測試者, 需要多網域郵件入口的開發者], en: [Testers, developers needing multi-domain mail entry points]}
+      capabilities: {zh-tw: [多網域信箱, D1 保存郵件, REST API 與可選寄信 provider], en: [Multiple domains, D1 mail storage, a REST API and optional sending providers]}
+      deployment_requirements: {zh-tw: [Cloudflare Workers, D1, Email Routing, 自有網域與 Resend 或其他寄信服務], en: [Cloudflare Workers, D1, Email Routing, a domain and Resend or another sending service]}
+      limitations: {zh-tw: [郵件內容含敏感資料時需明確保存政策, GPL-3.0 與外部寄信服務需納入發布審查], en: [Sensitive mail needs an explicit retention policy, GPL-3.0 and external sending services need release review]}
+    architecture: {cloudflare: [workers, d1, email-routing], external_services: [Resend, MailChannels]}
+    current_stage: {zh-tw: 功能與元件已整理, 尚未完成多網域與郵件遞送驗收, en: Features and components are mapped; multi-domain and delivery acceptance are pending}
+    next_steps: {zh-tw: [核對 Email Routing 與 D1 schema, 實測多網域收件, 建立資料刪除與濫用測試], en: [Confirm Email Routing and D1 schema, test multi-domain receipt, add deletion and abuse tests]}
+
+  - id: serverless-cloud-notepad
+    name: Serverless Cloud Notepad
+    axis: cloudflare-native
+    state: content-research
+    state_label: {zh-tw: 研究中, en: In research}
+    source: {repository: s0urcelab/serverless-cloud-notepad, license: MIT, default_branch: master, last_push: "2025-06-06", checked_on: "2026-08-27"}
+    product_summary:
+      project_type: {zh-tw: 以 Worker 與 KV 提供免登入文字記事與分享的小型服務, en: A small no-login text note and sharing service using Workers and KV}
+      problem: {zh-tw: 解決臨時文字需要快速記錄、同步與唯讀分享的問題, en: Solves the need to quickly record sync and share temporary text as read-only content}
+      audience: {zh-tw: [需要簡易文字暫存的人, 開發與支援團隊], en: [People needing simple text scratch space, development and support teams]}
+      capabilities: {zh-tw: [自訂路徑, 自動保存, 唯讀分享, 不需帳號或資料庫], en: [Custom paths, autosave, read-only sharing, no account or database]}
+      deployment_requirements: {zh-tw: [Cloudflare Workers, KV, GitHub Actions；需評估 KV 寫入額度], en: [Cloudflare Workers, KV and GitHub Actions; KV write limits need evaluation]}
+      limitations: {zh-tw: [KV 每日寫入限制可能影響高頻保存, 長期維護狀態需再確認], en: [KV daily write limits may affect high-frequency saving, long-term maintenance needs rechecking]}
+    architecture: {cloudflare: [workers, kv], github: [actions, repository]}
+    current_stage: {zh-tw: 服務定位與資料層清楚, 尚未實測高頻自動保存與權限邊界, en: Product and data-layer roles are clear; high-frequency autosave and access boundaries are untested}
+    next_steps: {zh-tw: [確認 KV 寫入模型, 驗證唯讀連結與路徑權限, 補 GitHub Actions teardown 流程], en: [Confirm the KV write model, verify read-only links and path access, add the GitHub Actions teardown flow]}
+
+  - id: zmail
+    name: ZMail
+    axis: cloudflare-native
+    state: content-research
+    state_label: {zh-tw: 研究中, en: In research}
+    source: {repository: takumi913/zmail, license: MIT, default_branch: main, last_push: "2026-08-01", checked_on: "2026-08-27"}
+    product_summary:
+      project_type: {zh-tw: 整合前後端的 24 小時臨時信箱 Worker, en: An integrated frontend and backend Worker for 24-hour temporary mailboxes}
+      problem: {zh-tw: 解決短期測試需要有期限收件地址的問題, en: Solves the need for expiring inboxes during short-term testing}
+      audience: {zh-tw: [開發者, 測試者, 需要短期收件的人], en: [Developers, testers, people needing short-lived inboxes]}
+      capabilities: {zh-tw: [建立 24 小時信箱, 單一 Worker 前後端, 自訂網域與郵件路由], en: [Create 24-hour inboxes, run frontend and backend in one Worker, use a custom domain and mail routing]}
+      deployment_requirements: {zh-tw: [Cloudflare Worker, 自有網域與 Email Routing, 需以 GitHub Action 或部署按鈕設定], en: [A Cloudflare Worker, a domain and Email Routing, GitHub Action or deploy-button setup]}
+      limitations: {zh-tw: [目前 demo 標示只能查看且不能收信, 郵件過期與遞送尚待驗證], en: [The current demo says it is view-only and cannot receive mail, expiry and delivery are unverified]}
+    architecture: {cloudflare: [workers, email-routing], github: [actions]}
+    current_stage: {zh-tw: 身份、授權與基本產品形狀已確認, 尚未視為可部署服務, en: Identity license and basic product shape are confirmed; it is not considered deployable yet}
+    next_steps: {zh-tw: [先修正或確認 demo 的收信狀態, 驗證 24 小時生命週期, 補郵件資料清除證據], en: [Resolve or confirm the demo receive-mail status, verify the 24-hour lifecycle, add mail-deletion evidence]}
+
+  - id: roim-picx
+    name: roim-picx
+    axis: cloudflare-native
+    state: content-research
+    state_label: {zh-tw: 研究中, en: In research}
+    source: {repository: roimdev/roim-picx, license: Apache-2.0, default_branch: main, last_push: "2026-03-16", checked_on: "2026-08-27"}
+    product_summary:
+      project_type: {zh-tw: 使用 R2、D1 與 KV 的自有圖片託管服務, en: An owned image-hosting service using R2 D1 and KV}
+      problem: {zh-tw: 解決圖片放在第三方圖床，無法控制檔案、連結與統計資料的問題, en: Solves the loss of control over image files links and statistics on third-party hosts}
+      audience: {zh-tw: [網站作者, 需要自有圖床的開發者, 管理圖片資產的人], en: [Website authors, developers needing an owned image host, people managing image assets]}
+      capabilities: {zh-tw: [圖片上傳與資料夾, 分享與到期, OAuth, 統計與多儲存 provider], en: [Image upload and folders, sharing and expiry, OAuth, statistics and multiple storage providers]}
+      deployment_requirements: {zh-tw: [Workers 或 Pages Functions, R2, D1, KV, OAuth provider], en: [Workers or Pages Functions, R2, D1, KV and an OAuth provider]}
+      limitations: {zh-tw: [需要同時管理多個 binding 與 OAuth 權限, 圖片公開連結與刪除政策需審查], en: [Several bindings and OAuth permissions must be managed, public links and deletion policy need review]}
+    architecture: {cloudflare: [workers, pages, r2, d1, kv], external_services: [OAuth provider]}
+    current_stage: {zh-tw: 產品能力與 Cloudflare 元件已整理, 尚未驗證檔案權限與刪除流程, en: Product capabilities and Cloudflare components are mapped; file permissions and deletion are unverified}
+    next_steps: {zh-tw: [確認 OAuth callback 與權限模型, 實測 R2 檔案生命週期, 建立公開連結撤銷驗收], en: [Confirm the OAuth callback and permission model, test the R2 file lifecycle, verify public-link revocation]}
+
+  - id: authinbox
+    name: AuthInbox
+    axis: cloudflare-native
+    state: content-research
+    state_label: {zh-tw: 研究中, en: In research}
+    source: {repository: TooonyChen/AuthInbox, license: MIT, default_branch: main, last_push: "2026-07-09", checked_on: "2026-08-27"}
+    product_summary:
+      project_type: {zh-tw: 自架多信箱 OTP 收件與擷取平台, en: A self-hosted multi-inbox OTP receiving and extraction platform}
+      problem: {zh-tw: 解決測試帳號驗證碼分散在信箱，難以分類、擷取與通知的問題, en: Solves the problem of OTPs being scattered across inboxes and difficult to classify extract and notify}
+      audience: {zh-tw: [需要管理測試信箱的人, 自動化測試與帳號管理者], en: [People managing test inboxes, automation testers and account operators]}
+      capabilities: {zh-tw: [多信箱管理, AI 分類與擷取, D1 儲存, Bark 通知與 Remote MCP], en: [Multi-inbox management, AI classification and extraction, D1 storage, Bark notifications and Remote MCP]}
+      deployment_requirements: {zh-tw: [Cloudflare Workers, D1, Email Worker, AI provider, Bark 或其他通知服務], en: [Cloudflare Workers, D1, an Email Worker, an AI provider and Bark or another notification service]}
+      limitations: {zh-tw: [OTP 與郵件是高敏感資料, AI provider、多人權限與 MCP 必須逐項審查], en: [OTPs and email are highly sensitive, AI providers multi-user permissions and MCP need review]}
+    architecture: {cloudflare: [workers, d1, email-routing], external_services: [AI provider, Bark]}
+    current_stage: {zh-tw: 功能面與外部依賴已整理, 尚未完成敏感資料與權限驗證, en: Features and external dependencies are mapped; sensitive-data and permission verification are pending}
+    next_steps: {zh-tw: [畫出 OTP 資料流與保存邊界, 測試多人 grant 與撤銷, 驗證 AI 不必要資料暴露], en: [Map OTP data flow and retention boundaries, test multi-user grants and revocation, verify minimal AI data exposure]}
+
+  - id: webviso
+    name: Webviso
+    axis: cloudflare-native
+    state: content-research
+    state_label: {zh-tw: 研究中, en: In research}
+    source: {repository: yestool/analytics_with_cloudflare, license: MIT, default_branch: main, last_push: "2024-10-23", checked_on: "2026-08-27"}
+    product_summary:
+      project_type: {zh-tw: 使用 Workers、D1 與 Hono 的簡易網站分析服務, en: A simple website analytics service using Workers D1 and Hono}
+      problem: {zh-tw: 解決小型網站需要基本流量資料，又不想導入大型追蹤平台的問題, en: Solves the need for basic website traffic data without adopting a large tracking platform}
+      audience: {zh-tw: [網站維護者, 需要自有分析資料的人], en: [Website maintainers, people needing owned analytics data]}
+      capabilities: {zh-tw: [收集網站事件, D1 儲存, 提供簡易分析介面], en: [Collect website events, store them in D1, provide a simple analytics view]}
+      deployment_requirements: {zh-tw: [Cloudflare Workers, D1, Hono, 需建立資料表並設定 binding], en: [Cloudflare Workers, D1 and Hono, with a database schema and binding]}
+      limitations: {zh-tw: [上游更新較久, 事件隱私、聚合與資料刪除需補規格], en: [The upstream is older, event privacy aggregation and deletion need specification]}
+    architecture: {cloudflare: [workers, d1]}
+    current_stage: {zh-tw: 部署步驟與基本元件已確認, 尚未判斷目前 API 是否適合正式使用, en: Deployment steps and basic components are known; current API suitability is unverified}
+    next_steps: {zh-tw: [核對 schema 與事件格式, 補無 cookie 與匿名化邊界, 實測查詢與資料刪除], en: [Confirm schema and event format, define cookie-free and anonymization boundaries, test queries and deletion]}
+
+  - id: imguu
+    name: imgUU
+    axis: cloudflare-native
+    state: content-research
+    state_label: {zh-tw: 研究中, en: In research}
+    source: {repository: yestool/imgUU, license: MIT, default_branch: main, last_push: "2025-03-13", checked_on: "2026-08-27"}
+    product_summary:
+      project_type: {zh-tw: 以 Astro、R2 與 D1 組成的圖片上傳服務, en: An image upload and hosting service using Astro R2 and D1}
+      problem: {zh-tw: 解決圖片上傳後缺乏自有儲存與管理介面的問題, en: Solves the lack of owned storage and management after image upload}
+      audience: {zh-tw: [網站作者, 需要管理圖片網址的開發者], en: [Website authors, developers managing image URLs]}
+      capabilities: {zh-tw: [GitHub 登入, R2 圖片儲存, D1 metadata 與 Astro SSR], en: [GitHub login, R2 image storage, D1 metadata and Astro SSR]}
+      deployment_requirements: {zh-tw: [Cloudflare Pages 或 Workers, R2, D1, GitHub OAuth], en: [Cloudflare Pages or Workers, R2 D1 and GitHub OAuth]}
+      limitations: {zh-tw: [GitHub OAuth 與檔案權限需實測, 圖片格式及刪除規則需補齊], en: [GitHub OAuth and file permissions need testing, image formats and deletion rules need completion]}
+    architecture: {cloudflare: [pages, workers, r2, d1], external_services: [GitHub OAuth]}
+    current_stage: {zh-tw: 上游功能與元件角色已整理, 尚未完成公開圖片權限驗證, en: Upstream features and component roles are mapped; public image permission verification is pending}
+    next_steps: {zh-tw: [確認 OAuth 身份與 ownership, 實測 R2 上傳及刪除, 補熱連結與濫用限制], en: [Confirm OAuth identity and ownership, test R2 upload and deletion, add hotlink and abuse limits]}
+
+  - id: gins-blog
+    name: Gins' Blog
+    axis: cloudflare-native
+    state: content-research
+    state_label: {zh-tw: 研究中, en: In research}
+    source: {repository: IchimaruGin728/Gins-Blog, license: MIT, default_branch: main, last_push: "2026-05-17", checked_on: "2026-08-27"}
+    product_summary:
+      project_type: {zh-tw: 結合 Astro、D1、R2、KV 與 Hono 的部落格專案, en: A blog project combining Astro D1 R2 KV and Hono}
+      problem: {zh-tw: 解決個人內容需要自有發布、圖片儲存與 AI 搜尋入口的問題, en: Solves the need for owned publishing image storage and AI search for personal content}
+      audience: {zh-tw: [個人作者, 需要自架內容站的人], en: [Individual authors, people needing a self-hosted content site]}
+      capabilities: {zh-tw: [文章發布, OAuth, 圖片儲存, AI 搜尋與 MCP／Agent 引導], en: [Article publishing, OAuth, image storage, AI search and MCP or agent guidance]}
+      deployment_requirements: {zh-tw: [Cloudflare Workers, D1, R2, KV, Hono, OAuth provider], en: [Cloudflare Workers, D1, R2 KV Hono and an OAuth provider]}
+      limitations: {zh-tw: [元件較多, AI 搜尋與內容索引的資料邊界需驗證], en: [It has several components, AI search and content-index boundaries need verification]}
+    architecture: {cloudflare: [workers, d1, r2, kv], external_services: [OAuth provider]}
+    current_stage: {zh-tw: 內容站與 AI 能力已完成初步定位, 尚未拆出最小可部署範圍, en: The content site and AI capabilities are mapped; a minimal deployable scope is not yet separated}
+    next_steps: {zh-tw: [拆分最小部落格版本, 驗證 D1 R2 KV 資料流, 再評估 AI 搜尋與 MCP], en: [Separate a minimal blog version, verify D1 R2 KV flows, then assess AI search and MCP]}
+
+  - id: cf-files-sharing
+    name: CloudFlare File Share
+    axis: cloudflare-native
+    state: content-research
+    state_label: {zh-tw: 研究中, en: In research}
+    source: {repository: joyance-professional/cf-files-sharing, license: MIT, default_branch: main, last_push: "2025-01-01", checked_on: "2026-08-27"}
+    product_summary:
+      project_type: {zh-tw: 以 Workers、R2 與 D1 提供檔案分享的服務, en: A file-sharing service using Workers R2 and D1}
+      problem: {zh-tw: 解決需要自有檔案儲存與受控分享連結的問題, en: Solves the need for owned file storage and controlled sharing links}
+      audience: {zh-tw: [需要分享檔案的小型團隊, 個人網站維護者], en: [Small teams sharing files, personal website maintainers]}
+      capabilities: {zh-tw: [上傳與下載, R2 保存大型檔案, D1 metadata, 密碼與 cookie 權限], en: [Upload and download, R2 storage for large files, D1 metadata, password and cookie access]}
+      deployment_requirements: {zh-tw: [Cloudflare Workers, R2, D1, 管理者密碼設定], en: [Cloudflare Workers, R2 D1 and an administrator password]}
+      limitations: {zh-tw: [分享連結撤銷與密碼策略需測試, 上游維護狀態需再確認], en: [Share-link revocation and password policy need testing, upstream maintenance needs rechecking]}
+    architecture: {cloudflare: [workers, r2, d1]}
+    current_stage: {zh-tw: 檔案層與 metadata 層已辨識, 尚未完成權限與刪除驗收, en: File and metadata layers are identified; permission and deletion acceptance are pending}
+    next_steps: {zh-tw: [驗證大檔案路徑, 測試分享連結撤銷, 補資源歸零與資料刪除證據], en: [Verify the large-file path, test share-link revocation, add zero-resource and deletion evidence]}
+
+  - id: d1-manager
+    name: D1 Manager
+    axis: cloudflare-native
+    state: content-research
+    state_label: {zh-tw: 研究中, en: In research}
+    source: {repository: JacobLinCool/d1-manager, license: MIT, default_branch: main, last_push: "2026-08-26", checked_on: "2026-08-27"}
+    product_summary:
+      project_type: {zh-tw: 管理多個 Cloudflare D1 資料庫的 Pages／SvelteKit 工具, en: A Pages and SvelteKit tool for managing multiple Cloudflare D1 databases}
+      problem: {zh-tw: 解決管理 D1 schema、資料與 SQL 時需要反覆切換命令列的問題, en: Solves the need to switch repeatedly to the command line to manage D1 schemas data and SQL}
+      audience: {zh-tw: [管理多個 D1 的開發者, 需要簡易資料管理介面的團隊], en: [Developers managing multiple D1 databases, teams needing a simple data console]}
+      capabilities: {zh-tw: [查看資料表與 schema, 執行 SQL, 編輯資料, 連接多個 D1, 選配語意查詢], en: [Inspect tables and schemas, run SQL, edit data, connect multiple D1 databases, optional semantic queries]}
+      deployment_requirements: {zh-tw: [Cloudflare Pages, D1 bindings, 建議 Cloudflare Access, 選配 OpenAI 或 Workers AI], en: [Cloudflare Pages, D1 bindings, recommended Cloudflare Access, optional OpenAI or Workers AI]}
+      limitations: {zh-tw: [具備高權限資料操作能力, 必須先設定 Access 與最小權限], en: [It can perform high-privilege data operations, Access and least privilege must be configured first]}
+    architecture: {cloudflare: [pages, workers, d1, workers-ai], external_services: [Cloudflare Access, OpenAI (optional)]}
+    current_stage: {zh-tw: 產品用途與部署步驟清楚, 尚未完成管理者權限與誤操作防護驗證, en: Product purpose and deployment steps are clear; admin permissions and destructive-action safeguards are unverified}
+    next_steps: {zh-tw: [建立 Access 與角色模型, 測試 SQL 權限與 audit 邊界, 驗證 D1 binding teardown], en: [Define Access and roles, test SQL permissions and audit boundaries, verify D1 binding teardown]}
+
+  - id: zerolink
+    name: ZeroLink
+    axis: cloudflare-native
+    state: content-research
+    state_label: {zh-tw: 研究中, en: In research}
+    source: {repository: yclgkd/zerolink, license: AGPL-3.0, default_branch: main, last_push: "2026-08-09", checked_on: "2026-08-27"}
+    product_summary:
+      project_type: {zh-tw: 以零知識設計分享敏感內容的加密 Worker, en: An encrypted Worker for sharing sensitive content with a zero-knowledge design}
+      problem: {zh-tw: 解決分享密碼或秘密時不希望伺服器看到明文的問題, en: Solves the need to share secrets without exposing plaintext to the server}
+      audience: {zh-tw: [需要分享敏感內容的人, 重視端到端加密的團隊], en: [People sharing sensitive content, teams requiring end-to-end encryption]}
+      capabilities: {zh-tw: [加密分享, URL fragment 鎖定, WebAuthn Passkey, 一次性或受控存取], en: [Encrypted sharing, URL-fragment locking, WebAuthn passkeys, one-time or controlled access]}
+      deployment_requirements: {zh-tw: [Cloudflare Worker, WebAuthn 相容網域, 需驗證瀏覽器與金鑰流程], en: [A Cloudflare Worker, a WebAuthn-compatible domain, browser and key-flow verification]}
+      limitations: {zh-tw: [安全性主張必須靠獨立測試支持, AGPL-3.0 與瀏覽器相容性需納入審查], en: [Security claims need independent testing, AGPL-3.0 and browser compatibility need review]}
+    architecture: {cloudflare: [workers], external_services: [WebAuthn]}
+    current_stage: {zh-tw: 產品安全模型與功能名稱已整理, 尚未進行 SmallGreen 安全驗證, en: Product security model and features are mapped; SmallGreen security verification has not started}
+    next_steps: {zh-tw: [核對密鑰是否離開瀏覽器, 測試分享生命週期與撤銷, 進行安全與瀏覽器相容性 review], en: [Confirm keys never leave the browser, test sharing lifecycle and revocation, perform security and browser-compatibility review]}
+
+  - id: statusflare
+    name: Statusflare
+    axis: cloudflare-native
+    state: content-research
+    state_label: {zh-tw: 研究中, en: In research}
+    source: {repository: krzko/statusflare, license: Apache-2.0, default_branch: main, last_push: "2025-12-15", checked_on: "2026-08-27"}
+    product_summary:
+      project_type: {zh-tw: 以 Workers、D1 與 R2 組成的監測與狀態頁平台, en: A monitoring and status-page platform using Workers D1 and R2}
+      problem: {zh-tw: 解決服務需要監測、事件頁、SLO 與公開 API 的問題, en: Solves the need for monitoring incident pages SLOs and a public API}
+      audience: {zh-tw: [維護網路服務的人, 需要公開事件紀錄的團隊], en: [People maintaining network services, teams publishing incident records]}
+      capabilities: {zh-tw: [排程監測, 事件與 SLO, R2 快取頁面, 通知、RSS 與 API], en: [Scheduled monitoring, incidents and SLOs, R2-cached pages, notifications RSS and API]}
+      deployment_requirements: {zh-tw: [Cloudflare Workers, D1, R2, Cron；Hyperdrive 為選配], en: [Cloudflare Workers, D1 R2 and Cron; Hyperdrive is optional]}
+      limitations: {zh-tw: [多元監測與通知設定需較完整維運, 目前維護狀態與資源成本需實測], en: [The varied monitoring and notification setup needs more operations work, maintenance and resource cost need testing]}
+    architecture: {cloudflare: [workers, d1, r2, cron], external_services: [Hyperdrive (optional), notification webhooks]}
+    current_stage: {zh-tw: 架構功能與資料層已整理, 尚未完成最小服務範圍與監測驗收, en: Architecture features and data layers are mapped; minimal scope and monitoring acceptance are pending}
+    next_steps: {zh-tw: [確認排程與通知資料流, 測試事件建立與關閉, 量測長期保存與 teardown], en: [Confirm scheduled and notification flows, test incident open and close, measure retention and teardown]}
+
+  - id: llmkit
+    name: LLMKit
+    axis: cloudflare-native
+    state: content-research
+    state_label: {zh-tw: 研究中, en: In research}
+    source: {repository: smigolsmigol/llmkit, license: MIT, default_branch: main, last_push: "2026-08-16", checked_on: "2026-08-27"}
+    product_summary:
+      project_type: {zh-tw: 具備預算控管與證據記錄的 AI Gateway／SDK, en: An AI gateway and SDK with budget controls and request evidence}
+      problem: {zh-tw: 解決 AI provider 成本、路由與請求證據分散，難以在送出前控管的問題, en: Solves the lack of pre-dispatch control over AI provider cost routing and request evidence}
+      audience: {zh-tw: [使用多 AI provider 的開發者, 需要成本與稽核邊界的團隊], en: [Developers using multiple AI providers, teams needing cost and audit boundaries]}
+      capabilities: {zh-tw: [預估費用與 budget admission, provider gateway, 成本歸屬, 請求證據與 MCP tools], en: [Estimated-cost budget admission, provider gateway, cost attribution, request evidence and MCP tools]}
+      deployment_requirements: {zh-tw: [Cloudflare Worker 與資料層, AI provider 憑證, 需先定義成本與敏感資料策略], en: [A Cloudflare Worker and data layer, AI provider credentials, cost and sensitive-data policy]}
+      limitations: {zh-tw: [仍屬高敏感的 AI 基礎元件, budget 計算與 provider 行為需獨立驗證], en: [It is a sensitive AI infrastructure component, budget calculations and provider behavior need independent verification]}
+    architecture: {cloudflare: [workers, d1, kv, workers-ai], external_services: [AI providers, MCP clients]}
+    current_stage: {zh-tw: 核心產品主張與安全方向已整理, 尚未完成最小部署與成本 oracle 驗證, en: Core product claims and security direction are mapped; minimal deployment and cost-oracle verification are pending}
+    next_steps: {zh-tw: [固定最小 provider 集合, 建立預估與實際費用對照, 驗證拒絕請求與 evidence 完整性], en: [Fix a minimal provider set, compare estimated and actual cost, verify rejection and evidence completeness]}
+
+  - id: prism
+    name: Prism
+    axis: cloudflare-native
+    state: content-research
+    state_label: {zh-tw: 研究中, en: In research}
+    source: {repository: skyphusion-labs/prism, license: AGPL-3.0, default_branch: main, last_push: "2026-08-26", checked_on: "2026-08-27"}
+    product_summary:
+      project_type: {zh-tw: 單一 Cloudflare Worker 的多模態 AI playground, en: A multimodal AI playground running as a single Cloudflare Worker}
+      problem: {zh-tw: 解決多種 AI 模態、RAG 與模型服務需要多套介面與後端的問題, en: Solves the need to assemble separate interfaces and backends for multimodal AI RAG and model services}
+      audience: {zh-tw: [想自架 AI playground 的開發者, 需要測試多模態流程的人], en: [Developers self-hosting an AI playground, people testing multimodal flows]}
+      capabilities: {zh-tw: [文字圖片影音與語音, RAG 與 web search, D1 歷史, R2 artifacts, Vectorize 與 workflow], en: [Text image video voice and music, RAG and web search, D1 history, R2 artifacts, Vectorize and workflows]}
+      deployment_requirements: {zh-tw: [Cloudflare Workers, D1, R2, Vectorize, Workers AI 或外部模型, 需設定 AI Gateway 與使用者登入], en: [Cloudflare Workers, D1 R2 Vectorize, Workers AI or external models, AI Gateway and user authentication]}
+      limitations: {zh-tw: [範圍與元件遠超小型服務, 多使用者、模型成本與資料安全需拆分驗證], en: [Its scope and components exceed a small service, multi-user model cost and data security need separate verification]}
+    architecture: {cloudflare: [workers, d1, r2, vectorize, durable-objects, workers-ai], external_services: [AI Gateway, external model providers, web search]}
+    current_stage: {zh-tw: 功能版與複合架構已確認, 暫列研究案例不進單一服務上架, en: The feature build and composite architecture are confirmed; it remains research-only rather than a single-service entry}
+    next_steps: {zh-tw: [拆分最小單模態版本, 先完成資料與成本邊界, 保留複合應用到後續 showcase], en: [Extract a minimal single-modality version, establish data and cost boundaries first, reserve composite work for a later showcase]}
+
+  - id: beam
+    name: Beam
+    axis: cloudflare-native
+    state: content-research
+    state_label: {zh-tw: 研究中, en: In research}
+    source: {repository: scobb/beam, license: MIT, default_branch: main, last_push: "2026-06-16", checked_on: "2026-08-27"}
+    product_summary:
+      project_type: {zh-tw: cookie-free 的隱私取向網站分析服務, en: A privacy-oriented cookie-free website analytics service}
+      problem: {zh-tw: 解決網站需要基本分析又不希望導入 cookie 與個人追蹤的問題, en: Solves the need for basic website analytics without cookies and personal tracking}
+      audience: {zh-tw: [網站作者, 重視隱私的產品團隊], en: [Website authors, privacy-conscious product teams]}
+      capabilities: {zh-tw: [輕量追蹤腳本, 分析 dashboard, 自有網域與 email 報告], en: [A lightweight script, an analytics dashboard, custom domains and email reports]}
+      deployment_requirements: {zh-tw: [Cloudflare Workers, 自有網域, 郵件與付款服務為選配], en: [Cloudflare Workers, a custom domain, optional email and payment services]}
+      limitations: {zh-tw: [商業化功能與外部付款會增加範圍, 目前尚未核對完整部署與資源需求], en: [Commercial and payment features expand scope, complete deployment and resource needs are unverified]}
+    architecture: {cloudflare: [workers], external_services: [Email provider, Stripe (optional)]}
+    current_stage: {zh-tw: 產品定位與隱私方向已整理, 尚未完成開源部署路徑驗證, en: Product positioning and privacy direction are mapped; the open deployment path is unverified}
+    next_steps: {zh-tw: [確認目前可部署功能範圍, 補事件匿名化與刪除規則, 再評估是否進入正式卡片], en: [Confirm the currently deployable scope, define event anonymization and deletion, then assess catalogue entry]}
+
+  - id: upptime
+    name: Upptime
+    axis: github-runtime
+    state: content-research
+    state_label: {zh-tw: 研究中, en: In research}
+    source: {repository: upptime/upptime, license: MIT, default_branch: master, last_push: "2026-08-26", checked_on: "2026-08-27"}
+    product_summary:
+      project_type: {zh-tw: 把 GitHub Actions、Issues 與 Pages 組成的開源狀態監測服務, en: An open status-monitoring service built from GitHub Actions Issues and Pages}
+      problem: {zh-tw: 解決小型服務需要排程監測、歷史資料與公開狀態頁的問題, en: Solves the need for scheduled checks history and a public status page for small services}
+      audience: {zh-tw: [GitHub 使用者, 需要公開狀態頁的專案維護者], en: [GitHub users, project maintainers needing a public status page]}
+      capabilities: {zh-tw: [排程檢查, 把 response data 寫回 repo, 自動開關 Issue, Svelte 狀態頁], en: [Scheduled checks, commit response data to the repo, open and close Issues, a Svelte status page]}
+      deployment_requirements: {zh-tw: [GitHub repository, GitHub Actions, GitHub Pages, repository secrets 與權限設定], en: [A GitHub repository, GitHub Actions, GitHub Pages, repository secrets and permissions]}
+      limitations: {zh-tw: [資料與權限集中在 GitHub, Actions 額度與公開 repo 政策需納入], en: [Data and permissions are concentrated in GitHub, Actions quotas and public-repository policy apply]}
+    architecture: {github: [actions, pages, repository, issues]}
+    current_stage: {zh-tw: GitHub 作為執行、資料與發布層的模式已確認, 尚未完成 SmallGreen 部署契約, en: GitHub as runtime data store and publishing layer is clear; the SmallGreen deployment contract is pending}
+    next_steps: {zh-tw: [固定 repository 權限模型, 驗證排程與 Issue 狀態機, 完成 repo teardown 與資料保留說明], en: [Fix repository permissions, verify scheduled checks and the Issue state machine, document repo teardown and retention]}
+
+  - id: metrics
+    name: Metrics
+    axis: github-runtime
+    state: content-research
+    state_label: {zh-tw: 研究中, en: In research}
+    source: {repository: lowlighter/metrics, license: MIT, default_branch: master, last_push: "2026-05-29", checked_on: "2026-08-27"}
+    product_summary:
+      project_type: {zh-tw: 由 GitHub Actions 產生個人或組織資訊圖的自動化工具, en: An automation tool that generates profile infographics with GitHub Actions}
+      problem: {zh-tw: 解決 GitHub 活動與個人頁面資訊需要手動整理更新的問題, en: Solves the manual work of collecting and updating GitHub activity on profile pages}
+      audience: {zh-tw: [GitHub 使用者, 需要自動更新個人頁的人], en: [GitHub users, people automating profile pages]}
+      capabilities: {zh-tw: [多種資料 plugin, 輸出 SVG、Markdown、PDF 與 JSON, 排程更新], en: [Many data plugins, SVG Markdown PDF and JSON output, scheduled updates]}
+      deployment_requirements: {zh-tw: [GitHub repository, Actions workflow, GitHub token 與各 plugin 的外部憑證], en: [A GitHub repository, an Actions workflow, a GitHub token and plugin-specific credentials]}
+      limitations: {zh-tw: [plugin 範圍大且外部 API 多, token 權限與失敗通知需明確設定], en: [The plugin surface and external APIs are broad, token scopes and failure alerts need explicit setup]}
+    architecture: {github: [actions, repository], external_services: [GitHub API, optional provider APIs]}
+    current_stage: {zh-tw: 產品形狀與輸出類型已整理, 尚未縮小成可驗證的最小 plugin 組合, en: Product shape and outputs are mapped; a minimal verifiable plugin set is not selected}
+    next_steps: {zh-tw: [選定最小 plugin 集合, 驗證 token 最小權限, 補 Actions 失敗與資料清除流程], en: [Choose a minimal plugin set, verify least-privilege tokens, add Actions failure and data-cleanup flows]}
+
+  - id: giscus
+    name: giscus
+    axis: github-runtime
+    state: content-research
+    state_label: {zh-tw: 研究中, en: In research}
+    source: {repository: giscus/giscus, license: MIT, default_branch: main, last_push: "2026-05-26", checked_on: "2026-08-27"}
+    product_summary:
+      project_type: {zh-tw: 使用 GitHub Discussions 作為資料層的網站留言元件, en: A website comment component using GitHub Discussions as its data layer}
+      problem: {zh-tw: 解決網站留言需要另建資料庫、登入與管理後台的問題, en: Solves the need to build a separate database login and moderation backend for website comments}
+      audience: {zh-tw: [有 GitHub repo 的網站作者, 需要低維運留言的團隊], en: [Website authors with a GitHub repo, teams needing low-operations comments]}
+      capabilities: {zh-tw: [Discussion 留言, GitHub OAuth, 依頁面映射討論, 不含廣告與追蹤], en: [Discussion comments, GitHub OAuth, page-to-discussion mapping, no ads or tracking]}
+      deployment_requirements: {zh-tw: [GitHub repository 與 Discussions, GitHub App 設定, 網站嵌入元件], en: [A GitHub repository with Discussions, GitHub App configuration and a website embed]}
+      limitations: {zh-tw: [留言資料與權限依賴 GitHub, 社群與 moderation 規則需自行管理], en: [Comments and permissions depend on GitHub, community and moderation rules are yours to manage]}
+    architecture: {github: [discussions, api], external_services: [GitHub OAuth]}
+    current_stage: {zh-tw: 資料層與使用方式清楚, 尚未驗證 SmallGreen 網站的留言權限邊界, en: Data layer and usage are clear; comment permissions on a SmallGreen site are unverified}
+    next_steps: {zh-tw: [確認 repo 與 Discussion category, 測試頁面映射與刪除, 補 OAuth 與 moderation 說明], en: [Confirm repo and Discussion category, test mapping and deletion, document OAuth and moderation]}
+
+  - id: picx
+    name: PicX
+    axis: github-runtime
+    state: content-research
+    state_label: {zh-tw: 研究中, en: In research}
+    source: {repository: XPoet/picx, license: AGPL-3.0, default_branch: master, last_push: "2025-02-26", checked_on: "2026-08-27"}
+    product_summary:
+      project_type: {zh-tw: 以 GitHub API 與 repository 作為圖片儲存的圖床工具, en: An image host using the GitHub API and a repository for image storage}
+      problem: {zh-tw: 解決個人網站需要圖片上傳介面而不想維護獨立物件儲存的問題, en: Solves the need for an upload interface without maintaining separate object storage}
+      audience: {zh-tw: [部落格作者, 使用 GitHub 的開發者], en: [Blog authors, developers using GitHub]}
+      capabilities: {zh-tw: [GitHub OAuth, 圖片上傳, repository／branch 管理, 圖片網址生成], en: [GitHub OAuth, image upload, repository and branch management, image URL generation]}
+      deployment_requirements: {zh-tw: [靜態網站 hosting, GitHub OAuth, 具備寫入權限的 GitHub token], en: [Static hosting, GitHub OAuth and a GitHub token with write access]}
+      limitations: {zh-tw: [圖片直接進 Git repository, 儲存量與 token 權限不適合所有場景, 授權為 AGPL-3.0], en: [Images go into a Git repository, storage and token permissions do not fit every case, license is AGPL-3.0]}
+    architecture: {github: [api, repository]}
+    current_stage: {zh-tw: GitHub 作為圖片資料層的模式已確認, 尚未驗證 repository 權限與檔案刪除, en: GitHub as the image data layer is clear; repository permissions and deletion are unverified}
+    next_steps: {zh-tw: [測試 OAuth 與 repository grant, 量測圖片與歷史檔案成長, 補刪除與 rate limit 說明], en: [Test OAuth and repository grants, measure image and history growth, document deletion and rate limits]}
+
+  - id: running-page
+    name: running_page
+    axis: github-runtime
+    state: content-research
+    state_label: {zh-tw: 研究中, en: In research}
+    source: {repository: yihong0618/running_page, license: MIT, default_branch: master, last_push: "2026-07-16", checked_on: "2026-08-27"}
+    product_summary:
+      project_type: {zh-tw: 整合運動資料的個人跑步首頁, en: A personal running homepage that presents activity data}
+      problem: {zh-tw: 解決跑步紀錄分散在 Garmin、Strava 等服務，無法集中展示的問題, en: Solves the fragmentation of running records across Garmin Strava and similar services}
+      audience: {zh-tw: [跑者, 想自架運動資料頁的人], en: [Runners, people self-hosting an activity page]}
+      capabilities: {zh-tw: [跑步活動展示, 地圖與統計, 靜態頁發布], en: [Running activity display, maps and statistics, static-page publishing]}
+      deployment_requirements: {zh-tw: [GitHub 或其他 hosting, Garmin／Strava 等帳號與 secret, 地圖服務設定], en: [GitHub or another host, Garmin or Strava accounts and secrets, map-service configuration]}
+      limitations: {zh-tw: [外部運動與地圖服務依賴高, secret 與個人位置資料需要額外保護], en: [It depends heavily on activity and map services, secrets and location data need extra protection]}
+    architecture: {github: [actions, pages, repository], external_services: [Garmin, Strava, Mapbox or MapCN]}
+    current_stage: {zh-tw: 個人展示場景已整理, 尚未確認純 GitHub runtime 的最小部署路徑, en: The personal-display use case is mapped; a minimal GitHub-runtime path is unconfirmed}
+    next_steps: {zh-tw: [拆出不含敏感資料的 demo, 確認 provider API 與 secret 邊界, 再評估是否適合單一服務卡], en: [Extract a non-sensitive demo, confirm provider APIs and secret boundaries, then assess a single service card]}
+
+  - id: blog-post-workflow
+    name: Blog Post Workflow
+    axis: github-runtime
+    state: content-research
+    state_label: {zh-tw: 研究中, en: In research}
+    source: {repository: gautamkrishnar/blog-post-workflow, license: AGPL-3.0, default_branch: master, last_push: "2026-08-10", checked_on: "2026-08-27"}
+    product_summary:
+      project_type: {zh-tw: 以 GitHub Actions 從 RSS 更新 README 的內容同步工作流, en: A GitHub Actions workflow that updates a README from RSS feeds}
+      problem: {zh-tw: 解決個人頁面需要定期手動同步文章、影片或 Stack Overflow 內容的問題, en: Solves the manual work of syncing articles videos or Stack Overflow content to a profile}
+      audience: {zh-tw: [使用 GitHub profile 的作者, 需要自動更新內容的人], en: [GitHub-profile authors, people automating content updates]}
+      capabilities: {zh-tw: [排程讀取 RSS, 更新 README, 支援文章、影片與 Stack Overflow feed], en: [Scheduled RSS reads, README updates, support for article video and Stack Overflow feeds]}
+      deployment_requirements: {zh-tw: [GitHub repository, Actions workflow, contents:write 權限, RSS sources], en: [A GitHub repository, an Actions workflow, contents:write permission and RSS sources]}
+      limitations: {zh-tw: [需要寫入 repository, RSS 格式與來源變動會影響結果, 授權為 AGPL-3.0], en: [It needs repository write access, RSS changes affect results, license is AGPL-3.0]}
+    architecture: {github: [actions, repository, rss]}
+    current_stage: {zh-tw: 工作流邊界清楚, 尚未完成 RSS 失敗與寫入權限的證據設計, en: Workflow boundaries are clear; RSS failure and write-permission evidence are pending}
+    next_steps: {zh-tw: [建立最小 feed fixture, 驗證 contents:write 最小權限, 補失敗通知與回滾策略], en: [Create a minimal feed fixture, verify least-privilege contents:write, add failure alerts and rollback]}
+
+  - id: shot-scraper
+    name: shot-scraper
+    axis: github-runtime
+    state: content-research
+    state_label: {zh-tw: 研究中, en: In research}
+    source: {repository: simonw/shot-scraper, license: Apache-2.0, default_branch: main, last_push: "2026-07-12", checked_on: "2026-08-27"}
+    product_summary:
+      project_type: {zh-tw: 以 CLI 與瀏覽器自動化擷取網頁截圖或資料的工具, en: A CLI and browser-automation tool for screenshots and web extraction}
+      problem: {zh-tw: 解決網頁截圖、簡單擷取與定期產出需要自行維護瀏覽器流程的問題, en: Solves the need to maintain browser flows for screenshots simple extraction and scheduled outputs}
+      audience: {zh-tw: [文件與內容維護者, 需要網頁快照的開發者], en: [Documentation and content maintainers, developers needing web snapshots]}
+      capabilities: {zh-tw: [截圖, JavaScript 擷取, 影片與批次執行, GitHub Actions template], en: [Screenshots, JavaScript extraction, video and batch execution, a GitHub Actions template]}
+      deployment_requirements: {zh-tw: [Python CLI, Chromium 環境, GitHub Actions 或其他 runner], en: [The Python CLI, a Chromium environment, GitHub Actions or another runner]}
+      limitations: {zh-tw: [瀏覽器資源與第三方網站變動會影響結果, 輸出檔案可能快速累積], en: [Browser resources and third-party changes affect results, output files may accumulate quickly]}
+    architecture: {github: [actions, workflow-artifacts], external_services: [Target websites]}
+    current_stage: {zh-tw: 工具能力與 Actions 路徑已整理, 尚未驗證 Cloudflare／GitHub 的小型部署邊界, en: Tool capabilities and the Actions path are mapped; the small Cloudflare or GitHub deployment boundary is unverified}
+    next_steps: {zh-tw: [定義固定目標網站 fixture, 測量 runner 與 artifact 成本, 補失敗與 robots 政策說明], en: [Define fixed target-site fixtures, measure runner and artifact cost, document failure and robots policy]}
+
+  - id: gitblog
+    name: Gitblog
+    axis: github-runtime
+    state: content-research
+    state_label: {zh-tw: 研究中, en: In research}
+    source: {repository: yihong0618/gitblog, license: MIT, default_branch: master, last_push: "2026-08-20", checked_on: "2026-08-27"}
+    product_summary:
+      project_type: {zh-tw: 以 GitHub Issues 與 Actions 作為內容層的個人部落格, en: A personal blog using GitHub Issues and Actions as its content layer}
+      problem: {zh-tw: 解決個人寫作需要 CMS、資料庫與 hosting 維護的問題, en: Solves the need to maintain a separate CMS database and hosting for personal writing}
+      audience: {zh-tw: [使用 GitHub 的作者, 想把 repo 當內容資料庫的人], en: [Authors using GitHub, people treating a repo as a content database]}
+      capabilities: {zh-tw: [Issues 文章, Actions 建置, RSS feed, 靜態部落格發布], en: [Issue-based posts, Actions builds, an RSS feed and static blog publishing]}
+      deployment_requirements: {zh-tw: [GitHub repository, Issues, Actions, Pages 或其他靜態 hosting], en: [A GitHub repository, Issues, Actions and Pages or another static host]}
+      limitations: {zh-tw: [內容與權限綁定 GitHub, Issue API 與 Actions 額度需納入], en: [Content and permissions are tied to GitHub, Issue API and Actions quotas apply]}
+    architecture: {github: [issues, actions, pages, repository]}
+    current_stage: {zh-tw: GitHub 作內容資料庫的模式已整理, 尚未完成發布與刪除的端到端驗收, en: GitHub as a content database is mapped; end-to-end publishing and deletion acceptance are pending}
+    next_steps: {zh-tw: [固定文章 schema 與狀態, 測試 Issue 變更到頁面的流程, 補 repo backup 與 teardown], en: [Fix the post schema and states, test Issue-to-page flow, add repo backup and teardown]}
+
+  - id: git-history
+    name: Git History
+    axis: github-runtime
+    state: content-research
+    state_label: {zh-tw: 研究中, en: In research}
+    source: {repository: pomber/git-history, license: MIT, default_branch: master, last_push: "2024-10-10", checked_on: "2026-08-27"}
+    product_summary:
+      project_type: {zh-tw: 用瀏覽器呈現 Git repository 檔案歷史的檢視工具, en: A browser viewer for the history of files in a Git repository}
+      problem: {zh-tw: 解決一般 Git diff 不容易理解長期檔案演變的問題, en: Solves the difficulty of understanding long-term file evolution from ordinary Git diffs}
+      audience: {zh-tw: [開發者, 文件維護者, 需要檢視內容演變的人], en: [Developers, documentation maintainers, people inspecting content evolution]}
+      capabilities: {zh-tw: [檢視檔案歷史, 支援 GitHub、GitLab 與 Bitbucket, 以 URL 開啟 repository], en: [View file history, support GitHub GitLab and Bitbucket, open repositories by URL]}
+      deployment_requirements: {zh-tw: [靜態前端與 API／repository 讀取權限, 需確認目前 hosting 流程], en: [A static frontend and repository read access, with the current hosting flow to be confirmed]}
+      limitations: {zh-tw: [上游更新較久, 大型 repository 與 API rate limit 需測量], en: [The upstream is older, large repositories and API rate limits need measurement]}
+    architecture: {github: [api, repository]}
+    current_stage: {zh-tw: 使用情境與資料來源已整理, 尚未確認現代 GitHub API 的相容性, en: Use case and data sources are mapped; compatibility with current GitHub APIs is unverified}
+    next_steps: {zh-tw: [確認 API 與 hosting 入口, 測試大型檔案歷史, 補 rate limit 與快取策略], en: [Confirm API and hosting entry points, test large file histories, add rate-limit and caching policy]}
+
+  - id: utterances
+    name: utterances
+    axis: github-runtime
+    state: content-research
+    state_label: {zh-tw: 研究中, en: In research}
+    source: {repository: utterance/utterances, license: MIT, default_branch: master, last_push: "2024-08-15", checked_on: "2026-08-27"}
+    product_summary:
+      project_type: {zh-tw: 使用 GitHub Issues 作為資料層的輕量留言元件, en: A lightweight comment component using GitHub Issues as its data layer}
+      problem: {zh-tw: 解決網站留言需要自建資料庫與管理後台的問題, en: Solves the need to build a separate database and moderation backend for comments}
+      audience: {zh-tw: [有 GitHub repo 的網站作者, 需要簡單留言的內容站], en: [Website authors with a GitHub repo, content sites needing simple comments]}
+      capabilities: {zh-tw: [Issue 留言, OAuth, 頁面映射, 不含廣告與追蹤], en: [Issue comments, OAuth, page mapping, no ads or tracking]}
+      deployment_requirements: {zh-tw: [GitHub repository, Issues, GitHub OAuth App, 網站嵌入設定], en: [A GitHub repository, Issues, a GitHub OAuth App and website embed configuration]}
+      limitations: {zh-tw: [留言權限與 moderation 依賴 GitHub, 上游維護較慢需評估], en: [Comment permissions and moderation depend on GitHub, slower upstream maintenance needs assessment]}
+    architecture: {github: [issues, api], external_services: [GitHub OAuth]}
+    current_stage: {zh-tw: 產品模式與依賴已整理, 尚未完成與 giscus 的選型比較, en: Product model and dependencies are mapped; comparison with giscus is pending}
+    next_steps: {zh-tw: [比較 Issues 與 Discussions 的資料邊界, 測試頁面映射與刪除, 依維護狀態決定是否保留], en: [Compare Issues and Discussions boundaries, test mapping and deletion, decide whether to keep it based on maintenance]}

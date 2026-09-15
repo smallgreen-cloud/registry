@@ -1,0 +1,114 @@
+{
+  "schema_version": "0.4.0",
+  "spec_version": "0.3.1",
+  "project_id": "second-brain-cloudflare",
+  "submitted_at": "2026-08-03T15:20:00Z",
+  "submitter": {
+    "github_handle": "AlanChen75"
+  },
+  "deploy_event": {
+    "date": "2026-08-03",
+    "profile": "small-app",
+    "path": "C-adapter",
+    "result": "success"
+  },
+  "maturity_reached": "D3",
+  "code_metrics": {
+    "loc": 16225,
+    "dependency_count": 8,
+    "measured_at_commit": "4e5424efae99e9666d4aa901f1ad2715bac0cb13",
+    "tool": "git ls-files（ts/js/mjs，排除 test/spec/.d.ts）+ wc -l；deps=package.json dependencies"
+  },
+  "conformance": {
+    "minutes": 2.0,
+    "result": "pass",
+    "ci_run_url": "https://github.com/smallgreen-cloud/adapter-second-brain/actions/runs/30823597570"
+  },
+  "low_carbon": {
+    "scale_to_zero": true,
+    "green_compute": false,
+    "no_idle_infra": true
+  },
+  "free_tier": {
+    "grade": "C",
+    "quota_notes": [
+      "**讀法**：deploy_event.result=success 指「部署事件本身成功」（資源建立、URL 可存取）；本輪的功能驗收並未完成，驗證深度看 maturity_reached=D3、未涵蓋面向看 unverified_scope——三個欄位要合起來讀",
+      "grade C 因 Workers AI：capture 走 embedding＋LLM 分類、recall 走 embedding＋查詢蒸餾，共用 10k Neurons/day 的**帳號層**免費額度；用盡即當日擷取與檢索皆回 500（不是降級是停擺），計數 00:00 UTC 重置",
+      "上游同步後重驗（371a8f9 → 4e5424e，跨 96 commits 與 Worker v2.2.0）。**本輪未達 D4，故 D5b（Update-Survivable，定義＝上游更新後重新通過 D4 驗收）未成立**——阻斷源為帳號層 Workers AI Neurons 額度耗盡（10k/day），非上游更新造成",
+      "已成立的更新存活證據：三個建置閘門（wrangler types → tsc → npm test）全 exit 0，其中上游 981 個測試零改動全綠；deploy 與 auto-provision 一次成功（未撞 E45）；health 200；auth 401；POST /migration/reembed 回 503 fail-closed",
+      "patch 0002 於本輪改寫為 binding-absence 語義（前版 try/catch 吞例外會弄紅上游兩個測試）；並補 src/env.ts 的選配型別宣告——降級樹此前 13 處 TS2339，是前一輪驗證未發現的既存缺陷（當時閘門不含 typecheck）",
+      "**契約更正（本輪實測）**：此前三份契約皆稱「keyword-only 降級」，實際上 src/recall/search.ts:124-127 的 embed() 與 inferQueryTags() 在 try 之外——Workers AI 不可用時擷取與檢索皆 500，是停擺不是降級。已更正 profile/maintenance/AGENTS 三處並新增部署前的額度探針步驟"
+    ]
+  },
+  "unverified_scope": [
+    {
+      "surface": "帶 AUTH_TOKEN 擷取筆記（POST /capture）",
+      "reason": "沙盒帳號的 Workers AI 免費額度（10k Neurons/day）在本輪開始前已於帳號層耗盡；獨立探針 POST /ai/run/@cf/baai/bge-small-en-v1.5 回 code 4006 確認。計數於 00:00 UTC 重置，超出本輪時間預算",
+      "blocker_kind": "platform-limit"
+    },
+    {
+      "surface": "關鍵字檢索與降級提示（GET /recall）",
+      "reason": "同上——recall 路徑在 try 之外呼叫 embed()／inferQueryTags()，Workers AI 不可用時於關鍵字回退前即 500",
+      "blocker_kind": "platform-limit"
+    },
+    {
+      "surface": "刪除後「再搜不命中」的後半段",
+      "reason": "刪除本身已驗（直接寫入 D1 一列後 POST /forget 回 200、count 歸 0，且 deletedVectors:0 證實降級模式跳過 Vectorize 未阻斷刪除），但「再搜」需 /recall，同受額度阻斷",
+      "blocker_kind": "platform-limit"
+    },
+    {
+      "surface": "語意搜尋（完整模式）",
+      "reason": "沙盒 token 無 Vectorize 權限（error 10000）——本 adapter 即為此情境的降級版，完整模式非本 Pack 範圍",
+      "blocker_kind": "platform-limit"
+    }
+  ],
+  "agent_matrix": [
+    {
+      "role": "deployer",
+      "agent": "claude-code",
+      "model": "claude-opus-5",
+      "version": "2.x",
+      "result": "autonomous",
+      "human_interventions": 0,
+      "stuck_state": "Workers AI Neurons 帳號層額度耗盡，UA-1/2/4 無法驗證；agent 選擇停止而非放寬驗收標準",
+      "retries": 3,
+      "date": "2026-08-03",
+      "self_repairs": [
+        {
+          "action": "wrangler d1 execute 加 --yes 旗標",
+          "reason": "非互動 session；wrangler 對 --remote 執行會要求互動確認而卡住。不改變行為",
+          "kind": "other"
+        }
+      ]
+    }
+  ],
+  "teardown": {
+    "performed": true,
+    "pass": true,
+    "residual_resources": [],
+    "method": "REST 直刪 worker second-brain（secrets 隨之移除）＋D1 second-brain-db＋KV second-brain-oauth-kv；六類歸零 diff 為空（pages 的 smallgreen-site 為常駐基線例外），部署 URL 回 404",
+    "date": "2026-08-03"
+  },
+  "user_acceptance": [
+    {
+      "task": "前端 GET /（200）",
+      "result": "pass",
+      "date": "2026-08-03"
+    },
+    {
+      "task": "無 token 打寫入端點 → 401（/capture 與 /forget 皆驗，含錯誤 token）",
+      "result": "pass",
+      "date": "2026-08-03"
+    },
+    {
+      "task": "POST /migration/reembed 帶 token → 503 fail-closed（v2.2 新路由；patch 0002 約束三：不得逐筆回報成功卻沒寫入）",
+      "result": "pass",
+      "date": "2026-08-03"
+    },
+    {
+      "task": "裁判獨立複驗（/ 200、無 token 401、migration 503、capture 500 復現）",
+      "result": "pass",
+      "date": "2026-08-03"
+    }
+  ]
+}

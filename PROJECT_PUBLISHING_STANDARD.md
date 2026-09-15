@@ -1,9 +1,15 @@
-# SmallGreen Cloud 新專案發布標準 v1.0
+# SmallGreen 新專案發布標準 v1.1
 
-> 目的：讓後續 Agent 以一致、可驗證、可重生的方式，把新專案加入 Registry 與官方網站。  
+> 目的：讓後續 Agent 以一致、可驗證、可重生的方式，把開源小型專案整理成使用者自己能運行的服務，加入 Registry 與官方網站。
 > 核心原則：**網站不是資料輸入介面；Registry YAML 是服務卡真相源，網站只 render。**
 
-## 一、發布狀態機
+## 一、先服務讀者，再描述技術
+
+SmallGreen 的第一個讀者，是想把開源小型專案變成自己能運行服務的人。每個專案在進入部署與驗證流程前，必須先讓人看懂：這是什麼、解決什麼、適合誰、可以做什麼、部署前要準備什麼，以及開始前要知道哪些限制。
+
+這些是服務卡的決策資訊；Profile、Deployment Contract、Agent 與 Evidence 是後續的部署與稽核資訊。不得用技術欄位代替專案用途與受眾說明。
+
+## 二、發布狀態機
 
 ```text
 CANDIDATE
@@ -19,7 +25,7 @@ CANDIDATE
 
 任何一步失敗即停在當前狀態並回報，不得跳過 validator、以手填資料偽造下一狀態，或因網站能 render 就宣稱已驗證。
 
-## 二、必要產物
+## 三、必要產物
 
 每個新專案至少具備：
 
@@ -42,7 +48,7 @@ registry/
 
 無 UI 服務不製造假截圖，網站改用 Deployment Contract 機械生成的架構圖。
 
-## 三、欄位所有權
+## 四、欄位所有權
 
 服務卡欄位分為三類，Agent 必須依來源修改：
 
@@ -55,7 +61,7 @@ registry/
 
 禁止直接修改 `cards/{project}.yaml` 的推導欄位。檔案頂端已有生成警告；直接修改會在下一次重生時被覆寫。
 
-## 四、Agent 執行流程
+## 五、Agent 執行流程
 
 ### Step 1：資格與公開邊界
 
@@ -104,9 +110,10 @@ Agent 是導遊不是裁判；`AGENTS.md` 不得自行宣告通過，通過與�
 
 1. 將 project ID 加入 `PROJECTS`，指向本地 adapter 目錄與公開 adapter repo slug。
 2. 在 `EDITORIAL` 加入名稱、一般人看得懂的 one-liner、taxonomy categories、顯示用 Cloudflare components 與 maintenance status。
-3. one-liner 描述使用情境，不堆技術名詞，最長 120 字。
-4. category 只能引用 `taxonomy.yaml` 現有 ID；新增 taxonomy 必須獨立說明理由並檢查既有卡片影響。
-5. 在 `translations/en.yaml` 新增相同 project ID 的 `one_liner` 與 `data_flow`；網站程式碼不得保存逐服務翻譯。
+3. one-liner 先描述專案要解決的問題與使用情境，不堆技術名詞，最長 120 字。
+4. `product_summary` 必須讓讀者依序看懂專案、問題、受眾、能力、部署前提與限制；架構與資料流另由來源欄位揭露。
+5. category 只能引用 `taxonomy.yaml` 現有 ID；新增 taxonomy 必須獨立說明理由並檢查既有卡片影響。
+6. 在 `translations/en.yaml` 新增相同 project ID 的 `one_liner` 與 `data_flow`；網站程式碼不得保存逐服務翻譯。
 
 ### Step 6：重生服務卡
 
@@ -167,7 +174,7 @@ Agent 檢查：
 
 人工 review 不得覆蓋機械失敗；兩者都通過才可發布。
 
-## 五、驗證等級與網站語意
+## 六、驗證等級與網站語意
 
 | 等級 | 網站可以說 | 網站不可說 |
 |---|---|---|
@@ -177,7 +184,7 @@ Agent 檢查：
 
 每頁必須顯示 `spec_version`、`last_verified` 與 `verified_commit`／Evidence reference，讓過期驗證可辨識。
 
-## 六、變更類型
+## 七、變更類型
 
 ### 新增專案
 
@@ -193,7 +200,7 @@ Agent 檢查：
 
 不得直接刪除歷史 Evidence。服務卡標示 `archived` 或移入歷史索引，保留已發布版本、日期與替代方案；真正刪除需另依治理政策決定。
 
-## 七、Agent 完成回報格式
+## 八、Agent 完成回報格式
 
 後續 Agent 完成新專案發布工作時，必須回報：
 
@@ -219,6 +226,6 @@ Not performed (push/deploy/external publication):
 
 ---
 
-文件版本：v1.0  
-定稿日期：2026-08-03  
-Owner：SmallGreen Cloud maintainers
+文件版本：v1.1
+定稿日期：2026-08-27
+Owner：SmallGreen maintainers

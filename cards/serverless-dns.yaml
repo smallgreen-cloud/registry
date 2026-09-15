@@ -2,6 +2,44 @@
 id: serverless-dns
 name: serverless-dns
 one_liner: RethinkDNS 引擎的自架 DoH 解析端點（內建封鎖清單）
+product_summary:
+  project_type:
+    zh-tw: 自架 DNS over HTTPS 解析服務
+    en: A self-hosted DNS-over-HTTPS resolver
+  problem:
+    zh-tw: 個人或小型團隊需要可自訂的 DNS 解析與封鎖清單入口
+    en: Individuals and small teams need a customizable DNS resolver and blocklist
+      endpoint
+  audience:
+    zh-tw:
+    - 需要自訂 DNS 的小型團隊
+    - 希望減少第三方解析依賴的技術使用者
+    en:
+    - Small teams that need custom DNS
+    - Technical users who want less dependence on third-party resolvers
+  capabilities:
+    zh-tw:
+    - 提供 DoH 解析端點
+    - 使用建置時封裝的封鎖清單
+    - 以無狀態方式處理請求
+    en:
+    - Provide a DoH resolver endpoint
+    - Use blocklists packaged at build time
+    - Process requests without storing query history by default
+  deployment_requirements:
+    zh-tw:
+    - 需要 Cloudflare Worker
+    - 需要自行維護封鎖清單與解析政策
+    en:
+    - A Cloudflare Worker
+    - The deployer maintains blocklists and resolver policies
+  limitations:
+    zh-tw:
+    - 不是完整的企業 DNS 管理平台
+    - 封鎖清單更新與錯誤分類需要自行維護
+    en:
+    - It is not a full enterprise DNS-management platform
+    - Blocklist updates and false-positive handling remain the deployer's responsibility
 categories:
 - utilities
 profile: small-app

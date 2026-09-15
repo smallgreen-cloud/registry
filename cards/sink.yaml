@@ -2,6 +2,44 @@
 id: sink
 name: Sink
 one_liner: 自架短網址服務，附 Analytics Engine 造訪統計
+product_summary:
+  project_type:
+    zh-tw: 自架短網址與造訪統計服務
+    en: A self-hosted URL shortener with visit analytics
+  problem:
+    zh-tw: 活動與分享連結依賴第三方短網址，企業無法掌握連結與基本統計
+    en: Campaign and sharing links depend on a third-party shortener, leaving the
+      business without control of links and basic statistics
+  audience:
+    zh-tw:
+    - 需要品牌短網址的小型企業
+    - 活動與行銷團隊
+    en:
+    - Small businesses that need branded links
+    - Event and marketing teams
+  capabilities:
+    zh-tw:
+    - 建立短網址與轉址
+    - 在自己的帳號儲存彙總造訪統計
+    - 由部署者維護連結與資料
+    en:
+    - Create short links and redirects
+    - Store aggregate visit statistics in your own account
+    - Maintain links and data under the deployer's control
+  deployment_requirements:
+    zh-tw:
+    - 需要自己的 Cloudflare 帳號
+    - 需要 Workers、KV；統計功能需要 Analytics Engine
+    en:
+    - Your own Cloudflare account
+    - Workers and KV; Analytics Engine for statistics
+  limitations:
+    zh-tw:
+    - 轉址目標由使用者自行提供與負責
+    - 統計受平台保留政策與免費額度限制
+    en:
+    - The deployer is responsible for destination URLs
+    - Statistics remain subject to platform retention and free-tier limits
 categories:
 - utilities
 - analytics
