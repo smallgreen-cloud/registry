@@ -3,7 +3,7 @@ name: cards
 on:
   push:
     branches: [main]
-    paths: ["cards/**", "taxonomy.yaml", "tools/**", "evidence/**", ".github/workflows/cards.yml"]
+    paths: ["cards/**", "candidates/**", "taxonomy.yaml", "tools/**", "evidence/**", ".github/workflows/cards.yml"]
   pull_request:
 
 jobs:
@@ -21,6 +21,8 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install --quiet jsonschema pyyaml
+      - name: Generator and candidate handoff regression tests
+        run: python -m unittest discover -s tools -p 'test_*.py'
       - name: 服務卡檢核（SVC-1/2/3/4/7）
         run: python tools/check_cards.py --spec .spec
       - name: Evidence Pack schema（全量重驗）

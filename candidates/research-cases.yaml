@@ -553,8 +553,8 @@ projects:
     axis: cloudflare-native
     state: content-research
     state_label:
-      zh-tw: 開源候選／安裝契約待實測
-      en: Open-source candidate / install contract awaiting live verification
+      zh-tw: 開源候選／先檢查環境再部署
+      en: Open-source candidate / check prerequisites before deployment
     source:
       repository: ai-cooperation/audio-notes-sites
       license: MIT
@@ -562,7 +562,7 @@ projects:
       locked_commit: b484d674c8572ecfaf8f9649484fa59db98e2250
       contract_commit: 9d29844c858c3619dda9d98e1aa5ddc3d42e3e76
       last_push: "2026-09-16"
-      checked_on: "2026-09-16"
+      checked_on: "2026-09-17"
     product_summary:
       project_type:
         zh-tw: 由 ChatGPT Work 與私人 Sites 組成的自有會議筆記系統，語音辨識使用使用者自己的 Groq API Key
@@ -577,11 +577,33 @@ projects:
         zh-tw: [在 Work 中處理會議錄音, 產生逐字稿、術語校正、摘要與後續待辦, 在私人 Sites 保存原稿、校正版、摘要與個人詞庫, 使用自己的 Groq 額度進行語音辨識]
         en: [Process meeting recordings in Work, Produce transcripts terminology corrections summaries and follow-up tasks, Store original and corrected transcripts summaries and terminology in private Sites, Use the owner's Groq quota for speech recognition]
       deployment_requirements:
-        zh-tw: [帳戶可使用 ChatGPT Work 與 Sites, Work 使用 Sites 受管的 D1 與 R2, 部署後由使用者登入網站自行設定 Groq API Key]
-        en: [An account with ChatGPT Work and Sites access, Sites-managed D1 and R2 provisioned by Work, A user-created Groq API key entered in the application after deployment]
+        zh-tw:
+          - 執行中的 agent 必須實際具有 ChatGPT Work 與 Sites 原生工具，只有 Codex 或其他 CLI 不代表具備部署能力
+          - 先核對安裝環境與固定版本文件並完成乾淨安裝及建置，再建立私人 Site 與受管 D1 和 R2
+          - 部署後由本人登入網站設定 Groq API Key，不在聊天貼上 Key
+          - 處理錄音前另行驗證 agent 對私人網站的合法傳檔授權，網頁登入不代表 agent 已授權
+        en:
+          - The running agent must actually have native ChatGPT Work and Sites tools; Codex or another CLI alone does not establish deployment capability
+          - Check the installation environment and pinned documents and complete a clean install and build before creating a private Site and managed D1 and R2
+          - After deployment the owner signs in and enters a Groq API key in the website, never in chat
+          - Before processing audio separately verify authorized agent uploads to the private site; browser sign-in does not authorize the agent
       limitations:
-        zh-tw: [音訊會傳送至 Groq 進行辨識, Work 傳檔授權與全新帳戶端到端流程尚未獨立驗證, 不保證關閉對話後隔日自動續作, 完整備份還原與自動刪除尚未完成]
-        en: [Audio is sent to Groq for recognition, Work upload authorization and a fresh-account end-to-end flow are not independently verified, Unattended next-day continuation is not guaranteed, Complete backup restore and automated deletion are incomplete]
+        zh-tw:
+          - 目前不能承諾貼上網址就能自動部署成功，這次更新只補充操作防呆，未修復應用程式
+          - macOS 預設環境的文件安裝流程已實測失敗，受管 Linux 與全新帳戶流程仍待驗證
+          - 應用程式與契約使用不同固定版本，agent 必須依 install.json 的文件網址讀取，不能把缺檔誤判為整個契約失效
+          - 本機重用依賴建置與模擬 Groq 通過，不代表乾淨安裝或真實語音辨識已通過
+          - 音訊會傳送至 Groq 進行辨識，本人須先完成網站內的 Key 設定
+          - 傳檔授權未完成時只能回報網站階段進度，不能宣稱錄音流程可用或改成公開網站繞過授權
+          - 不保證關閉對話後隔日自動續作，完整備份還原與自動刪除尚未完成
+        en:
+          - Pasting this URL does not guarantee automatic deployment; this update adds operating safeguards and does not fix application code
+          - The documented install failed on default macOS; managed Linux and fresh-account flows remain unverified
+          - Application source and contracts use different pinned revisions; agents must use the document URLs in install.json rather than treat a missing checkout file as a missing contract
+          - A local build with reused dependencies and mocked Groq does not verify clean installation or real speech recognition
+          - Audio is sent to Groq for recognition and the owner must first configure the key in the website
+          - If upload authorization is unavailable report only the website stage; do not claim usable audio processing or make the site public to bypass authorization
+          - Unattended next-day continuation is not guaranteed and complete backup restore and automated deletion remain incomplete
     architecture:
       cloudflare: [workers, d1, r2]
       external_services: [ChatGPT Work, Cloudflare Sites, Groq Speech-to-Text]
@@ -591,8 +613,8 @@ projects:
       deployment_ready: false
       contract_url: https://raw.githubusercontent.com/ai-cooperation/audio-notes-sites/9d29844c858c3619dda9d98e1aa5ddc3d42e3e76/.smallgreen/install.yaml
       trigger:
-        zh-tw: 依這網站，幫我部署到我的帳號
-        en: Deploy this service to my account from this page
+        zh-tw: 先讀取此服務卡的 install.json，核對 Sites 能力、安裝環境及固定文件網址；前置檢查通過後，依這網站，幫我部署到我的帳號。遇到阻塞先停止並回報；分開回報網站部署、本人設定 Groq Key、合法傳檔與錄音驗收，不把模擬測試當成部署成功。
+        en: First read this card's install.json and verify Sites capability, the installation environment and pinned document URLs. After preflight passes, deploy this service to my account from this page. Stop and report blockers; report website deployment, owner Groq key setup and authorized audio acceptance separately. Mock tests are not deployment success.
       target:
         client: chatgpt-work
         hosting: sites
@@ -606,16 +628,64 @@ projects:
         entry_channel: application-ui
         chat_handling: forbidden
         setup_path: /#groq-settings
+      # The application snapshot predates .smallgreen/. Resolve those documents
+      # from the contract revision, without silently changing the application SHA.
+      documents:
+        .smallgreen/install.yaml: https://raw.githubusercontent.com/ai-cooperation/audio-notes-sites/9d29844c858c3619dda9d98e1aa5ddc3d42e3e76/.smallgreen/install.yaml
+        .smallgreen/acceptance.yaml: https://raw.githubusercontent.com/ai-cooperation/audio-notes-sites/9d29844c858c3619dda9d98e1aa5ddc3d42e3e76/.smallgreen/acceptance.yaml
+        .smallgreen/maintenance.yaml: https://raw.githubusercontent.com/ai-cooperation/audio-notes-sites/9d29844c858c3619dda9d98e1aa5ddc3d42e3e76/.smallgreen/maintenance.yaml
+        docs/WORK_DEPLOY.md: https://raw.githubusercontent.com/ai-cooperation/audio-notes-sites/b484d674c8572ecfaf8f9649484fa59db98e2250/docs/WORK_DEPLOY.md
+        docs/LIMITATIONS.md: https://raw.githubusercontent.com/ai-cooperation/audio-notes-sites/b484d674c8572ecfaf8f9649484fa59db98e2250/docs/LIMITATIONS.md
+        AGENTS.md: https://raw.githubusercontent.com/ai-cooperation/audio-notes-sites/b484d674c8572ecfaf8f9649484fa59db98e2250/AGENTS.md
+      document_resolution:
+        rule: Use documents entries for matching contract-relative references; resolve other paths at source.commit. Fetch all required documents before provisioning. If instructions conflict, stop and report the conflict.
+        missing_document_action: stop
+        allow_unpinned_fallback: false
+      preflight:
+        on_failure: stop_before_resource_creation
+        required_checks: [native_sites_capability, pinned_documents, compatible_install_environment, clean_dependency_install, build_and_migration_bundle]
+        instructions:
+          - Verify native Sites tools and account access in the current agent session; a CLI name or website HTTP 200 is not capability evidence. Do not substitute external Cloudflare hosting.
+          - Fetch pinned documents using the mapping above and verify the application checkout SHA. A missing .smallgreen file at source.commit does not mean contract_url is unavailable.
+          - Record the operating system, shell and Sites execution profile. The pinned helper path failed on macOS with Bash 3.2 and missing Linux tools. Stop on this incompatible path; do not provision resources or install global tools to work around it.
+          - Managed Linux is unverified, not known to fail. In a compatible environment require a successful frozen clean dependency install and build with the hosting manifest and all migrations present. Reused node_modules do not pass this check.
+          - On dependency download timeout keep the log and report installation incomplete. Retry at most once with a stated time bound; do not change the lockfile or claim that a network timeout is a product defect.
+      encryption_readiness:
+        requirement: Generate the documented 32-byte encryption key and store it only as a Sites secret. Validate its decoded length and encryption operation without logging it; a nonempty secret or storageReady alone is insufficient.
+        known_failure_scope: A malformed master key produced storageReady true followed by save HTTP 400 in local fault injection; this does not mean a valid key always fails.
+      upload_authorization:
+        website_login_implies_agent_access: false
+        on_unavailable: stop_audio_stage
+        make_site_public_to_bypass_auth: false
+        requirement: Use a platform-supported authorized upload route with the verified owner and short-lived credentials. Follow the current Sites tool authorization requirements; a deployment request alone does not authorize every token-generation tool. Never request keys or tokens in chat or fabricate identity headers.
+      completion_policy:
+        report_stages: [private_site_deployment, owner_groq_setup, authorized_audio_flow]
+        stage_results: [passed, failed, blocked, not_run]
+        mock_is_live_evidence: false
+        deployment_success_requires: Sites successful terminal state plus authenticated application health and working D1 and R2 with all migrations; homepage HTTP 200 or anonymous API 401 alone is insufficient.
+        operational_success_requires: Owner-configured Groq key plus authorized short-audio upload, a real Groq response and four saved documents read back with completion verification.
+      verification_scope:
+        checked_on: "2026-09-17"
+        scope_summary_url: https://github.com/smallgreen-cloud/registry/blob/main/candidates/audio-notes-sites.md
+        macos_portable_install: failed
+        clean_install: unverified
+        managed_linux_install: unverified
+        build_with_reused_dependencies: passed
+        local_mock_audio_flow: passed
+        fresh_account_deployment: unverified
+        real_groq_flow: unverified
+        note: Local observations are not a SmallGreen Evidence Pack. Model review completion is not deployment completion.
       blockers:
+        - macOS portable 文件安裝路徑已實測不相容；乾淨安裝因下載逾時未完成，受管 Linux 路徑未驗證
         - 尚未完成全新 Work／Sites 帳號從服務卡啟動的獨立部署驗收
         - 尚未驗證 Work 對私人 Site 的持久合法附件傳輸授權
         - 尚未完成 Sites 受管 D1／R2 的全量備份、還原與 teardown zero-diff 驗收
     current_stage:
-      zh-tw: 已公開 MIT 原碼，新增 SmallGreen 核心契約與 Sites-only Agent Install Contract；來源鎖定 b484d674c8572ecfaf8f9649484fa59db98e2250，契約 commit 為 9d29844c858c3619dda9d98e1aa5ddc3d42e3e76。尚未完成全新帳戶的 Work 傳檔、真實 Groq 轉錄、資料讀回、teardown 與 Evidence Pack
-      en: "MIT source is public with the core SmallGreen contracts and a Sites-only Agent Install Contract. Source is pinned to b484d674c8572ecfaf8f9649484fa59db98e2250 and the contract commit is 9d29844c858c3619dda9d98e1aa5ddc3d42e3e76. Fresh-account Work upload, real Groq transcription, data readback, teardown and an Evidence Pack remain incomplete"
+      zh-tw: 已補充部署前檢查、固定版本文件對照與分階段回報規則。2026 年 9 月 17 日本機檢查確認 macOS 文件安裝路徑失敗；重用依賴建置與模擬音訊流程通過，但乾淨安裝、全新帳戶部署、真實 Groq、備份還原與移除仍未驗證。應用程式鎖定 b484d674c8572ecfaf8f9649484fa59db98e2250，契約鎖定 9d29844c858c3619dda9d98e1aa5ddc3d42e3e76，兩者不可混用
+      en: "Preflight checks, pinned document mapping and separate stage reporting are documented. Local checks on 2026-09-17 found the documented macOS install path failed. A build with reused dependencies and mocked audio flow passed, but clean installation, fresh-account deployment, real Groq, backup, restore and teardown remain unverified. Application source stays at b484d674c8572ecfaf8f9649484fa59db98e2250 and contracts at 9d29844c858c3619dda9d98e1aa5ddc3d42e3e76; do not mix the revisions"
     verification_note:
       zh-tw: 這是具有候選安裝契約的研究卡。目前只驗證契約 schema、原碼、文件與隔離測試，不是已驗證服務或 SmallGreen Ready
       en: "This research card now has a candidate install contract. Current evidence covers contract schema, source, documentation and isolated tests; it is not a verified service or SmallGreen Ready"
     next_steps:
-      zh-tw: [在乾淨沙盒帳戶用一句話啟動並完成 Sites 部署, 由使用者登入網站後自行設定 Groq Key, 驗證 Work 合法傳檔與四種文件讀回, 驗證資源清除並產出 Evidence Pack 與正式上線畫面]
-      en: [Start and complete the Sites deployment from one sentence in a clean sandbox account, Let the user configure the Groq key in the deployed application, Verify authorized Work upload and four-document readback, Verify resource removal and produce an Evidence Pack plus a live screenshot]
+      zh-tw: [修正並驗證相容環境的乾淨安裝後再建立私人 Site, 在新帳戶分別驗證網站部署與本人設定 Groq Key, 驗證合法傳檔及真實 Groq 後讀回四種文件, 驗證備份還原與資源清除後產出 Evidence Pack]
+      en: [Fix and verify clean installation in a compatible environment before creating a private Site, Verify website deployment and owner Groq setup separately in a fresh account, Verify authorized uploads and real Groq then read back all four documents, Verify backup restore and resource removal before producing an Evidence Pack]

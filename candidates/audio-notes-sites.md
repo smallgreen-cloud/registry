@@ -38,3 +38,29 @@ Requires actual Work/Sites access and initial Groq key setup. Audio is sent to G
 原有測試及掃描範圍見 [release](https://github.com/ai-cooperation/audio-notes-sites/tree/d25f8a5998418f28cc9d8ade99fe89eb12ee179a/release)。這些是原碼與隔離測試紀錄，Groq 回應為模擬；不是 SmallGreen Evidence Pack，也不是全新帳戶端對端部署驗收。
 
 此候選請維護者審查 Sites 託管資源與 Work 執行端的 profile 適配方式。正式收錄仍須完成上列門檻。
+
+## 2026 年 9 月 17 日部署交接修正
+
+本次只更新研究卡、複製提示與 `install.json` 的操作規則，不變更應用程式版本，也不宣稱修復安裝腳本或取得真實部署證據。
+
+1. **先檢查再建資源**：目前 agent 必須有 Work／Sites 原生工具。核對環境、文件、乾淨安裝及建置後才建立 Site、D1、R2；前置檢查失敗即停，不以 CLI 名稱或首頁 HTTP 200 判定有部署能力。
+2. **分開解析兩個固定版本**：應用程式仍是 `b484d674c8572ecfaf8f9649484fa59db98e2250`，`.smallgreen/` 契約文件從 `9d29844c858c3619dda9d98e1aa5ddc3d42e3e76` 讀取。`agent_install.documents` 提供完整固定網址，禁止默默切換 main 或把應用目錄缺檔誤報為主契約失效。
+3. **揭露安裝限制**：macOS 14.6、Bash 3.2、Sites 0.1.65 portable 的文件安裝路徑失敗，不能把此結果外推成所有 Linux 失敗。乾淨安裝因下載逾時未完成；重用既有依賴的建置成功不能替代乾淨安裝。
+4. **本人操作與 agent 授權分開**：Groq Key 只由本人在私人網站設定。網站登入不會自動授權 agent 傳檔；授權不可用即停止錄音階段，不改成公開網站、不偽造身分、不在聊天索取憑證。
+5. **三階段分別回報**：私人網站部署、本人 Groq 設定、合法傳檔與真實音訊驗收，各自標示 passed／failed／blocked／not_run。模擬 Groq、模型完成審查、schema 通過或首頁 HTTP 200 都不能替代實際部署及使用驗收。
+
+### 本機觀測的證據範圍
+
+這是 2026 年 9 月 17 日原碼與本機檢查摘要，**不是 SmallGreen Evidence Pack**。
+
+| 檢查 | 結果與界線 |
+| --- | --- |
+| 固定來源 | main／契約為 `9d29844`；應用為 `b484d67`；兩者產品程式及依賴鎖檔一致 |
+| macOS helper | Sites 0.1.65 的文件路徑 exit 69，訊息要求 Linux flock、GNU timeout；系統 Bash 3.2 對腳本 coproc 的語法檢查 exit 2 |
+| 乾淨安裝補救 | frozen install 首次下載逾時；同 checkout／lockfile 一次 180 秒重試仍未完成，不能算 PASS |
+| 重用依賴 | 相同 package／lockfile／workspace 雜湊下，型別、workflow／queue／remote-mcp 測試及正式建置通過；本機首頁 200，未登入 API 與 MCP 401 |
+| 模擬音訊 | 本機隔離 Miniflare D1／R2、模擬身分及 mock Groq；合成 1 秒音檔完成四文件保存與讀回。Synthetic for testing only；不能推論真實辨識品質或雲端授權成功 |
+| readiness 故障注入 | 主加密金鑰格式錯誤時觀察到 storageReady 為 true、保存 HTTP 400；不是有效 Key 必定失敗。部署應驗證 32-byte 主金鑰及加密操作，不能只看非空設定 |
+| 未驗收 | 受管 Linux 乾淨安裝、新學員帳戶發布、真實登入與 Groq、完整備份還原及移除 |
+
+原碼依據：[安裝腳本](https://github.com/ai-cooperation/audio-notes-sites/blob/b484d674c8572ecfaf8f9649484fa59db98e2250/scripts/install-pnpm.sh)、[Work 部署與授權界線](https://github.com/ai-cooperation/audio-notes-sites/blob/b484d674c8572ecfaf8f9649484fa59db98e2250/docs/WORK_DEPLOY.md)、[安裝契約](https://github.com/ai-cooperation/audio-notes-sites/blob/9d29844c858c3619dda9d98e1aa5ddc3d42e3e76/.smallgreen/install.yaml)、[驗收契約](https://github.com/ai-cooperation/audio-notes-sites/blob/9d29844c858c3619dda9d98e1aa5ddc3d42e3e76/.smallgreen/acceptance.yaml)、[維護契約](https://github.com/ai-cooperation/audio-notes-sites/blob/9d29844c858c3619dda9d98e1aa5ddc3d42e3e76/.smallgreen/maintenance.yaml)。
