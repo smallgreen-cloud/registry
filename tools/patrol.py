@@ -2,7 +2,7 @@
 """SVC-5 巡邏 detector（生產層）：卡片 spec_version 落後現行 spec minor 版以上 → stale 告警。
 
 設計依 pipeline-invariant-testing 第 5 條：「應該會一直正常」的假設要嘛 CI 測、要嘛生產 detector＋告警。
-排程跑（GitHub Actions cron）；發現 stale 或執行失敗都打 Telegram（沉默失敗＝設計缺陷）。
+排程跑（GitHub Actions cron）；發現 stale 或執行失敗都送 ops-inbox（沉默失敗＝設計缺陷）。
 輸出：stdout 報告＋exit code（0 無事、1 有 stale、2 執行錯誤）——告警由 workflow 層依 exit code 觸發。
 """
 import json

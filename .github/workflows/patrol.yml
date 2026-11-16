@@ -20,18 +20,26 @@ jobs:
           set +e
           python tools/patrol.py | tee patrol.out
           echo "code=$?" >> "$GITHUB_OUTPUT"
-      - name: Telegram 告警（stale 或執行失敗才發）
+      - name: 送 ops-inbox（stale 或執行失敗才發）
         if: steps.patrol.outputs.code != '0'
         env:
-          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
-          TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+          GH_TOKEN: ${{ secrets.OPS_INBOX_TOKEN }}
+          SEV: warn
+          SRC: registry
+          TITLE: registry patrol 異常
         run: |
           MSG="SmallGreen patrol（SVC-5）: exit ${{ steps.patrol.outputs.code }}
           $(head -12 patrol.out)
           https://github.com/smallgreen-cloud/registry/actions/runs/${{ github.run_id }}"
-          curl -s "https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage" \
-            --data-urlencode "chat_id=${TG_CHAT_ID}" \
-            --data-urlencode "text=${MSG}" > /dev/null
+          R=ai-cooperation/ops-inbox
+          N=$(gh api "repos/$R/issues?state=open&labels=src:$SRC&per_page=100" \
+                --jq "[.[] | select(.title==env.TITLE)][0].number // empty")
+          if [ -n "$N" ]; then
+            gh api "repos/$R/issues/$N/comments" -f body="$MSG" --silent
+          else
+            gh api "repos/$R/issues" -f title="$TITLE" -f body="$MSG" \
+              -f "labels[]=sev:$SEV" -f "labels[]=src:$SRC" --silent
+          fi
       - name: 結果反映到 job 狀態
         if: steps.patrol.outputs.code == '2'
         run: exit 1
