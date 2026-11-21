@@ -1,0 +1,84 @@
+# 機械生成（tools/gen_cards.py）——editorial 欄位改 EDITORIAL 字典後重生，勿直接手改推導欄位
+id: ai-fitness-coach
+name: AI 健身教練
+one_liner: 手機架在旁邊做運動，相機自動數次數、語音報數，畫面與姿勢資料都只留在手機上
+product_summary:
+  project_type:
+    zh-tw: 在瀏覽器內執行姿勢辨識的健身計數網頁 App（PWA）
+    en: A fitness rep-counting web app (PWA) that runs pose detection in the browser
+  problem:
+    zh-tw: 在家自主訓練時沒人幫忙數次數、看動作是否做完整，而多數健身 App 要註冊帳號並把影像或資料送上雲端
+    en: Training alone at home leaves no one to count reps or check whether each rep
+      was complete, and most fitness apps require an account and send video or data
+      to the cloud
+  audience:
+    zh-tw:
+    - 在家自主訓練的人
+    - 想讓學員回家照著練的健身教練與瑜伽老師
+    en:
+    - People who train on their own at home
+    - Fitness coaches and yoga teachers who want students to practise at home
+  capabilities:
+    zh-tw:
+    - 24 個動作附解剖風格示範動畫，其中 21 個可自動計數
+    - 保守計數：動作不完整或追蹤中斷時標為待確認，並有語音報數
+    - 電視模式：手機橫放後投放到電視，左側大字次數、右側相機畫面
+    en:
+    - 24 exercises with anatomy-style demo animations, 21 of them counted automatically
+    - Conservative counting that marks incomplete or interrupted reps as uncertain,
+      with spoken counts
+    - 'TV mode: turn the phone sideways and cast it to a TV for large rep counts beside
+      the camera view'
+  deployment_requirements:
+    zh-tw:
+    - 需要自己的 Cloudflare 帳號，只建立一個靜態資產 Worker
+    - 不需要資料庫、secret 或自有網域；相機需要 HTTPS，workers.dev 網址即可
+    en:
+    - Your own Cloudflare account; only one static-assets Worker is created
+    - No database, secrets or custom domain; the camera needs HTTPS, which the workers.dev
+      address provides
+  limitations:
+    zh-tw:
+    - 一次只能一個人入鏡，只在 Android 手機的 Chrome 實際測過；iPhone Safari 尚未測試
+    - 投放電視已用 Android 的「投放螢幕」連 Android TV 實測；iPhone 經 AirPlay 投放尚未測試
+    - 多數動作的計數門檻尚未經手機實機校準；本 App 不是醫療或復健建議
+    en:
+    - Only one person can be in frame, and it has only been tested in Chrome on Android
+      phones; iPhone Safari is untested
+    - Casting has been tested with Android screen casting to an Android TV; AirPlay
+      from an iPhone is untested
+    - Most rep thresholds are not yet calibrated on real phone sessions; the app is
+      not medical or rehabilitation advice
+categories:
+- personal
+profile: small-app
+repo:
+  upstream: AlanChen75/ai-fitness-coach
+  license: Apache-2.0
+components:
+  cloudflare:
+  - workers
+login_method: none
+data_flow:
+  external_services: []
+  disclosure: 伺服器端不存任何資料。訓練紀錄與逐幀姿勢資料存在使用者瀏覽器的 IndexedDB 與 OPFS，設定存在 localStorage；刪除瀏覽器網站資料即一併刪除。相機畫面不離開裝置。
+verification:
+  level: discovered
+  spec_version: 0.4.0
+  last_verified: '2026-11-21'
+  evidence_packs:
+  - evidence/ai-fitness-coach/2026-11-21-sandbox-01.json
+  compatible_agents:
+  - agent: claude-code
+    model: claude-opus-5-5
+    result: autonomous
+free_tier_grade: A
+low_carbon:
+  scale_to_zero: true
+  green_compute: false
+  no_idle_infra: true
+maintenance_status: active
+images:
+  screenshot:
+    path: evidence/ai-fitness-coach/artifacts/2026-11-21-home-1280.png
+    evidence_pack_ref: evidence/ai-fitness-coach/2026-11-21-sandbox-01.json
