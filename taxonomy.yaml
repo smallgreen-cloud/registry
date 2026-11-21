@@ -13,3 +13,6 @@ categories:
   - id: utilities
     name: 網路工具（DNS／監測／短網址）
     members_at_creation: [serverless-dns, uptimeflare, sink]
+  - id: personal
+    name: 個人應用（資料留在自己手機或帳號的個人工具）
+    members_at_creation: [ai-fitness-coach, tapcard-mcp, second-brain-cloudflare]

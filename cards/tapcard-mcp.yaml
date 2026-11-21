@@ -43,6 +43,7 @@ product_summary:
     - URL import is limited to public TapCards that meet the contract
 categories:
 - sharing
+- personal
 profile: small-app
 repo:
   upstream: ai-cooperation/tapcard-mcp

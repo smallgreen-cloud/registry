@@ -1,0 +1,157 @@
+{
+  "schema_version": "0.4.0",
+  "spec_version": "0.4.0",
+  "project_id": "ai-fitness-coach",
+  "submitted_at": "2026-11-21T15:10:00Z",
+  "submitter": {
+    "github_handle": "AlanChen75"
+  },
+  "deploy_event": {
+    "date": "2026-11-21",
+    "profile": "small-app",
+    "path": "A-template",
+    "result": "success"
+  },
+  "maturity_reached": "D5a",
+  "code_metrics": {
+    "loc": 6861,
+    "dependency_count": 5,
+    "measured_at_commit": "daf69007f22254d26684343565b1d4904fea9c24",
+    "tool": "git ls-files src/**/*.ts（排除 .test. 與 .d.ts）+ wc -l；deps=package.json dependencies+devDependencies"
+  },
+  "conformance": {
+    "minutes": 0.4,
+    "result": "pass",
+    "ci_run_url": "https://github.com/AlanChen75/ai-fitness-coach/actions/runs/44916861588"
+  },
+  "low_carbon": {
+    "scale_to_zero": true,
+    "green_compute": false,
+    "no_idle_infra": true
+  },
+  "free_tier": {
+    "grade": "A",
+    "quota_notes": [
+      "只宣告 assets（Workers Static Assets），無 binding、無 secret、無自有網域需求；靜態資產請求不計入 Workers 每日請求額度。",
+      "部署中發現並修正專案缺陷：預設 html_handling（auto-trailing-slash）把 /train.html 307 轉址到 /train，service worker 預先快取 ./train.html 會存到轉址回應；改為 html_handling none 加 SPA fallback（commit 57a9ec9），重新部署後 / 與各 .html 皆 200。",
+      "CI 乾淨環境閘第一次失敗：wrangler 4.166 內部套件的選配 peer vitest ^4||^5 與專案 vitest 3 衝突，npm 10 判定 lockfile 不同步；改為不把 wrangler 放進 devDependencies、部署指令固定 npx wrangler@4.166.0（commit daf6900），CI 轉綠。另 spec v0.4.0 tag 未推到遠端，改釘 commit。",
+      "部署內容來自 commit 57a9ec9 的 build；daf6900 只改 package 與 CI 設定，不影響 dist。",
+      "真人計數與電視模式的實機驗收來自使用者在 GitHub Pages 線上版的測試，與本次沙盒部署為同一份程式碼的不同託管位置。"
+    ]
+  },
+  "unverified_scope": [
+    {
+      "surface": "長時間訓練的螢幕常亮（Screen Wake Lock）",
+      "reason": "使用者實機投放測試確認畫面與計數正常，但未單獨記錄長時間閒置下螢幕是否保持常亮；無頭瀏覽器無法驗證。",
+      "blocker_kind": "requires-human"
+    },
+    {
+      "surface": "iPhone Safari",
+      "reason": "本次與既有測試都只在 Chromium／Android Chrome。",
+      "blocker_kind": "requires-human"
+    },
+    {
+      "surface": "service worker 離線安裝後的頁面載入",
+      "reason": "本次以 HTTP 確認 .html 不再轉址，未在已安裝 PWA 上離線重開。",
+      "blocker_kind": "other"
+    },
+    {
+      "surface": "獨立 verifier agent 複驗",
+      "reason": "本次由部署者以 curl 與 Playwright 機械檢查驗收，未另派不同模型的 verifier；部署已拆除，需重新部署才能複驗。",
+      "blocker_kind": "other"
+    }
+  ],
+  "agent_matrix": [
+    {
+      "role": "deployer",
+      "agent": "claude-code",
+      "model": "claude-opus-5-5",
+      "version": "desktop",
+      "result": "autonomous",
+      "human_interventions": 1,
+      "stuck_state": null,
+      "retries": 2,
+      "date": "2026-11-21",
+      "self_repairs": []
+    }
+  ],
+  "network_behavior_report": {
+    "declared_domains": [],
+    "observed_domains": [
+      "ai-fitness-coach.smallgreen-sandbox.workers.dev"
+    ],
+    "undeclared": [],
+    "verdict": "pass"
+  },
+  "screenshots": {
+    "app_png": {
+      "path": "evidence/ai-fitness-coach/artifacts/2026-11-21-home-1280.png",
+      "sha256": "f197ec5a84e55b6cb05a010b4ff21d861a388c74830209f5e26b77826a0f75db",
+      "tool": "Playwright chromium（1280x800，部署在線時收取；主線目視：動作選單首頁，四個分級分頁與示範動畫卡片，無敏感資料）"
+    }
+  },
+  "teardown": {
+    "performed": true,
+    "pass": true,
+    "residual_resources": [],
+    "method": "npx wrangler delete ai-fitness-coach；部署前後以 REST 列出 workers／d1／kv／pages／queues／r2 六類，diff 為空（帳號內他人既有資源不動）；部署網址隨後回 404。",
+    "date": "2026-11-21"
+  },
+  "user_acceptance": [
+    {
+      "task": "wrangler deploy 上傳 56 個靜態檔，workers.dev 網址可存取",
+      "result": "pass",
+      "date": "2026-11-21"
+    },
+    {
+      "task": "/、/index.html、/train.html、/train.html?exercise=squat、/review.html、/sw.js、/manifest.webmanifest 皆 200 且無轉址",
+      "result": "pass",
+      "date": "2026-11-21"
+    },
+    {
+      "task": "/models/pose_landmarker_lite.task 200，大小 5777746 bytes 與 dist 相同",
+      "result": "pass",
+      "date": "2026-11-21"
+    },
+    {
+      "task": "線上 sw.js 的 CACHE_NAME 為 fitness-coach-v0.8.1",
+      "result": "pass",
+      "date": "2026-11-21"
+    },
+    {
+      "task": "Playwright 開首頁、示範頁、訓練頁：無 pageerror、無 console error，所有資源請求只指向部署網址本身",
+      "result": "pass",
+      "date": "2026-11-21"
+    },
+    {
+      "task": "375／768／1280 px 首頁與 375 px 示範頁、訓練頁無橫向 overflow",
+      "result": "pass",
+      "date": "2026-11-21"
+    },
+    {
+      "task": "本地 wrangler dev smoke（acceptance.yaml health 與兩組 smoke）",
+      "result": "pass",
+      "date": "2026-11-21"
+    },
+    {
+      "task": "teardown 後六類資源與部署前 diff 為空，網址回 404",
+      "result": "pass",
+      "date": "2026-11-21"
+    },
+    {
+      "task": "使用者實機：Android 手機架在旁邊做動作，以「投放螢幕」鏡像到 Android TV，錄影可見次數由 6 跳到 10、骨架與動作同步（GitHub Pages 線上版，非本次沙盒部署）",
+      "result": "pass",
+      "date": "2026-11-21"
+    },
+    {
+      "task": "使用者實機：訓練頁開啟電視模式後投放到電視，使用者回報可用（GitHub Pages 線上版 v0.8.1，非本次沙盒部署）",
+      "result": "pass",
+      "date": "2026-11-21"
+    }
+  ],
+  "verifier_verdict": {
+    "by": "AlanChen75（專案作者，實機使用）",
+    "usable": true,
+    "note": "沙盒部署、載入與拆除由 Claude Code 機械驗收；真人計數有使用者實機錄影，電視模式經使用者實機確認可用（Android 投放到 Android TV）。iPhone 與 AirPlay 未測；多數動作門檻未經手機實機校準。"
+  }
+}

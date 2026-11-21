@@ -38,6 +38,7 @@ FIRST_PARTY = {
     "meeting-capture-kit": "ai-cooperation/meeting-capture-kit",
     "kb-vault": "AlanChen75/kb-vault",
     "fluxgate": "ai-cooperation/fluxgate",
+    "ai-fitness-coach": "AlanChen75/ai-fitness-coach",
 }
 
 # first-party contracts may be staged locally before their public release commit is
@@ -102,7 +103,7 @@ EDITORIAL = {
     },
     "second-brain-cloudflare": {
         "name": "Second Brain", "one_liner": "個人知識庫＋MCP server（keyword-only 降級收錄版）",
-        "categories": ["sharing"],
+        "categories": ["sharing", "personal"],
         "components": ["workers", "d1", "kv", "workers-ai", "cron"],
         "maintenance_status": "active",  # 2026-07-30
     },
@@ -120,7 +121,7 @@ EDITORIAL = {
     },
     "tapcard-mcp": {
         "name": "TapCard MCP", "one_liner": "自架 NFC／QR 電子名片＋私人 AI 名片庫：公開頁掃即得，收到的名片存自己帳號",
-        "categories": ["sharing"],
+        "categories": ["sharing", "personal"],
         "components": ["workers", "d1", "r2", "kv"],
         "maintenance_status": "active", "license": "Apache-2.0",
     },
@@ -147,6 +148,12 @@ EDITORIAL = {
         "categories": ["utilities"],
         "components": ["workers", "workers-ai", "kv", "r2", "cron"],
         "maintenance_status": "active", "license": "MIT",
+    },
+    "ai-fitness-coach": {
+        "name": "AI 健身教練", "one_liner": "手機架在旁邊做運動，相機自動數次數、語音報數，畫面與姿勢資料都只留在手機上",
+        "categories": ["personal"],
+        "components": ["workers"],
+        "maintenance_status": "active", "license": "Apache-2.0",
     },
     "microfeed": {
         "name": "microfeed", "one_liner": "輕量 feed/CMS（JSON/RSS feed＋admin 後台；無 R2 文字模式收錄版）",
@@ -286,6 +293,14 @@ PRODUCT_SUMMARY = {
         "capabilities": {"zh-tw": ["保存 Markdown 筆記、標籤與雙向連結", "以 D1 搜尋並查看知識圖譜", "透過 Remote MCP 讓 AI 受控讀寫，並可選擇 RSS／備份同步"], "en": ["Store Markdown notes, tags and bidirectional links", "Search D1 and inspect the knowledge graph", "Give AI controlled read/write access through Remote MCP, with optional RSS and backup sync"]},
         "deployment_requirements": {"zh-tw": ["需要自己的 Cloudflare Worker、Pages、D1、KV 與 Private repo", "啟用 OAuth、RSS、Notion 或 GitHub 備份時，需另設各自憑證"], "en": ["Your own Cloudflare Worker, Pages, D1, KV and private repository", "OAuth, RSS, Notion or GitHub backup require their own credentials when enabled"]},
         "limitations": {"zh-tw": ["canonical repo 與上架 release 必須先固定，不能混用不同 checkout", "外部同步與備份是選配功能，資料邊界與權限需逐項確認"], "en": ["The canonical repository and release must be fixed before publishing; different checkouts cannot be mixed", "External sync and backup are optional and require separate boundary and permission review"]},
+    },
+    "ai-fitness-coach": {
+        "project_type": {"zh-tw": "在瀏覽器內執行姿勢辨識的健身計數網頁 App（PWA）", "en": "A fitness rep-counting web app (PWA) that runs pose detection in the browser"},
+        "problem": {"zh-tw": "在家自主訓練時沒人幫忙數次數、看動作是否做完整，而多數健身 App 要註冊帳號並把影像或資料送上雲端", "en": "Training alone at home leaves no one to count reps or check whether each rep was complete, and most fitness apps require an account and send video or data to the cloud"},
+        "audience": {"zh-tw": ["在家自主訓練的人", "想讓學員回家照著練的健身教練與瑜伽老師"], "en": ["People who train on their own at home", "Fitness coaches and yoga teachers who want students to practise at home"]},
+        "capabilities": {"zh-tw": ["24 個動作附解剖風格示範動畫，其中 21 個可自動計數", "保守計數：動作不完整或追蹤中斷時標為待確認，並有語音報數", "電視模式：手機橫放後投放到電視，左側大字次數、右側相機畫面"], "en": ["24 exercises with anatomy-style demo animations, 21 of them counted automatically", "Conservative counting that marks incomplete or interrupted reps as uncertain, with spoken counts", "TV mode: turn the phone sideways and cast it to a TV for large rep counts beside the camera view"]},
+        "deployment_requirements": {"zh-tw": ["需要自己的 Cloudflare 帳號，只建立一個靜態資產 Worker", "不需要資料庫、secret 或自有網域；相機需要 HTTPS，workers.dev 網址即可"], "en": ["Your own Cloudflare account; only one static-assets Worker is created", "No database, secrets or custom domain; the camera needs HTTPS, which the workers.dev address provides"]},
+        "limitations": {"zh-tw": ["一次只能一個人入鏡，只在 Android 手機的 Chrome 實際測過；iPhone Safari 尚未測試", "投放電視已用 Android 的「投放螢幕」連 Android TV 實測；iPhone 經 AirPlay 投放尚未測試", "多數動作的計數門檻尚未經手機實機校準；本 App 不是醫療或復健建議"], "en": ["Only one person can be in frame, and it has only been tested in Chrome on Android phones; iPhone Safari is untested", "Casting has been tested with Android screen casting to an Android TV; AirPlay from an iPhone is untested", "Most rep thresholds are not yet calibrated on real phone sessions; the app is not medical or rehabilitation advice"]},
     },
     "fluxgate": {
         "project_type": {"zh-tw": "自架 Cloudflare AI 生圖閘道", "en": "A self-hosted Cloudflare AI image-generation gateway"},

@@ -42,6 +42,7 @@ product_summary:
     - The deployer owns retention and backup responsibilities
 categories:
 - sharing
+- personal
 profile: small-app
 repo:
   upstream: rahilp/second-brain-cloudflare

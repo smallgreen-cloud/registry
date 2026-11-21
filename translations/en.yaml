@@ -5,6 +5,9 @@ services:
   business-card-mcp:
     one_liner: A self-hosted private contact library that turns AI-identified business cards into searchable records in your own account
     data_flow: Gmail OTP protects the web UI; contact data and model-generated 480px WebP thumbnails stay in the deployer's D1/R2 while MCP authorization stays in KV; no online image transformation is used
+  ai-fitness-coach:
+    one_liner: A phone-camera rep counter with spoken counts that keeps video and pose data on the phone
+    data_flow: Pose detection runs in the browser with a bundled model; training records stay in browser IndexedDB and OPFS, and the deployment serves static files only
   fluxgate:
     one_liner: A self-hosted Cloudflare AI image-generation gateway with REST and MCP endpoints
     data_flow: REST and MCP requests call Workers AI; manual keys and usage counters stay in KV, generated images stay in R2, and Firebase membership plus Telegram alerts are optional
