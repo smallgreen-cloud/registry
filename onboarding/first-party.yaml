@@ -211,19 +211,20 @@ projects:
       - mcp
       external_services: []
     current_stage:
-      zh-tw: 公開 MIT 原始碼、鎖定安裝契約、本機測試及 GitHub CI 已建立；真實個人 Sites、插件、照片、Voice、手機及 teardown 依 Evidence 持續分項驗收
-      en: Public MIT source, pinned install contract, local tests and GitHub CI exist; personal Sites, plugin, photos,
-        Voice, mobile and teardown require separate evidence
+      zh-tw: 已驗證原生私人 Sites 部署、個人 MCP 寫讀修正、PWA 顯示，以及合成照片上傳、取圖、AI 辨識、人工確認後寫入；本次插件在 Codex 操作，不能代替手機 ChatGPT 驗收。最新分項證據保存在開源 Repo 的 evidence/2026-11-22-final-acceptance.json，維持 Candidate
+      en: Native private Sites deployment, personal MCP read/write/correction, PWA display, and synthetic photo upload,
+        retrieval, AI transcription and human-confirmed saving are verified. The plugin was exercised in Codex, not
+        the mobile ChatGPT client. See evidence/2026-11-22-final-acceptance.json in the source repository; status remains Candidate
     next_steps:
       zh-tw:
-      - 在具備 Sites 權限的本人帳號原生部署並核對私人受眾
-      - 安裝個人 MCP，以合成資料做寫入／讀回／修正與第二帳號隔離
-      - 完成照片辨識、原生 Voice、Android PWA 與匯出還原驗收
+      - 用第二個真實帳號驗證紀錄與照片隔離
+      - 完成手機 ChatGPT 圖片工具交接、原生 Voice 及 Android PWA 實機驗收
+      - 核對最新 Evidence 中的備份還原結果，補齊仍未通過的項目
       - 取得 teardown 與受管資源 zero-diff 證據後再評估 Ready
       en:
-      - Deploy natively in an eligible account and verify owner-private access
-      - Connect the personal MCP and test synthetic write/read/correction plus second-account isolation
-      - Verify vision, native Voice, Android PWA and backup/restore
+      - Verify record and photo isolation using a second real account
+      - Verify photo-tool handoff in mobile ChatGPT, native Voice and Android PWA on a real device
+      - Check the latest backup/restore evidence and complete any remaining acceptance
       - Collect teardown and managed-resource zero-diff evidence before assessing Ready
     source:
       repository: smallgreen-cloud/petmcp-sites
@@ -281,8 +282,8 @@ projects:
           records or photos. Data stays in your own Sites-managed database and storage. The PWA does not embed ChatGPT
           or put health data into URLs.
       blockers:
-      - Live personal-plugin and second-account isolation evidence pending
-      - ChatGPT vision, native Voice and Android PWA acceptance pending
+      - Second-real-account isolation evidence pending
+      - Mobile ChatGPT photo-tool handoff, native Voice and Android PWA acceptance pending
       - Sites teardown / managed-resource zero-diff evidence pending
       - Legacy Wrangler conformance does not yet recognise Sites manifests
     product_family: personal-vault
