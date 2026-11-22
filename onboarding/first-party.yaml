@@ -211,21 +211,23 @@ projects:
       - mcp
       external_services: []
     current_stage:
-      zh-tw: 已驗證原生私人 Sites 部署、個人 MCP 寫讀修正、PWA 顯示、合成照片辨識與人工確認後寫入，以及含原圖備份的清除還原；6 筆合成紀錄、1 張照片、7 筆稽核比對一致。本次插件在 Codex 操作，不能代替手機 ChatGPT 驗收。最新證據為開源 Repo 的 evidence/2026-11-22-final-acceptance-v2.json，維持 Candidate
+      zh-tw: 已驗證原生私人 Sites 部署、MCP 寫讀修正、PWA、合成照片人工確認後寫入與含原圖備份還原。2026-11-23 已修正並通過 Sites-only 的 SAP-1／SAP-2／CON-3；新證據為 Repo 的 evidence/2026-11-23-sites-conformance.json。本人操作集中於 docs/USER_ACCEPTANCE_CHECKLIST.md；手機、Voice、第二帳號與 teardown 仍未通過，維持 Candidate
       en: Native private Sites deployment, personal MCP read/write/correction, PWA display, and synthetic photo upload,
         retrieval, AI transcription and human-confirmed saving are verified. The plugin was exercised in Codex, not
         the mobile ChatGPT client. After authorized purge and restore, all 6 synthetic records, 1 original photo and
-        7 audit events matched exactly. See evidence/2026-11-22-final-acceptance-v2.json in the source repository; status remains Candidate
+        7 audit events matched exactly. Sites-only SAP-1/SAP-2/CON-3 now pass; see evidence/2026-11-23-sites-conformance.json.
+        Owner actions are consolidated in docs/USER_ACCEPTANCE_CHECKLIST.md. Mobile, Voice, real second-account isolation
+        and teardown remain unverified; status stays Candidate
     next_steps:
       zh-tw:
       - 用第二個真實帳號驗證紀錄與照片隔離
       - 完成手機 ChatGPT 圖片工具交接、原生 Voice 及 Android PWA 實機驗收
-      - 補齊 SmallGreen legacy conformance 對 Sites manifest 的支援與外部驗收
+      - 按 docs/USER_ACCEPTANCE_CHECKLIST.md 一次回報本人操作結果；靜態檢查不替代外部驗收
       - 取得 teardown 與受管資源 zero-diff 證據後再評估 Ready
       en:
       - Verify record and photo isolation using a second real account
       - Verify photo-tool handoff in mobile ChatGPT, native Voice and Android PWA on a real device
-      - Complete Sites-manifest support in legacy SmallGreen conformance and external acceptance
+      - Complete and return docs/USER_ACCEPTANCE_CHECKLIST.md; static checks do not replace external acceptance
       - Collect teardown and managed-resource zero-diff evidence before assessing Ready
     source:
       repository: smallgreen-cloud/petmcp-sites
@@ -235,7 +237,7 @@ projects:
       protocol: smallgreen-install/v1
       status: candidate
       deployment_ready: false
-      contract_url: https://raw.githubusercontent.com/smallgreen-cloud/petmcp-sites/4d973a7f9becc006d94c5f14788b0ecfe2c10311/.smallgreen/install.yaml
+      contract_url: https://raw.githubusercontent.com/smallgreen-cloud/petmcp-sites/7a5f09461f308528d98322a33a041faca331fe2d/.smallgreen/install.yaml
       target:
         client: chatgpt-work
         hosting: sites
@@ -250,16 +252,17 @@ projects:
         zh-tw: 建立我的 PetMCP
         en: Create my PetMCP
       trigger:
-        zh-tw: 請先讀取 https://raw.githubusercontent.com/smallgreen-cloud/petmcp-sites/4d973a7f9becc006d94c5f14788b0ecfe2c10311/.smallgreen/install.yaml，核對
+        zh-tw: 請先讀取 https://raw.githubusercontent.com/smallgreen-cloud/petmcp-sites/7a5f09461f308528d98322a33a041faca331fe2d/.smallgreen/install.yaml，核對
           MIT 與公開 source commit ed20ee8fbda440a7f1b44007528394b726ae4f62，只用 ChatGPT Work / Sites 原生工具為我建立私人 PetMCP。無
           Sites 權限就停止，不可改用獨立 Cloudflare、BYOC、外部 AI API key 或共享後端。部署後以合成資料驗收 MCP 寫讀、PWA、修正稽核、照片與備份還原；Voice、Android、第二帳號隔離與
-          teardown 分別列 pass/fail/blocked/not tested，不可宣稱 SmallGreen Ready。
-        en: Read https://raw.githubusercontent.com/smallgreen-cloud/petmcp-sites/4d973a7f9becc006d94c5f14788b0ecfe2c10311/.smallgreen/install.yaml,
+          teardown 分別列 pass/fail/blocked/not tested，不可宣稱 SmallGreen Ready。來源快照若缺 install.yaml，先保存上方鎖定契約原文再跑靜態檢查。本人操作集中使用 https://github.com/smallgreen-cloud/petmcp-sites/blob/7a5f09461f308528d98322a33a041faca331fe2d/docs/USER_ACCEPTANCE_CHECKLIST.md。
+        en: Read https://raw.githubusercontent.com/smallgreen-cloud/petmcp-sites/7a5f09461f308528d98322a33a041faca331fe2d/.smallgreen/install.yaml,
           verify MIT and public source commit ed20ee8fbda440a7f1b44007528394b726ae4f62, and create my private PetMCP
           using native ChatGPT Work / Sites only. Stop without Sites access; do not substitute Cloudflare, BYOC, external
           AI API keys or a shared backend. Test synthetic MCP write/read, PWA, corrections, photos and backup/restore.
           Report Voice, Android, second-account isolation and teardown separately as pass/fail/blocked/not tested;
-          do not claim SmallGreen Ready.
+          do not claim SmallGreen Ready. If install.yaml is absent in the runtime snapshot, preserve the pinned contract
+          above before static checks. Consolidate owner actions with https://github.com/smallgreen-cloud/petmcp-sites/blob/7a5f09461f308528d98322a33a041faca331fe2d/docs/USER_ACCEPTANCE_CHECKLIST.md.
       steps:
         zh-tw:
         - 複製部署提示，在具有 Sites 權限的 ChatGPT 對話中貼上，依帳號顯示核對方案與額度
@@ -286,5 +289,4 @@ projects:
       - Second-real-account isolation evidence pending
       - Mobile ChatGPT photo-tool handoff, native Voice and Android PWA acceptance pending
       - Sites teardown / managed-resource zero-diff evidence pending
-      - Legacy Wrangler conformance does not yet recognise Sites manifests
     product_family: personal-vault
