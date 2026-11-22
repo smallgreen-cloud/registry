@@ -3,7 +3,7 @@ name: cards
 on:
   push:
     branches: [main]
-    paths: ["cards/**", "candidates/**", "taxonomy.yaml", "tools/**", "evidence/**", ".github/workflows/cards.yml"]
+    paths: ["cards/**", "candidates/**", "onboarding/**", "translations/**", "taxonomy.yaml", "tools/**", "evidence/**", ".github/workflows/cards.yml"]
   pull_request:
 
 jobs:

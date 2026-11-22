@@ -146,3 +146,143 @@ projects:
         - Human-review provider data flows, secrets and cost limits
         - Complete a live deployment, acceptance, teardown and Evidence Pack with synthetic audio
     product_family: pipeline
+
+  - id: petmcp-sites
+    name: PetMCP Sites
+    state: evidence-needed
+    state_label:
+      zh-tw: 候選專案｜等待實機驗收
+      en: Candidate | live acceptance pending
+    product_summary:
+      project_type:
+        zh-tw: 在自己的 ChatGPT Site 使用的毛孩健康手帳
+        en: A personal pet health journal in your own ChatGPT Site
+      problem:
+        zh-tw: 把血檢報告、日常照護與食品營養標籤收在一起，回診前能查到原始值與修正歷程
+        en: Keep lab reports, daily care and food labels together, with original values and correction history for
+          later review
+      audience:
+        zh-tw:
+        - 希望整理毛孩健康紀錄的一般飼主
+        - 具有 ChatGPT Sites 建立權限的個人使用者
+        en:
+        - Pet owners organising health records
+        - Individuals with permission to create ChatGPT Sites
+      capabilities:
+        zh-tw:
+        - 寵物檔案與私人頭像
+        - 血檢保留原始值、單位、日期與來源；同項同單位趨勢
+        - 日常照護與食品營養標籤，標籤不推定已食用
+        - 由 ChatGPT 原生影像／語音／推理配合個人 MCP；寫入前人工核對
+        - 可修正、稽核、匯出、空白帳號還原與刪除
+        en:
+        - Pet profiles and private avatars
+        - Original lab values, units, dates and sources, with trends separated by exact unit
+        - Daily care and food labels; a label does not imply consumption
+        - Native ChatGPT vision, voice and reasoning with a personal MCP; review before saving
+        - Corrections, audit history, export, empty-account restore and deletion
+      deployment_requirements:
+        zh-tw:
+        - 需要有 Sites 建立權限的 ChatGPT 方案；資格及建置／AI 額度依帳號當下官方顯示
+        - 在 ChatGPT 內以公開鎖定版本建立自己的私人 Site，再安裝自己的 Site PWA
+        - 不另申請 Cloudflare，不使用 BYOC、外部 AI API Key 或 SmallGreen 共用寵物後端
+        en:
+        - A ChatGPT plan with Sites creation access; eligibility, build and AI quotas follow current account policy
+        - Create your own private Site from a pinned public source inside ChatGPT, then install that Site as a PWA
+        - No separate Cloudflare account, BYOC, external AI API key or shared SmallGreen pet backend
+      limitations:
+        zh-tw:
+        - Candidate：Sites、MCP、照片、Voice、Android 及 teardown 必須各自有實測證據，不能互相替代
+        - 照片先存自己的 Site；不承諾 PWA 麥克風或照片無縫送進 ChatGPT Live
+        - 完整備份上限 20 MB、原圖總量 10 MB；1000 筆紀錄、100 照片、5000 筆稽核，超限會拒絕
+        - 只整理紀錄，不取代獸醫診斷；公開 Site 可讀不代表免費帳號可建立私人 Site
+        en:
+        - 'Candidate: Sites, MCP, photos, Voice, Android and teardown each need their own live evidence'
+        - Photos stay in your Site; no claim of seamless microphone or photo forwarding into ChatGPT Live
+        - 'Backup limit: 20 MB total, 10 MB raw photos; 1000 records, 100 photos, 5000 audit events; oversize requests
+          fail explicitly'
+        - Record organisation is not a veterinary diagnosis; public viewing does not imply free-account private-Site
+          creation
+    architecture:
+      sites:
+      - site
+      - d1
+      - r2
+      - mcp
+      external_services: []
+    current_stage:
+      zh-tw: 公開 MIT 原始碼、鎖定安裝契約、本機測試及 GitHub CI 已建立；真實個人 Sites、插件、照片、Voice、手機及 teardown 依 Evidence 持續分項驗收
+      en: Public MIT source, pinned install contract, local tests and GitHub CI exist; personal Sites, plugin, photos,
+        Voice, mobile and teardown require separate evidence
+    next_steps:
+      zh-tw:
+      - 在具備 Sites 權限的本人帳號原生部署並核對私人受眾
+      - 安裝個人 MCP，以合成資料做寫入／讀回／修正與第二帳號隔離
+      - 完成照片辨識、原生 Voice、Android PWA 與匯出還原驗收
+      - 取得 teardown 與受管資源 zero-diff 證據後再評估 Ready
+      en:
+      - Deploy natively in an eligible account and verify owner-private access
+      - Connect the personal MCP and test synthetic write/read/correction plus second-account isolation
+      - Verify vision, native Voice, Android PWA and backup/restore
+      - Collect teardown and managed-resource zero-diff evidence before assessing Ready
+    source:
+      repository: smallgreen-cloud/petmcp-sites
+      locked_commit: ed20ee8fbda440a7f1b44007528394b726ae4f62
+      license: MIT
+    agent_install:
+      protocol: smallgreen-install/v1
+      status: candidate
+      deployment_ready: false
+      contract_url: https://raw.githubusercontent.com/smallgreen-cloud/petmcp-sites/4d973a7f9becc006d94c5f14788b0ecfe2c10311/.smallgreen/install.yaml
+      target:
+        client: chatgpt-work
+        hosting: sites
+        execution_mode: native-sites
+      hosting:
+        managed_resources:
+        - site
+        - d1
+        - r2
+        external_infrastructure: []
+      cta:
+        zh-tw: 建立我的 PetMCP
+        en: Create my PetMCP
+      trigger:
+        zh-tw: 請先讀取 https://raw.githubusercontent.com/smallgreen-cloud/petmcp-sites/4d973a7f9becc006d94c5f14788b0ecfe2c10311/.smallgreen/install.yaml，核對
+          MIT 與公開 source commit ed20ee8fbda440a7f1b44007528394b726ae4f62，只用 ChatGPT Work / Sites 原生工具為我建立私人 PetMCP。無
+          Sites 權限就停止，不可改用獨立 Cloudflare、BYOC、外部 AI API key 或共享後端。部署後以合成資料驗收 MCP 寫讀、PWA、修正稽核、照片與備份還原；Voice、Android、第二帳號隔離與
+          teardown 分別列 pass/fail/blocked/not tested，不可宣稱 SmallGreen Ready。
+        en: Read https://raw.githubusercontent.com/smallgreen-cloud/petmcp-sites/4d973a7f9becc006d94c5f14788b0ecfe2c10311/.smallgreen/install.yaml,
+          verify MIT and public source commit ed20ee8fbda440a7f1b44007528394b726ae4f62, and create my private PetMCP
+          using native ChatGPT Work / Sites only. Stop without Sites access; do not substitute Cloudflare, BYOC, external
+          AI API keys or a shared backend. Test synthetic MCP write/read, PWA, corrections, photos and backup/restore.
+          Report Voice, Android, second-account isolation and teardown separately as pass/fail/blocked/not tested;
+          do not claim SmallGreen Ready.
+      steps:
+        zh-tw:
+        - 複製部署提示，在具有 Sites 權限的 ChatGPT 對話中貼上，依帳號顯示核對方案與額度
+        - 等待原生 Sites terminal 成功，保存自己的 Site URL；expected URL 不是發布證明
+        - 安裝／連線 Sites 為你建立的個人 MCP，先讀取，再用合成資料寫入與修正
+        - 開啟自己的 Site，上傳照片；回 ChatGPT 用個人 MCP 取得影像，人工確認辨識草稿後再存檔
+        - Android Chrome 開啟自己的 Site，選「安裝應用程式／新增至主畫面」；逐項測試返回、更新、照片權限與登入保持
+        - 用完整備份驗證空白帳號還原；未實測項目維持未通過
+        en:
+        - Copy the prompt into ChatGPT with Sites access; check the plan and allowance shown by your account
+        - Wait for native Sites terminal success and keep your own Site URL; an expected URL is not proof of publication
+        - Install/connect the personal MCP created by Sites; read first, then test synthetic writes and corrections
+        - Upload a photo in your own Site; ask ChatGPT to retrieve it through your personal MCP, review the draft,
+          then save
+        - Open your own Site in Android Chrome, install/add to home screen, and test return, updates, photo permission
+          and retained sign-in
+        - Verify a full backup by restoring to an empty account; untested items remain unverified
+      privacy:
+        zh-tw: SmallGreen 只提供開源介紹與部署引導，不保存你的個人 Site URL、帳號、寵物紀錄或照片。資料保存在你自己的 Sites 受管資料庫與附件中；PWA 不內嵌 ChatGPT，也不把健康資料放進網址。
+        en: SmallGreen provides source and deployment guidance only; it does not store your Site URL, account, pet
+          records or photos. Data stays in your own Sites-managed database and storage. The PWA does not embed ChatGPT
+          or put health data into URLs.
+      blockers:
+      - Live personal-plugin and second-account isolation evidence pending
+      - ChatGPT vision, native Voice and Android PWA acceptance pending
+      - Sites teardown / managed-resource zero-diff evidence pending
+      - Legacy Wrangler conformance does not yet recognise Sites manifests
+    product_family: personal-vault
