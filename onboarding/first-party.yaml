@@ -211,20 +211,21 @@ projects:
       - mcp
       external_services: []
     current_stage:
-      zh-tw: 已驗證原生私人 Sites 部署、個人 MCP 寫讀修正、PWA 顯示，以及合成照片上傳、取圖、AI 辨識、人工確認後寫入；本次插件在 Codex 操作，不能代替手機 ChatGPT 驗收。最新分項證據保存在開源 Repo 的 evidence/2026-11-22-final-acceptance.json，維持 Candidate
+      zh-tw: 已驗證原生私人 Sites 部署、個人 MCP 寫讀修正、PWA 顯示、合成照片辨識與人工確認後寫入，以及含原圖備份的清除還原；6 筆合成紀錄、1 張照片、7 筆稽核比對一致。本次插件在 Codex 操作，不能代替手機 ChatGPT 驗收。最新證據為開源 Repo 的 evidence/2026-11-22-final-acceptance-v2.json，維持 Candidate
       en: Native private Sites deployment, personal MCP read/write/correction, PWA display, and synthetic photo upload,
         retrieval, AI transcription and human-confirmed saving are verified. The plugin was exercised in Codex, not
-        the mobile ChatGPT client. See evidence/2026-11-22-final-acceptance.json in the source repository; status remains Candidate
+        the mobile ChatGPT client. After authorized purge and restore, all 6 synthetic records, 1 original photo and
+        7 audit events matched exactly. See evidence/2026-11-22-final-acceptance-v2.json in the source repository; status remains Candidate
     next_steps:
       zh-tw:
       - 用第二個真實帳號驗證紀錄與照片隔離
       - 完成手機 ChatGPT 圖片工具交接、原生 Voice 及 Android PWA 實機驗收
-      - 核對最新 Evidence 中的備份還原結果，補齊仍未通過的項目
+      - 補齊 SmallGreen legacy conformance 對 Sites manifest 的支援與外部驗收
       - 取得 teardown 與受管資源 zero-diff 證據後再評估 Ready
       en:
       - Verify record and photo isolation using a second real account
       - Verify photo-tool handoff in mobile ChatGPT, native Voice and Android PWA on a real device
-      - Check the latest backup/restore evidence and complete any remaining acceptance
+      - Complete Sites-manifest support in legacy SmallGreen conformance and external acceptance
       - Collect teardown and managed-resource zero-diff evidence before assessing Ready
     source:
       repository: smallgreen-cloud/petmcp-sites
